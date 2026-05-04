@@ -1,9 +1,78 @@
 {
   "_version": 1,
   "_updated": "2026-05-05",
-  "tasksByDay": [[], [], [], [], [], [], []],
+  "tasksByDay": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
   "rewards": [],
-  "subjects": [],
+  "subjects": [
+    {
+      "id": "english",
+      "name": "英语",
+      "color": "#FF7043",
+      "bg": "#FFF3EF"
+    },
+    {
+      "id": "math",
+      "name": "数学",
+      "color": "#4F8EF7",
+      "bg": "#EFF4FF"
+    },
+    {
+      "id": "science",
+      "name": "科学",
+      "color": "#43C59E",
+      "bg": "#EDFAF5"
+    },
+    {
+      "id": "chinese",
+      "name": "语文",
+      "color": "#E91E63",
+      "bg": "#FCE4EC"
+    },
+    {
+      "id": "app",
+      "name": "App课程",
+      "color": "#9C6FE4",
+      "bg": "#F5EEFF"
+    },
+    {
+      "id": "review",
+      "name": "复习整理",
+      "color": "#F5A623",
+      "bg": "#FFFBEF"
+    },
+    {
+      "id": "hw",
+      "name": "学校作业",
+      "color": "#FF9800",
+      "bg": "#FFF8EF"
+    },
+    {
+      "id": "live",
+      "name": "直播课",
+      "color": "#00796B",
+      "bg": "#F0FFF8"
+    },
+    {
+      "id": "rest",
+      "name": "休息/其他",
+      "color": "#78909C",
+      "bg": "#F5F7FA"
+    }
+  ],
   "adminPwd": "001",
-  "students": [{"id": "student_1", "name": "学生1", "pwd": "002"}]
+  "students": [
+    {
+      "id": "student_1",
+      "name": "学生1",
+      "pwd": "002"
+    }
+  ]
 }
