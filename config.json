@@ -4,7 +4,7 @@
   "tasksByDay": [
     [
       {
-        "id": "task_1777921967538",
+        "id": "task_1777919377295",
         "time": "",
         "name": "新任务",
         "desc": "任务说明",
@@ -15,7 +15,7 @@
         "enabled": true
       },
       {
-        "id": "task_1777921968540",
+        "id": "task_1777919378157",
         "time": "",
         "name": "新任务",
         "desc": "任务说明",
@@ -29,17 +29,6 @@
     [
       {
         "id": "task_1777919379472",
-        "time": "",
-        "name": "新任务",
-        "desc": "任务说明",
-        "type": "review",
-        "pts": 2,
-        "required": true,
-        "flex": false,
-        "enabled": true
-      },
-      {
-        "id": "task_1777921975310",
         "time": "",
         "name": "新任务",
         "desc": "任务说明",
@@ -77,19 +66,7 @@
     [],
     [],
     [],
-    [
-      {
-        "id": "task_1777922009670",
-        "time": "",
-        "name": "新任务",
-        "desc": "任务说明",
-        "type": "review",
-        "pts": 2,
-        "required": true,
-        "flex": false,
-        "enabled": true
-      }
-    ]
+    []
   ],
   "rewards": [],
   "subjects": [
