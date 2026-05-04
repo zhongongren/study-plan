@@ -1,1 +1,1 @@
-{"_version":2,"_updated":"2026-05-05T06:00:00Z","adminPwd":"001","students":[{"id":"student_1","name":"学生1","pwd":"002"}],"tasksByDay":[[],[],[],[],[],[],[]],"rewards":[],"subjects":[]}
+{"_version":3,"_updated":"2026-05-05T06:10:00Z","adminPwd":"001","students":[{"id":"student_1","name":"学生1","pwd":"002"}],"tasksByDay":[[],[],[],[],[],[],[]],"rewards":[],"subjects":[]}
