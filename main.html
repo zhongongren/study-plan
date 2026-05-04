@@ -723,7 +723,12 @@ let state, adminConfig, currentDay = 0, confirmCallback = null, currentRole = nu
 
 function getStudentSK(sid){return 'study_plan_v5_'+(sid||'default');}
 function loadState(sid){const key=sid?getStudentSK(sid):SK;try{const s=localStorage.getItem(key);if(s)return JSON.parse(s);}catch(e){}return{totalScore:0,streak:0,lastCheckinDate:null,lastVisit:null,taskStatus:{},goalChecks:{},startDate:getTodayStr(),customWeekTasks:{}};}
-function saveState(){localStorage.setItem(currentStudentId?getStudentSK(currentStudentId):SK,JSON.stringify(state));}
+function saveState(){
+  const sid=currentStudentId||'default';
+  localStorage.setItem(getStudentSK(sid),JSON.stringify(state));
+  // 后台异步同步到云端（不阻塞UI）
+  saveStateCloud(sid,state).catch(e=>console.warn('State cloud sync failed',e));
+}
 function loadAdminConfig(){
   try{const s=localStorage.getItem(AK);if(s)return JSON.parse(s);}catch(e){}
   return{tasksByDay:[0,1,2,3,4].map(()=>JSON.parse(JSON.stringify(DEFAULT_WEEKDAY))).concat([JSON.parse(JSON.stringify(DEFAULT_SATURDAY)),JSON.parse(JSON.stringify(DEFAULT_SUNDAY))]),rewards:JSON.parse(JSON.stringify(DEFAULT_REWARDS)),subjects:JSON.parse(JSON.stringify(DEFAULT_SUBJECTS)),adminPwd:'001',students:[{id:'student_1',name:'学生1',pwd:'002'}]};
@@ -769,6 +774,54 @@ async function saveCloudConfig(cfg){
     else{const e=await w.text();console.error('Cloud save error',e);return false;}
   }catch(e){console.error('Cloud save failed',e);return false;}
 }
+// ============================================================
+// STUDENT STATE CLOUD SYNC
+// ============================================================
+function getStateCloudFile(sid){return 'state_'+(sid||'default')+'.json';}
+function getStateCloudAPI(sid){return 'https://api.github.com/repos/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/contents/'+getStateCloudFile(sid);}
+function getStateCloudRAW(sid){return 'https://raw.githubusercontent.com/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/main/'+getStateCloudFile(sid);}
+
+// 异步保存学生状态到云端（后台执行，不阻塞UI）
+async function saveStateCloud(sid, stateData){
+  try{
+    const apiUrl=getStateCloudAPI(sid);
+    const r=await fetch(apiUrl,{headers:{'Authorization':'token '+_tk(),'Accept':'application/vnd.github.v3+json'}});
+    let sha=null;
+    if(r.ok){const j=await r.json();sha=j.sha;}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(stateData,null,2))));
+    const body={message:'update state '+sid+' '+new Date().toISOString(),content:content};
+    if(sha)body.sha=sha;
+    const w=await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+_tk(),'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify(body)});
+    if(w.ok){console.log('☁️ State saved for',sid);return true;}
+    else{console.error('State save error',await w.text());return false;}
+  }catch(e){console.error('State save failed',e);return false;}
+}
+
+// 从云端加载学生状态
+async function loadStateCloud(sid){
+  try{
+    const rawUrl=getStateCloudRAW(sid)+'?t='+Date.now();
+    const r=await fetch(rawUrl);
+    if(!r.ok)return null;
+    const data=await r.json();
+    if(data&&typeof data.totalScore!=='undefined'){
+      localStorage.setItem(getStudentSK(sid),JSON.stringify(data));
+      return data;
+    }
+  }catch(e){console.warn('State cloud load failed for',sid,e);}
+  return null;
+}
+
+// 同步所有学生状态到云端（管理员保存时调用）
+async function syncAllStudentStates(){
+  if(!adminConfig||!adminConfig.students)return;
+  for(const s of adminConfig.students){
+    const st=loadState(s.id);
+    await saveStateCloud(s.id,st);
+  }
+  console.log('☁️ All student states synced');
+}
+
 function getTodayStr(){return new Date().toISOString().slice(0,10);}
 function getDateStr(d){return d.toISOString().slice(0,10);}
 function getDow(dateStr){return new Date(dateStr+'T00:00:00').getDay();}
@@ -814,12 +867,20 @@ function doLogin(){
   }
 }
 function shake(el){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),500);}
-function enterStudent(sid,sname){
+async function enterStudent(sid,sname){
   currentRole='student';currentStudentId=sid||'student_1';
   localStorage.setItem(AUTH_KEY,'student');localStorage.setItem('study_plan_current_student',currentStudentId);
   addLog('login_student',(sname||'学生')+'登录（账号：'+currentStudentId+'）');
   document.getElementById('loginPage').style.display='none';
   document.getElementById('studentApp').style.display='block';
+  // 先从云端拉取最新学生数据，再初始化
+  try{
+    const cloudState=await loadStateCloud(currentStudentId);
+    if(cloudState){
+      localStorage.setItem(getStudentSK(currentStudentId),JSON.stringify(cloudState));
+      console.log('☁️ Student state loaded from cloud for',currentStudentId);
+    }
+  }catch(e){console.warn('Cloud state load failed, using local',e);}
   initStudent();
 }
 function enterAdmin(){
@@ -1166,6 +1227,14 @@ function initAdmin(){
   renderRewardEditor();
   renderStudentManager();
   renderAdminStudentSelector();
+  // 后台异步从云端加载第一个学生最新数据
+  loadStateCloud(adminViewStudentId).then(cloudState=>{
+    if(cloudState){
+      state=cloudState;
+      document.getElementById('currentScoreInput').value=state.totalScore||0;
+      renderAdminStats();
+    }
+  }).catch(()=>{});
 }
 
 function renderSubjectEditor(){
@@ -1279,6 +1348,10 @@ function resetStudentData(sid,sname){
   addLog('reset',`重置了学生「${sname}」(${sid})的全部数据`);
   renderStudentManager();
   showToast(`✅ 已重置「${sname}」的数据`,'success');
+  // 同步清空云端对应学生数据
+  saveStateCloud(sid,emptyState).then(()=>{
+    console.log('☁️ Cloud state reset for',sid);
+  }).catch(e=>console.warn('Cloud reset failed',e));
 }
 function renderAdminStudentSelector(){
   const students=adminConfig.students||[];
@@ -1287,8 +1360,16 @@ function renderAdminStudentSelector(){
     sel.innerHTML=students.map(s=>`<option value="${s.id}" ${s.id===adminViewStudentId?'selected':''}>${s.name}</option>`).join('');
   });
 }
-function switchAdminViewStudent(sid){
+async function switchAdminViewStudent(sid){
   adminViewStudentId=sid;
+  // 先尝试从云端加载最新学生数据
+  try{
+    const cloudState=await loadStateCloud(sid);
+    if(cloudState){
+      localStorage.setItem(getStudentSK(sid),JSON.stringify(cloudState));
+      console.log('☁️ Admin loaded cloud state for',sid);
+    }
+  }catch(e){console.warn('Admin cloud load failed',e);}
   state=loadState(sid);
   document.getElementById('currentScoreInput').value=state.totalScore||0;
   renderAdminStats();
