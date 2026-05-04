@@ -66,7 +66,30 @@
     [],
     [],
     [],
-    []
+    [
+      {
+        "id": "task_1777922066266",
+        "time": "",
+        "name": "新任务",
+        "desc": "任务说明",
+        "type": "review",
+        "pts": 2,
+        "required": true,
+        "flex": false,
+        "enabled": true
+      },
+      {
+        "id": "task_1777922066798",
+        "time": "",
+        "name": "新任务",
+        "desc": "任务说明",
+        "type": "review",
+        "pts": 2,
+        "required": true,
+        "flex": false,
+        "enabled": true
+      }
+    ]
   ],
   "rewards": [],
   "subjects": [
