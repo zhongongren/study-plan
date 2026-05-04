@@ -77,7 +77,19 @@
     [],
     [],
     [],
-    []
+    [
+      {
+        "id": "task_1777922009670",
+        "time": "",
+        "name": "新任务",
+        "desc": "任务说明",
+        "type": "review",
+        "pts": 2,
+        "required": true,
+        "flex": false,
+        "enabled": true
+      }
+    ]
   ],
   "rewards": [],
   "subjects": [
