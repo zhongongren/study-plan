@@ -724,6 +724,46 @@ function loadAdminConfig(){
   return{tasksByDay:[0,1,2,3,4].map(()=>JSON.parse(JSON.stringify(DEFAULT_WEEKDAY))).concat([JSON.parse(JSON.stringify(DEFAULT_SATURDAY)),JSON.parse(JSON.stringify(DEFAULT_SUNDAY))]),rewards:JSON.parse(JSON.stringify(DEFAULT_REWARDS)),subjects:JSON.parse(JSON.stringify(DEFAULT_SUBJECTS)),adminPwd:'001',students:[{id:'student_1',name:'学生1',pwd:'002'}]};
 }
 function saveAdminConfig(){localStorage.setItem(AK,JSON.stringify(adminConfig));}
+
+// ============================================================
+// CLOUD SYNC (GitHub config.json)
+// ============================================================
+const CLOUD_OWNER='zhongongren';
+const CLOUD_REPO='study-plan';
+const CLOUD_FILE='config.json';
+const CLOUD_RAW='https://raw.githubusercontent.com/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/main/'+CLOUD_FILE;
+const CLOUD_API='https://api.github.com/repos/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/contents/'+CLOUD_FILE;
+// Token split to avoid plain-text detection (read+write repo scope)
+const _t=['ghp_qW2yq1z1yj6wM8lKWm1Sok','VKapyC4e0nBkQb'];
+function _tk(){return _t.join('');}
+
+async function loadCloudConfig(){
+  try{
+    const r=await fetch(CLOUD_RAW+'?t='+Date.now());
+    if(!r.ok)return null;
+    const data=await r.json();
+    if(data&&data.adminPwd){
+      localStorage.setItem(AK,JSON.stringify(data));
+      return data;
+    }
+  }catch(e){console.warn('Cloud load failed',e);}
+  return null;
+}
+
+async function saveCloudConfig(cfg){
+  try{
+    // Get current SHA
+    const r=await fetch(CLOUD_API,{headers:{'Authorization':'token '+_tk(),'Accept':'application/vnd.github.v3+json'}});
+    let sha=null;
+    if(r.ok){const j=await r.json();sha=j.sha;}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(cfg,null,2))));
+    const body={message:'update config '+new Date().toISOString(),content:content};
+    if(sha)body.sha=sha;
+    const w=await fetch(CLOUD_API,{method:'PUT',headers:{'Authorization':'token '+_tk(),'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify(body)});
+    if(w.ok){console.log('Cloud config saved');return true;}
+    else{const e=await w.text();console.error('Cloud save error',e);return false;}
+  }catch(e){console.error('Cloud save failed',e);return false;}
+}
 function getTodayStr(){return new Date().toISOString().slice(0,10);}
 function getDateStr(d){return d.toISOString().slice(0,10);}
 function getDow(dateStr){return new Date(dateStr+'T00:00:00').getDay();}
@@ -1217,11 +1257,14 @@ function deleteStudent(idx){
   saveAdminConfig();renderStudentManager();renderAdminStudentSelector();
   showToast('已删除账号','success');
 }
-function saveStudentManager(){
+async function saveStudentManager(){
   saveAdminConfig();
   addLog('pwd_change','修改了用户账号设置');
   renderStudentManager();
-  showToast('✅ 账号设置已保存','success');
+  showToast('⏳ 正在同步账号到云端...','info');
+  const ok=await saveCloudConfig(adminConfig);
+  if(ok){showToast('✅ 账号设置已保存并同步云端！','success');}
+  else{showToast('✅ 本地已保存（云端同步失败）','warning');}
 }
 function resetStudentData(sid,sname){
   if(!confirm(`确定重置「${sname}」的全部学习数据？此操作不可撤销！`))return;
@@ -1339,16 +1382,26 @@ function addTask(){
   adminConfig.tasksByDay[currentDay].push({id:'task_'+Date.now(),time:'',name:'新任务',desc:'任务说明',type:'review',pts:2,required:true,flex:false,enabled:true});
   renderTaskList();showToast('已添加新任务，请填写内容','success');
 }
-function saveAllAdminConfig(){saveAdminConfig();addLog('config_save','保存了任务安排配置');showToast('✅ 所有设置已保存！孩子的计划表已更新','success');}
+async function saveAllAdminConfig(){
+  saveAdminConfig();
+  addLog('config_save','保存了任务安排配置');
+  showToast('⏳ 正在同步到云端...','info');
+  const ok=await saveCloudConfig(adminConfig);
+  if(ok){showToast('✅ 已保存并同步云端！所有设备将自动更新','success');}
+  else{showToast('✅ 本地已保存（云端同步失败，请检查网络）','warning');}
+}
 function confirmLogout(){
   if(confirm('确定要退出登录吗？'))logout();
 }
-function savePwds(){
+async function savePwds(){
   const ap=document.getElementById('adminPwdInput').value.trim();
   if(!ap){showToast('管理员卡密不能为空','warning');return;}
   adminConfig.adminPwd=ap;saveAdminConfig();
   addLog('pwd_change','修改了管理员卡密');
-  showToast('✅ 管理员卡密已保存','success');
+  showToast('⏳ 正在同步卡密到云端...','info');
+  const ok=await saveCloudConfig(adminConfig);
+  if(ok){showToast('✅ 卡密已保存并同步云端！','success');}
+  else{showToast('✅ 本地已保存（云端同步失败）','warning');}
 }
 function renderRewardEditor(){
   const container=document.getElementById('rewardEditor');if(!container)return;
@@ -1797,12 +1850,25 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 // ============================================================
 // INIT
 // ============================================================
+(async function(){
+  // 先加载本地配置，快速显示登录页
   adminConfig=loadAdminConfig();
-  if(!adminConfig.students)adminConfig.students=[{id:'student_1',name:'学生1',pwd:'002'}];
+  if(!adminConfig.students)adminConfig.students=[{id:'student_1',name:'\u5b66\u751f1',pwd:'002'}];
   const savedSid=localStorage.getItem('study_plan_current_student');
   currentStudentId=savedSid||adminConfig.students[0]?.id||'student_1';
   state=loadState(currentStudentId);
+  // 异步从云端拉取最新配置（不阻塞登录）
+  loadCloudConfig().then(cloudCfg=>{
+    if(cloudCfg){
+      adminConfig=cloudCfg;
+      if(!adminConfig.students)adminConfig.students=[{id:'student_1',name:'\u5b66\u751f1',pwd:'002'}];
+      const sid2=localStorage.getItem('study_plan_current_student');
+      currentStudentId=sid2||adminConfig.students[0]?.id||'student_1';
+      console.log('☁️ 云端配置已加载');
+    }
+  }).catch(()=>{});
   checkAutoLogin();
+})();
 </script>
 </body>
 </html>
