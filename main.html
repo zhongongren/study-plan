@@ -71,7 +71,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .page{display:none;max-width:900px;margin:0 auto;padding:16px;}
 .page.active{display:block;}
 .card{background:var(--card);border-radius:18px;padding:20px;box-shadow:0 4px 20px rgba(79,142,247,.08);margin-bottom:14px;}
-.today-banner{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:18px;padding:18px 20px;color:#fff;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+.today-banner{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:18px;padding:16px 14px;color:#fff;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .today-date{font-size:12px;opacity:.8;}
 .today-title{font-size:20px;font-weight:900;margin:3px 0;}
 .today-sub{font-size:12px;opacity:.8;}
@@ -358,14 +358,22 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   </div>
   <div class="page active" id="page-today">
     <div class="today-banner">
-      <div><div class="today-date" id="todayDate"></div><div class="today-title" id="todayGreeting">今天，继续加油！</div><div class="today-sub" id="todayWeekType"></div></div>
-      <div><div class="today-pct" id="todayPct">0%</div><div class="today-pct-label">今日完成率</div></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <button onclick="changeViewDate(-1)" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">‹</button>
+        <div style="flex:1;">
+          <div class="today-date" id="todayDate"></div>
+          <div class="today-title" id="todayGreeting">今天，继续加油！</div>
+          <div class="today-sub" id="todayWeekType"></div>
+        </div>
+        <button onclick="changeViewDate(1)" id="nextDayBtn" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">›</button>
+      </div>
+      <div style="text-align:right;"><div class="today-pct" id="todayPct">0%</div><div class="today-pct-label" id="todayPctLabel">今日完成率</div></div>
     </div>
     <div class="adj-banner" id="adjBanner" style="display:none;"><div class="adj-title">⚠️ 昨天有任务没完成，今天需要补上：</div><div id="adjTasks"></div><div style="font-size:12px;color:#E53935;margin-top:8px;font-weight:600;">💡 今天提前10分钟开始，把昨天的任务补完！</div></div>
     <div class="highlight-box"><div class="hb-icon">⚡</div><div><h4>英语是本月最重要的突破口！</h4><p>每天完成英语专项训练，哪怕只有20分钟，坚持就是进步。</p></div></div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div style="font-size:17px;font-weight:800;">📅 今日任务</div>
+        <div style="font-size:17px;font-weight:800;" id="taskCardTitle">📅 今日任务</div>
         <div style="padding:4px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#EFF4FF;color:var(--primary);" id="todayTypeBadge">周一</div>
       </div>
       <div class="task-list" id="todayTasks"></div>
@@ -719,7 +727,7 @@ const SUBJECT_TYPES = DEFAULT_SUBJECTS;
 // ============================================================
 // STATE
 // ============================================================
-let state, adminConfig, currentDay = 0, confirmCallback = null, currentRole = null, currentStudentId = null, adminViewStudentId = null;
+let state, adminConfig, currentDay = 0, confirmCallback = null, currentRole = null, currentStudentId = null, adminViewStudentId = null, viewingDate = null;
 
 function getStudentSK(sid){return 'study_plan_v5_'+(sid||'default');}
 function loadState(sid){const key=sid?getStudentSK(sid):SK;try{const s=localStorage.getItem(key);if(s)return JSON.parse(s);}catch(e){}return{totalScore:0,streak:0,lastCheckinDate:null,lastVisit:null,taskStatus:{},goalChecks:{},startDate:getTodayStr(),customWeekTasks:{}};}
@@ -925,7 +933,7 @@ function setTaskDone(d,id,v){state.taskStatus[getTaskKey(d,id)]=v?'done':null;sa
 function getDayPct(dateStr){const t=getTasksForDate(dateStr).filter(x=>x.pts>0);if(!t.length)return 0;return Math.round(t.filter(x=>getTaskDone(dateStr,x.id)).length/t.length*100);}
 
 function initStudent(){
-  state=loadState();adminConfig=loadAdminConfig();
+  state=loadState(currentStudentId);adminConfig=loadAdminConfig();
   const today=getTodayStr();
   const lastVisit=state.lastVisit;
   const startDate=state.startDate||today;
@@ -939,6 +947,7 @@ function initStudent(){
     state.lastVisit=today;
     saveState();
   }
+  viewingDate=getTodayStr();
   renderToday();updateScoreBar();renderWeekGrid();
   if(isFirstEver){
     // 第一次使用：显示欢迎弹窗
@@ -966,37 +975,59 @@ function initStudent(){
 }
 
 function renderToday(){
-  const today=getTodayStr();const dow=getDow(today);
-  const d=new Date(today+'T00:00:00');
+  viewingDate=viewingDate||getTodayStr();
+  renderDateView(viewingDate);
+}
+function changeViewDate(delta){
+  const today=getTodayStr();
+  const cur=viewingDate||today;
+  const d=new Date(cur+'T00:00:00');
+  const nd=new Date(d.getTime()+delta*86400000);
+  const ns=getDateStr(nd);
+  if(ns>today){showToast('不能查看未来日期','warning');return;}
+  viewingDate=ns;
+  renderDateView(ns);
+}
+function renderDateView(dateStr){
+  const today=getTodayStr();
+  dateStr=dateStr||today;
+  viewingDate=dateStr;
+  const isToday=dateStr===today;
+  const dow=getDow(dateStr);
+  const d=new Date(dateStr+'T00:00:00');
   const DAYS=['周日','周一','周二','周三','周四','周五','周六'];
   const MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-  document.getElementById('todayDate').textContent=`${d.getFullYear()}年${MONTHS[d.getMonth()]}${d.getDate()}日 · ${DAYS[dow]}`;
+  const dateLabel=`${d.getFullYear()}年${MONTHS[d.getMonth()]}${d.getDate()}日 · ${DAYS[dow]}`;
+  document.getElementById('todayDate').textContent=isToday?dateLabel:dateLabel+' （历史）';
   const h=new Date().getHours();
   const greetings=['早上好！新的一天，新的开始！','午后时光，保持专注！','下午好！距离完成目标又近了一步！','晚上好！黄金学习时间到了！','夜深了，快完成今天的任务吧！'];
-  document.getElementById('todayGreeting').textContent=h<12?greetings[0]:h<14?greetings[1]:h<18?greetings[2]:h<21?greetings[3]:greetings[4];
-  document.getElementById('todayWeekType').textContent=(dow===0||dow===6)?'📡 今天有培训班直播课，认真听讲！':'📚 今天是学习日，晚上7点开始！';
+  document.getElementById('todayGreeting').textContent=isToday?(h<12?greetings[0]:h<14?greetings[1]:h<18?greetings[2]:h<21?greetings[3]:greetings[4]):'查看历史打卡记录';
+  document.getElementById('todayWeekType').textContent=isToday?((dow===0||dow===6)?'📡 今天有培训班直播课，认真听讲！':'📚 今天是学习日，晚上7点开始！'):((dow===0||dow===6)?'📡 培训班直播课日':'📚 学习日');
   document.getElementById('todayTypeBadge').textContent=DAYS[dow];
-  // Missed yesterday
-  const yesterday=getDateStr(new Date(Date.now()-86400000));
-  const missed=getTasksForDate(yesterday).filter(t=>t.required&&t.pts>0&&!getTaskDone(yesterday,t.id));
   const adjBanner=document.getElementById('adjBanner');
-  if(missed.length>0){adjBanner.style.display='block';document.getElementById('adjTasks').innerHTML=missed.map(t=>`<div class="adj-task">📌 ${t.name}</div>`).join('');}
-  else{adjBanner.style.display='none';}
-  // Tasks
-  const tasks=getTasksForDate(today);
+  if(isToday){
+    const yesterday=getDateStr(new Date(Date.now()-86400000));
+    const missed=getTasksForDate(yesterday).filter(t=>t.required&&t.pts>0&&!getTaskDone(yesterday,t.id));
+    if(missed.length>0){adjBanner.style.display='block';document.getElementById('adjTasks').innerHTML=missed.map(t=>`<div class="adj-task">📌 ${t.name}</div>`).join('');}
+    else{adjBanner.style.display='none';}
+  }else{adjBanner.style.display='none';}
+  const titleEl=document.getElementById('taskCardTitle');
+  if(titleEl)titleEl.textContent=isToday?'📅 今日任务':'📅 '+(d.getMonth()+1)+'月'+d.getDate()+'日任务';
+  const nextBtn=document.getElementById('nextDayBtn');
+  if(nextBtn){nextBtn.style.opacity=isToday?'0.3':'1';nextBtn.style.cursor=isToday?'not-allowed':'pointer';}
+  const tasks=getTasksForDate(dateStr);
   const container=document.getElementById('todayTasks');container.innerHTML='';
   tasks.forEach(task=>{
-    const done=getTaskDone(today,task.id);
+    const done=getTaskDone(dateStr,task.id);
     const hasPts=task.pts>0;
     const el=document.createElement('div');
     el.className=`task-item t-${task.type}${done?' done':''}${!hasPts?' no-click':''}`;
     el.innerHTML=`<div class="task-check">${done?'✓':''}</div><div class="task-time">${task.time}</div><div style="flex:1;"><div class="task-name">${task.name}</div><div class="task-desc">${task.desc}</div></div>${task.flex?'<div class="flex-badge">弹性</div>':''}${hasPts?`<div class="task-pts">+${task.pts}分</div>`:''}`;
-    if(hasPts)el.addEventListener('click',()=>toggleTask(today,task,el));
+    if(hasPts)el.addEventListener('click',()=>toggleTask(dateStr,task,el));
     container.appendChild(el);
   });
-  updateTodayPct(today);
+  updateTodayPct(dateStr);
 }
-
 function toggleTask(dateStr,task,el){
   const done=getTaskDone(dateStr,task.id);
   if(done){
@@ -1124,6 +1155,9 @@ function renderMonthCal(){
         html+=`<div style="text-align:center;padding:10px;background:#f8f9fa;border-radius:10px;margin-bottom:12px;"><div style="font-size:24px;font-weight:800;color:${statusColor};">${pct}%</div><div style="font-size:13px;color:#666;">${statusText}</div></div>`;
         if(tasks.length===0){html+=`<div style="color:#aaa;text-align:center;padding:10px;">暂无任务安排</div>`;}
         else{tasks.forEach(t=>{const done=getTaskDone(ds,t.id);html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0f0f0;"><span style="font-size:18px;">${done?'✅':'⬜'}</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:${done?'#22c55e':'#333'}">${t.name}</div><div style="font-size:11px;color:#999;">${t.time||''} ${t.pts>0?'+'+t.pts+'分':''}</div></div></div>`;});}
+      }
+      if(!isFuture){
+        html+=`<button onclick="document.getElementById('calModal').style.display='none';viewingDate='${ds}';showPage('today');renderDateView('${ds}');" style="width:100%;margin-top:12px;padding:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">📋 切换到该日打卡</button>`;
       }
       showCalModal(html);
     };
@@ -1590,10 +1624,13 @@ function syncState(s,sid){
   const key=sid?getStudentSK(sid):(adminViewStudentId?getStudentSK(adminViewStudentId):SK);
   localStorage.setItem(key,JSON.stringify(s));
   state=s;
+  // 同步到云端
+  const cloudSid=sid||(adminViewStudentId)||'default';
+  saveStateCloud(cloudSid,s).catch(e=>console.warn('syncState cloud failed',e));
   // 如果学生端当前已显示，同步刷新学生端界面
   try{
     if(currentRole==='student'){
-      renderToday();
+      renderDateView(viewingDate);
       updateScoreBar();
       renderWeekGrid();
       renderMonthCal();
