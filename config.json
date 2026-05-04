@@ -1,0 +1,9 @@
+{
+  "_version": 1,
+  "_updated": "2026-05-05",
+  "tasksByDay": [[], [], [], [], [], [], []],
+  "rewards": [],
+  "subjects": [],
+  "adminPwd": "001",
+  "students": [{"id": "student_1", "name": "学生1", "pwd": "002"}]
+}
