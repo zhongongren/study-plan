@@ -397,12 +397,25 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   </div>
   <div class="score-bar">
     <div class="score-bar-inner">
-      <div><div class="score-num" id="totalScore">0</div><div class="score-label">总积分</div></div>
-      <div class="score-progress-wrap">
-        <div class="score-progress-info"><span>下一奖励：<span id="nextRewardName">-</span></span><span class="pts" id="nextRewardPts">-</span></div>
-        <div class="score-progress"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
+      <!-- 左：总积分 -->
+      <div style="flex-shrink:0;">
+        <div class="score-num" id="totalScore">0</div>
+        <div class="score-label">总积分</div>
       </div>
-      <div class="streak-badge"><div class="streak-num"><span class="fire">🔥</span><span id="streakNum">0</span></div><div class="streak-label">连续天数</div></div>
+      <!-- 中：目标奖励进度 -->
+      <div class="score-progress-wrap">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);"><span style="color:#FFD54F;font-weight:700;" id="nextRewardName">加载中...</span></div>
+          <div style="font-size:11px;color:#FFD54F;font-weight:700;" id="nextRewardPts">-</div>
+        </div>
+        <div class="score-progress"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.55);margin-top:3px;" id="scoreBarSubtitle">打卡赚积分 → 兑换奖励</div>
+      </div>
+      <!-- 右：连续天数 -->
+      <div class="streak-badge">
+        <div class="streak-num"><span class="fire">🔥</span><span id="streakNum">0</span></div>
+        <div class="streak-label">连续天</div>
+      </div>
     </div>
   </div>
   <div class="page active" id="page-today">
@@ -584,7 +597,8 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="admin-tab" onclick="showAdminTab('subjects')">📚 科目管理</div>
       <div class="admin-tab" onclick="showAdminTab('stats')">📊 学习统计</div>
       <div class="admin-tab" onclick="showAdminTab('reset')">🔄 重置管理</div>
-      <div class="admin-tab" onclick="showAdminTab('settings')">⚙️ 卡密与设置</div>
+      <div class="admin-tab" onclick="showAdminTab('reward')">🏆 奖励管理</div>
+      <div class="admin-tab" onclick="showAdminTab('settings')">⚙️ 账号设置</div>
       <div class="admin-tab" onclick="showAdminTab('log')">📋 操作日志</div>
     </div>
   </div>
@@ -721,6 +735,38 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
         <div id="logList"></div>
       </div>
     </div>
+    <!-- 独立奖励管理页 -->
+    <div class="admin-page" id="admin-reward">
+      <div class="acard">
+        <div class="acard-title">🏆 积分奖励设置</div>
+        <div class="acard-sub">和孩子商量好奖励内容和所需积分，设置后学生端奖励页会即时更新</div>
+        <!-- 当前奖励状态预览 -->
+        <div id="adminRewardStatus" style="background:linear-gradient(135deg,#1a2980,#26d0ce);border-radius:14px;padding:14px 16px;margin-bottom:14px;color:#fff;">
+          <div style="font-size:12px;opacity:0.75;margin-bottom:6px;">当前奖励进度预览</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;" id="adminRewardStatusList"></div>
+        </div>
+        <div id="rewardEditor"></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="addReward()">➕ 新增一条奖励</button>
+          <button class="btn btn-primary" onclick="saveRewards()">💾 保存并同步到学生端</button>
+        </div>
+        <div id="rewardPreview" style="margin-top:12px;padding:10px 14px;background:#F0F4FF;border-radius:10px;font-size:12px;color:var(--light);display:none;">
+          ℹ️ 保存后学生端奖励页将即时更新
+        </div>
+      </div>
+      <div class="acard">
+        <div class="acard-title">💬 激励寄语</div>
+        <div class="acard-sub">写给孩子的话，会显示在学生端今日任务页顶部（留空则不显示）</div>
+        <div class="form-row">
+          <div class="form-group" style="width:100%;">
+            <div class="form-label">激励寄语内容</div>
+            <textarea id="motivationInput" class="form-input" rows="3" style="width:100%;resize:vertical;" placeholder="例如：宝贝，妈妈相信你一定可以做到！每天进步一点点，一年后就是大变化。加油！"></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveMotivation()">💾 保存寄语</button>
+      </div>
+    </div>
+    <!-- 账号设置页（只保留账号和卡密） -->
     <div class="admin-page" id="admin-settings">
       <div class="acard">
         <div class="acard-title">👨‍👩‍👦 学生账号管理</div>
@@ -738,29 +784,6 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
           <div class="form-group"><div class="form-label">管理员卡密（家长用）</div><input type="text" class="form-input" id="adminPwdInput" placeholder="输入管理员卡密"></div>
         </div>
         <button class="btn btn-primary" onclick="savePwds()">💾 保存管理员卡密</button>
-      </div>
-      <div class="acard">
-        <div class="acard-title">🏆 积分奖励设置</div>
-        <div class="acard-sub">设置积分门槛和对应奖励，和孩子商量好再填写</div>
-        <div id="rewardEditor"></div>
-        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-ghost" onclick="addReward()">➕ 新增奖励</button>
-          <button class="btn btn-primary" onclick="saveRewards()">&#x1F4BE; 保存并同步到学生端</button>
-        </div>
-        <div id="rewardPreview" style="margin-top:12px;padding:10px 14px;background:#F0F4FF;border-radius:10px;font-size:12px;color:var(--light);display:none;">
-          ℹ️ 保存后学生端奖励页将即时更新
-        </div>
-      </div>
-      <div class="acard">
-        <div class="acard-title">💬 激励寄语</div>
-        <div class="acard-sub">写给孩子的话，会显示在学生端今日任务页顶部（留空则不显示）</div>
-        <div class="form-row">
-          <div class="form-group" style="width:100%;">
-            <div class="form-label">激励寄语内容</div>
-            <textarea id="motivationInput" class="form-input" rows="3" style="width:100%;resize:vertical;" placeholder="例如：宝贝，妈妈相信你一定可以做到！每天进步一点点，一年后就是大变化。加油！"></textarea>
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="saveMotivation()">💾 保存寄语</button>
       </div>
     </div>
   </div>
@@ -1336,15 +1359,26 @@ function updateScoreBar(){
   const REWARDS=adminConfig.rewards||DEFAULT_REWARDS;
   document.getElementById('totalScore').textContent=score;
   document.getElementById('streakNum').textContent=state.streak||0;
+  const allUnlocked=score>=(REWARDS[REWARDS.length-1].pts);
   const next=REWARDS.find(r=>r.pts>score)||REWARDS[REWARDS.length-1];
   const prev=[...REWARDS].reverse().find(r=>r.pts<=score);
   const prevPts=prev?prev.pts:0;
   const pct=next.pts>prevPts?Math.min(100,(score-prevPts)/(next.pts-prevPts)*100):100;
-  document.getElementById('nextRewardName').textContent=score>=(REWARDS[REWARDS.length-1].pts)?'全部解锁！':next.name;
-  const remaining=next.pts-score;
-  document.getElementById('nextRewardPts').textContent=score>=(REWARDS[REWARDS.length-1].pts)?'🎉':`还差${remaining}分`;
+  const remaining=Math.max(0,next.pts-score);
+  // 目标奖励名称：显示当前冒尖目标
+  const nameEl=document.getElementById('nextRewardName');
+  const ptsEl=document.getElementById('nextRewardPts');
+  const subtitleEl=document.getElementById('scoreBarSubtitle');
+  if(allUnlocked){
+    if(nameEl)nameEl.textContent='🏆 全部奖励已解锁！';
+    if(ptsEl)ptsEl.textContent='🎉';
+    if(subtitleEl)subtitleEl.textContent='太棒了！去找家长兑换奖励吧！';
+  }else{
+    if(nameEl)nameEl.textContent='目标：'+next.name;
+    if(ptsEl)ptsEl.textContent='还差 '+remaining+' 分';
+    if(subtitleEl)subtitleEl.textContent='每天打卡赚积分 → 兑换「'+next.name+'」';
+  }
   document.getElementById('scoreFill').style.width=pct+'%';
-  // 更新进度条刻度提示
   const fillEl=document.getElementById('scoreFill');
   if(fillEl)fillEl.title=`${score}分 / ${next.pts}分`;
   renderRewards();
@@ -1726,11 +1760,10 @@ function initAdmin(){
     const todayPage=document.getElementById('admin-today');
     if(todayPage&&todayPage.classList.contains('active'))renderTodayMonitor();
   },30000);
-  document.getElementById('adminPwdInput').value=adminConfig.adminPwd||'001';
-  renderMotivationInput();
+  const adminPwdEl=document.getElementById('adminPwdInput');
+  if(adminPwdEl)adminPwdEl.value=adminConfig.adminPwd||'001';
   document.getElementById('currentScoreInput').value=state.totalScore||0;
   document.getElementById('resetDatePicker').value=getTodayStr();
-  renderRewardEditor();
   renderStudentManager();
   renderAdminStudentSelector();
   // 后台异步从云端加载第一个学生最新数据
@@ -1886,13 +1919,14 @@ function showAdminTab(name){
   document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   const el=document.getElementById('admin-'+name);if(el)el.classList.add('active');
-  const tabs=['today','schedule','subjects','stats','reset','settings','log'];const idx=tabs.indexOf(name);
+  const tabs=['today','schedule','subjects','stats','reset','reward','settings','log'];const idx=tabs.indexOf(name);
   if(idx>=0)document.querySelectorAll('.admin-tab')[idx].classList.add('active');
-  const navTabs=['today','schedule','subjects','stats','reset','settings','log'];const nidx=navTabs.indexOf(name);
+  const navTabs=['today','schedule','subjects','stats','reset','reward','settings','log'];const nidx=navTabs.indexOf(name);
   document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',i===nidx));
   if(name==='today')renderTodayMonitor();
   if(name==='stats')renderAdminStats();
-  if(name==='settings')renderRewardEditor();
+  if(name==='reward'){renderRewardEditor();renderAdminRewardStatus();renderMotivationInput();}
+  if(name==='settings'){renderStudentManager();}
   if(name==='subjects')renderSubjectEditor();
   if(name==='log'){renderLog();}
 }
@@ -2062,6 +2096,33 @@ function renderRewardEditor(){
     hint.textContent='💡 积分门槛请从小到大排列，保存时会自动排序';
     container.appendChild(hint);
   }
+}
+async function renderAdminRewardStatus(){
+  const container=document.getElementById('adminRewardStatusList');if(!container)return;
+  const REWARDS=adminConfig.rewards||DEFAULT_REWARDS;
+  const students=adminConfig.students||[];
+  container.innerHTML='<div style="font-size:12px;opacity:0.7;">加载中...</div>';
+  // 加载所有学生状态
+  const results=await Promise.all(students.map(s=>loadStateCloud(s.id).catch(()=>null)));
+  container.innerHTML='';
+  students.forEach((stu,i)=>{
+    const st=results[i]||loadState(stu.id);
+    const score=st.totalScore||0;
+    const streak=st.streak||0;
+    const next=REWARDS.find(r=>r.pts>score)||REWARDS[REWARDS.length-1];
+    const gap=Math.max(0,next.pts-score);
+    const allDone=score>=(REWARDS[REWARDS.length-1].pts);
+    const div=document.createElement('div');
+    div.style.cssText='background:rgba(255,255,255,0.15);border-radius:10px;padding:10px 14px;min-width:140px;flex:1;';
+    div.innerHTML=`
+      <div style="font-size:13px;font-weight:800;margin-bottom:4px;">${stu.name}</div>
+      <div style="font-size:22px;font-weight:900;color:#FFD54F;line-height:1;">${score}<span style="font-size:12px;font-weight:400;opacity:0.8;"> 分</span></div>
+      <div style="font-size:11px;margin-top:4px;opacity:0.85;">${allDone?'🏆 全部奖励已解锁':('冲刺中：'+next.name)}</div>
+      <div style="font-size:11px;opacity:0.7;">${allDone?'':('还差 '+gap+' 分')} · 🔥${streak}天</div>
+    `;
+    container.appendChild(div);
+  });
+  if(!students.length)container.innerHTML='<div style="font-size:12px;opacity:0.7;">暂无学生数据</div>';
 }
 function addReward(){
   if(!adminConfig.rewards)adminConfig.rewards=JSON.parse(JSON.stringify(DEFAULT_REWARDS));
