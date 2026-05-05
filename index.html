@@ -111,6 +111,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
 .week-day{border-radius:10px;padding:8px 4px;text-align:center;transition:.2s;border:2px solid transparent;}
 .week-day.today{border-color:var(--primary)!important;}
+.week-day.selected{border-color:var(--primary)!important;background:linear-gradient(135deg,#EEF2FF,#E0E8FF)!important;}
 .week-day.weekday{background:#F0F4FF;}
 .week-day.weekend{background:#FFF0EB;}
 .week-day-name{font-size:10px;font-weight:700;color:var(--light);margin-bottom:3px;}
@@ -125,7 +126,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .cal-header-day.weekend{color:var(--secondary);}
 .cal-header-day.weekday{color:var(--primary);}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
-.cal-cell{border-radius:9px;padding:7px 5px;min-height:52px;position:relative;transition:.2s;}
+.cal-cell{border-radius:9px;padding:6px 3px;min-height:48px;position:relative;transition:.2s;}
 .cal-cell.weekday{background:#F0F4FF;border:1px solid #D8E6FF;}
 .cal-cell.weekend{background:#FFF0EB;border:1px solid #FFD5C8;}
 .cal-cell.empty{background:transparent;border:none;}
@@ -206,7 +207,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 /* 日历条样式 */
 .week-cal-bar{display:flex;gap:4px;overflow-x:auto;padding:10px 0 6px;margin-bottom:8px;scrollbar-width:none;}
 .week-cal-bar::-webkit-scrollbar{display:none;}
-.week-cal-cell{flex:1;min-width:42px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border-radius:12px;cursor:pointer;transition:.2s;background:rgba(255,255,255,0.15);border:2px solid transparent;}
+.week-cal-cell{flex:0 0 auto;min-width:46px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;border-radius:12px;cursor:pointer;transition:.2s;background:rgba(255,255,255,0.15);border:2px solid transparent;}
 .week-cal-cell:hover{background:rgba(255,255,255,0.3);}
 .week-cal-cell.today{background:rgba(255,255,255,0.95);border-color:rgba(255,255,255,0.95);}
 .week-cal-cell.today .cal-dow{color:var(--primary);}
@@ -426,8 +427,9 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     </div>
     <div class="card">
       <div style="font-size:17px;font-weight:800;margin-bottom:6px;">📊 本周完成情况</div>
-      <div style="font-size:12px;color:var(--light);margin-bottom:14px;">点击任意一天，直接跳转到该天的打卡页面</div>
+      <div style="font-size:12px;color:var(--light);margin-bottom:14px;">点击任意一天，查看当天任务详情</div>
       <div class="week-grid" id="weekGrid"></div>
+      <div id="weekDayDetail" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;"></div>
     </div>
     <div class="card">
       <div style="font-size:17px;font-weight:800;margin-bottom:14px;">📖 本周科目轮换</div>
@@ -1021,8 +1023,8 @@ function renderStudentWeekCal(){
   const container = document.getElementById('studentWeekCal');
   if(!container) return;
   container.innerHTML = '';
-  // 显示本周7天 + 下周7天（共14天）
-  for(let i = 0; i < 14; i++){
+  // 显示本周7天 + 下周3天（共10天，更清晰）
+  for(let i = 0; i < 10; i++){
     const day = new Date(monday.getTime() + i * 86400000);
     const ds = getDateStr(day);
     const isToday = ds === today;
@@ -1215,32 +1217,89 @@ function updateScoreBar(){
   renderRewards();
 }
 
-function renderWeekGrid(){
+function renderWeekGrid(selectedDate){
   const today=getTodayStr();const d=new Date(today+'T00:00:00');const dow=d.getDay();
   const mo=dow===0?-6:1-dow;const monday=new Date(d.getTime()+mo*86400000);
   const container=document.getElementById('weekGrid');if(!container)return;
   container.innerHTML='';
   const DN=['周一','周二','周三','周四','周五','周六','周日'];
+  const selDs=selectedDate||(viewingDate||today);
   for(let i=0;i<7;i++){
     const day=new Date(monday.getTime()+i*86400000);const ds=getDateStr(day);
     const isToday=ds===today;const isWeekend=i>=5;const pct=getDayPct(ds);
+    const isSel=ds===selDs;
     const el=document.createElement('div');
-    el.className=`week-day ${isWeekend?'weekend':'weekday'}${isToday?' today':''}`;
+    el.className=`week-day ${isWeekend?'weekend':'weekday'}${isToday?' today':''}${isSel?' selected':''}`;
     el.style.cursor='pointer';
-    el.title=`点击查看${DN[i]}的任务`;
     el.innerHTML=`<div class="week-day-name">${DN[i]}</div><div class="week-day-num">${day.getDate()}</div><div class="week-day-pct" style="color:${pct===100?'var(--green)':pct>0?'var(--primary)':'var(--light)'}">${pct}%</div><div class="week-day-bar"><div class="week-day-bar-fill" style="width:${pct}%"></div></div>`;
-    // 点击跳转到今日页面并切换到对应日期
     el.onclick=(()=>{
       const dateStr=ds;
-      return ()=>{
-        viewingDate=dateStr;
-        showPage('today');
-        renderDateView(dateStr);
-        renderStudentWeekCal();
-      };
+      return ()=>{ renderWeekDayDetail(dateStr); };
     })();
     container.appendChild(el);
   }
+  // 渲染选中日的任务详情
+  renderWeekDayDetail(selDs);
+}
+
+function renderWeekDayDetail(ds){
+  // 重新渲染格子选中状态
+  const today=getTodayStr();
+  document.querySelectorAll('#weekGrid .week-day').forEach(el=>{
+    el.classList.remove('selected');
+  });
+  const container=document.getElementById('weekGrid');
+  if(container){
+    const d=new Date(today+'T00:00:00');const dow=d.getDay();
+    const mo=dow===0?-6:1-dow;const monday=new Date(d.getTime()+mo*86400000);
+    for(let i=0;i<7;i++){
+      const day=new Date(monday.getTime()+i*86400000);
+      if(getDateStr(day)===ds && container.children[i]){
+        container.children[i].classList.add('selected');
+      }
+    }
+  }
+  // 渲染任务列表
+  const detail=document.getElementById('weekDayDetail');if(!detail)return;
+  const tasks=getTasksForDate(ds);
+  const isFuture=ds>today;
+  const isToday=ds===today;
+  const d2=new Date(ds+'T00:00:00');
+  const dow2=d2.getDay();
+  const dowName=['周日','周一','周二','周三','周四','周五','周六'][dow2];
+  const dateLabel=`${d2.getMonth()+1}月${d2.getDate()}日 ${dowName}${isToday?' (今天)':''}`;
+  const req=tasks.filter(t=>t.required&&t.pts>0);
+  const doneTasks=req.filter(t=>getTaskDone(ds,t.id));
+  const pct=req.length>0?Math.round(doneTasks.length/req.length*100):0;
+  const statusColor=pct===100?'#22c55e':pct>0?'#f59e0b':'#ef4444';
+  let html=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="font-size:15px;font-weight:800;color:var(--text);">${dateLabel}</div>
+    ${!isFuture&&req.length>0?`<div style="font-size:13px;font-weight:800;color:${statusColor};">${pct}%</div>`:''}
+  </div>`;
+  if(isFuture){
+    html+=`<div style="font-size:12px;color:#888;margin-bottom:10px;">📅 预览计划（不可打卡）</div>`;
+  }
+  if(tasks.length===0){
+    html+=`<div style="text-align:center;color:#aaa;padding:20px;font-size:13px;">暂无任务安排</div>`;
+  } else {
+    tasks.forEach(t=>{
+      const done=!isFuture&&getTaskDone(ds,t.id);
+      const canClick=!isFuture&&t.pts>0;
+      const typeIcon=t.type==='english'?'🔥':t.type==='math'?'📐':t.type==='science'?'🔬':'📖';
+      html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0;">
+        <span style="font-size:20px;">${done?'✅':canClick?'⬜':'📋'}</span>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;color:${done?'#22c55e':'#333'}">${t.name}</div>
+          <div style="font-size:11px;color:#999;">${t.time||''} ${t.pts>0?'+'+t.pts+'分':''}</div>
+        </div>
+      </div>`;
+    });
+    if(!isFuture){
+      html+=`<button onclick="viewingDate='${ds}';showPage('today');renderDateView('${ds}');renderStudentWeekCal();" style="width:100%;margin-top:12px;padding:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">✏️ 去打卡</button>`;
+    }
+  }
+  detail.innerHTML=html;
+  detail.style.display='block';
 }
 
 function renderMonthStats(){
