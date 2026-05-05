@@ -1767,10 +1767,41 @@ function addTask(){
   adminConfig.tasksByDay[currentDay].push({id:'task_'+Date.now(),time:'',name:'新任务',desc:'任务说明',type:'review',pts:2,required:true,flex:false,enabled:true});
   renderTaskList();showToast('已添加新任务，请填写内容','success');
 }
+// 根据已完成的 taskStatus 重算积分
+function recalcScoreFromStatus(stuState){
+  const ts = stuState.taskStatus||{};
+  let total = 0;
+  Object.keys(ts).forEach(k=>{
+    if(ts[k]!=='done') return;
+    const parts = k.split('_'); // dateStr_taskId
+    const taskId = parts.slice(1).join('_');
+    // 在所有天的任务中找匹配的 id
+    for(let d=0;d<7;d++){
+      const t=(adminConfig.tasksByDay[d]||[]).find(t=>t.id===taskId);
+      if(t){ total+=(t.pts||0); break; }
+    }
+  });
+  return total;
+}
+
 async function saveAllAdminConfig(){
   saveAdminConfig();
   addLog('config_save','保存了任务安排配置');
   showToast('⏳ 正在同步到云端...','info');
+  // 重算所有学生积分（任务分値可能已变）
+  const students=adminConfig.students||[];
+  for(const stu of students){
+    const sid=stu.id;
+    const s=loadState(sid);
+    const newScore=recalcScoreFromStatus(s);
+    if(newScore!==s.totalScore){
+      s.totalScore=newScore;
+      const key=getStudentSK(sid);
+      localStorage.setItem(key,JSON.stringify(s));
+      saveStateCloud(sid,s).catch(()=>{});
+      addLog('score_recalc',`重算${stu.name}积分 -> ${newScore}分`);
+    }
+  }
   const ok=await saveCloudConfig(adminConfig);
   if(ok){showToast('✅ 已保存并同步云端！所有设备将自动更新','success');}
   else{showToast('✅ 本地已保存（云端同步失败，请检查网络）','warning');}
@@ -1822,7 +1853,7 @@ function renderMotivationInput(){
 
 
 // ============================================================
-// 今日打卡监控
+// 今日打卡监控（美化版）
 // ============================================================
 async function renderTodayMonitor(){
   const container=document.getElementById('todayMonitorCards');
@@ -1830,79 +1861,134 @@ async function renderTodayMonitor(){
   if(!container)return;
 
   const today=new Date();
-  const todayStr=today.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+  const todayKey=today.toISOString().slice(0,10);
+  const DOW=['\u5468\u65e5','\u5468\u4e00','\u5468\u4e8c','\u5468\u4e09','\u5468\u56db','\u5468\u4e94','\u5468\u516d'];
+  const todayStr=`${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日 ${DOW[today.getDay()]}`;
   if(dateEl)dateEl.textContent=todayStr;
 
-  // 获取今天是周几（0=周一...6=周日）
   const dow=today.getDay();
   const dayIdx=dow===0?6:dow-1;
   const todayTasks=(adminConfig.tasksByDay&&adminConfig.tasksByDay[dayIdx])||[];
+  const enabledTasks=todayTasks.filter(t=>t.enabled!==false);
+  const scoreTasks=enabledTasks.filter(t=>t.pts>0);
+  const totalPts=scoreTasks.reduce((s,t)=>s+t.pts,0);
 
   const students=adminConfig.students||[{id:'student_1',name:'学生1',pwd:'002'}];
+  container.innerHTML='<div style="text-align:center;padding:30px;color:#aaa;font-size:13px;"><div style="font-size:24px;margin-bottom:8px;">⏳</div>正在加载学生数据...</div>';
 
-  // 从服务器拉取所有学生的最新状态
-  container.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">正在加载...</div>';
-
-  const todayKey=today.toISOString().slice(0,10);
-  let cards='';
-
-  for(const stu of students){
-    let stuState=null;
+  // 并行获取所有学生状态
+  const stateMap={};
+  await Promise.all(students.map(async stu=>{
     try{
       const r=await fetch(API_BASE+'/state/'+encodeURIComponent(stu.id)+'?t='+Date.now(),{cache:'no-store'});
-      if(r.ok){const res=await r.json();if(res.ok&&res.data)stuState=res.data;}
+      if(r.ok){const res=await r.json();if(res.ok&&res.data){stateMap[stu.id]=res.data;return;}}
     }catch(e){}
+    stateMap[stu.id]=loadState(stu.id);
+  }));
 
-    if(!stuState)stuState=loadState(stu.id);
+  // 汇总数据
+  let totalDone=0,totalStudents=students.length;
+  const summaryData=students.map(stu=>{
+    const s=stateMap[stu.id]||{};
+    const ts=s.taskStatus||{};
+    let done=0,earned=0;
+    scoreTasks.forEach(t=>{
+      const k=todayKey+'_'+t.id;
+      if(ts[k]==='done'){done++;earned+=t.pts;}
+    });
+    const pct=scoreTasks.length>0?Math.round(done/scoreTasks.length*100):0;
+    if(pct>=100)totalDone++;
+    return{stu,s,done,earned,pct,total:scoreTasks.length,totalPts};
+  });
 
-    const taskStatus=stuState.taskStatus||{};
-    const todayStatus=taskStatus[todayKey]||{};
+  // 概要卡片
+  const allPct=totalStudents>0?Math.round(totalDone/totalStudents*100):0;
+  const avgPct=summaryData.length>0?Math.round(summaryData.reduce((s,d)=>s+d.pct,0)/summaryData.length):0;
+  const summaryColor=avgPct>=80?'#43C59E':avgPct>=50?'#FF9800':'#FF5252';
 
-    // 统计今日完成情况
-    const totalTasks=todayTasks.filter(t=>t.pts>0).length;
-    let doneTasks=0;
-    let totalPts=0;
-    let earnedPts=0;
+  let html=`
+  <div style="background:linear-gradient(135deg,#1a2980,#26d0ce);border-radius:18px;padding:18px;margin-bottom:14px;color:#fff;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:13px;opacity:0.8;margin-bottom:2px;">今日任务总分</div>
+        <div style="font-size:28px;font-weight:900;">${totalPts} <span style="font-size:14px;font-weight:400;opacity:0.8;">分</span></div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:13px;opacity:0.8;margin-bottom:2px;">全部完成</div>
+        <div style="font-size:28px;font-weight:900;">${totalDone}<span style="font-size:14px;font-weight:400;opacity:0.8;">/${totalStudents}人</span></div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:13px;opacity:0.8;margin-bottom:2px;">平均完成率</div>
+        <div style="font-size:28px;font-weight:900;">${avgPct}<span style="font-size:14px;font-weight:400;opacity:0.8;">%</span></div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,0.2);border-radius:99px;height:6px;overflow:hidden;">
+      <div style="background:#fff;height:100%;width:${avgPct}%;border-radius:99px;transition:width 0.6s;"></div>
+    </div>
+    <div style="font-size:11px;opacity:0.7;margin-top:6px;">共 ${scoreTasks.length} 项计分任务 · ${enabledTasks.length} 项全部任务</div>
+  </div>`;
 
-    const taskRows=todayTasks.map(t=>{
-      if(!t.name)return'';
-      const done=!!todayStatus[t.id||t.name];
-      if(t.pts>0){
-        totalPts+=t.pts;
-        if(done){doneTasks++;earnedPts+=t.pts;}
-      }
-      const statusIcon=done?'✅':'⬜';
-      const statusColor=done?'#43C59E':'#ccc';
-      return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f5f5f5;">
-        <span style="font-size:16px;">${statusIcon}</span>
-        <span style="flex:1;font-size:13px;color:${done?'var(--text)':'#aaa'};${done?'':'text-decoration:none;'}">${t.name}</span>
-        ${t.pts>0?`<span style="font-size:12px;font-weight:700;color:${done?'#FF9800':'#ddd'};">+${t.pts}分</span>`:''}
-        ${t.time?`<span style="font-size:11px;color:#bbb;">${t.time}</span>`:''}
+  // 学生卡片
+  for(const {stu,s,done,earned,pct,total} of summaryData){
+    const ts=s.taskStatus||{};
+    const pctColor=pct>=100?'#43C59E':pct>=60?'#FF9800':'#FF5252';
+    const statusEmoji=pct>=100?'🏆':pct>=60?'💪':'📚';
+    const statusText=pct>=100?'全部完成':pct>=60?'进行中':'未开始';
+    const bgGrad=pct>=100?'linear-gradient(135deg,#e8fff5,#f0fff8)':pct>=60?'linear-gradient(135deg,#fff8f0,#fffaf0)':'linear-gradient(135deg,#fff5f5,#fff8f8)';
+    const borderColor=pct>=100?'#b2f0d8':pct>=60?'#ffd8a8':'#ffc0c0';
+
+    // 任务行（分组：已完成 / 未完成）
+    const doneRows=[];
+    const pendingRows=[];
+    enabledTasks.forEach(t=>{
+      if(!t.name)return;
+      const k=todayKey+'_'+t.id;
+      const isDone=ts[k]==='done';
+      const hasPts=t.pts>0;
+      const row=`<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:${isDone?'rgba(67,197,158,0.08)':'rgba(0,0,0,0.02)'};margin-bottom:3px;">
+        <div style="width:20px;height:20px;border-radius:50%;background:${isDone?'#43C59E':'#e0e0e0'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="color:#fff;font-size:11px;font-weight:900;">${isDone?'✓':''}</span>
+        </div>
+        <span style="flex:1;font-size:12px;color:${isDone?'#2d7a5c':'#999'};font-weight:${isDone?'700':'400'};">${t.name}</span>
+        ${t.time?`<span style="font-size:10px;color:#bbb;flex-shrink:0;">${t.time}</span>`:''}
+        ${hasPts?`<span style="font-size:11px;font-weight:700;color:${isDone?'#FF9800':'#ddd'};flex-shrink:0;">+${t.pts}</span>`:''}
       </div>`;
-    }).join('');
+      if(isDone)doneRows.push(row);
+      else pendingRows.push(row);
+    });
 
-    const pct=totalTasks>0?Math.round(doneTasks/totalTasks*100):0;
-    const pctColor=pct>=80?'#43C59E':pct>=50?'#FF9800':'#FF5252';
-
-    cards+=`<div class="acard" style="margin-bottom:12px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    html+=`<div style="background:${bgGrad};border:1.5px solid ${borderColor};border-radius:18px;padding:16px;margin-bottom:12px;">
+      <!-- 头部 -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:12px;background:${pctColor};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${statusEmoji}</div>
+        <div style="flex:1;">
+          <div style="font-size:16px;font-weight:900;color:var(--text);">${stu.name}</div>
+          <div style="font-size:11px;color:var(--light);margin-top:1px;">纯积分: <b style="color:#FF9800;">${s.totalScore||0}</b> 分 · 连续 <b style="color:#FF5252;">${s.streak||0}</b> 天</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:26px;font-weight:900;color:${pctColor};line-height:1;">${pct}%</div>
+          <div style="font-size:11px;color:var(--light);margin-top:2px;">${done}/${total} 项 · +${earned}分</div>
+        </div>
+      </div>
+      <!-- 进度条 -->
+      <div style="background:rgba(0,0,0,0.06);border-radius:99px;height:7px;margin-bottom:12px;overflow:hidden;">
+        <div style="background:${pctColor};height:100%;width:${pct}%;border-radius:99px;transition:width 0.6s;"></div>
+      </div>
+      <!-- 任务列表 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div>
-          <div style="font-size:16px;font-weight:800;color:var(--text);">${stu.name}</div>
-          <div style="font-size:12px;color:var(--light);margin-top:2px;">今日积分：<span style="font-weight:700;color:#FF9800;">${earnedPts}</span> / ${totalPts} 分</div>
+          <div style="font-size:11px;font-weight:700;color:#43C59E;margin-bottom:5px;">✓ 已完成 (${doneRows.length})</div>
+          ${doneRows.length>0?doneRows.join(''):'<div style="font-size:11px;color:#ccc;padding:4px 8px;">暂无</div>'}
         </div>
-        <div style="text-align:center;">
-          <div style="font-size:28px;font-weight:900;color:${pctColor};">${pct}%</div>
-          <div style="font-size:11px;color:var(--light);">${doneTasks}/${totalTasks} 项</div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#FF5252;margin-bottom:5px;">□ 未完成 (${pendingRows.length})</div>
+          ${pendingRows.length>0?pendingRows.join(''):'<div style="font-size:11px;color:#43C59E;padding:4px 8px;font-weight:700;">🏆 全部完成！</div>'}
         </div>
       </div>
-      <div style="background:#f0f0f0;border-radius:99px;height:8px;margin-bottom:12px;overflow:hidden;">
-        <div style="background:${pctColor};height:100%;width:${pct}%;border-radius:99px;transition:width 0.5s;"></div>
-      </div>
-      ${totalTasks>0?taskRows:'<div style="color:#bbb;font-size:13px;text-align:center;padding:8px;">今天没有任务</div>'}
     </div>`;
   }
 
-  container.innerHTML=cards||'<div style="text-align:center;padding:20px;color:#aaa;">暂无学生数据</div>';
+  container.innerHTML=html||'<div style="text-align:center;padding:20px;color:#aaa;">暂无学生数据</div>';
 }
 
 function renderAdminStats(){
