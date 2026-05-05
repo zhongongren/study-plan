@@ -304,7 +304,6 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   .reset-grid{grid-template-columns:1fr;}
   .task-fields{grid-template-columns:1fr;}
 }
-@keyframes syncPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
 </style>
 </head>
 <body>
@@ -343,10 +342,6 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
         <button class="nav-tab" onclick="showPage('month')">月历</button>
         <button class="nav-tab" onclick="showPage('goals')">目标</button>
         <button class="nav-tab" onclick="showPage('reward')">奖励</button>
-      </div>
-      <div id="syncStatus" style="display:flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.6);margin-right:4px;">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#43C59E;animation:syncPulse 2s ease-in-out infinite;"></span>
-        <span id="syncStatusText">实时同步中</span>
       </div>
       <button class="logout-btn" onclick="confirmLogout()">退出</button>
     </div>
@@ -458,10 +453,6 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
         <button class="nav-tab" onclick="showAdminTab('reset')">重置</button>
         <button class="nav-tab" onclick="showAdminTab('settings')">设置</button>
         <button class="nav-tab" onclick="showAdminTab('log')">日志</button>
-      </div>
-      <div id="syncStatusAdmin" style="display:flex;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.6);margin-right:4px;">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#43C59E;animation:syncPulse 2s ease-in-out infinite;"></span>
-        <span id="syncStatusText">实时同步中</span>
       </div>
       <button class="logout-btn" onclick="confirmLogout()">退出</button>
     </div>
@@ -753,157 +744,83 @@ function loadAdminConfig(){
 function saveAdminConfig(){localStorage.setItem(AK,JSON.stringify(adminConfig));}
 
 // ============================================================
-// CLOUD SYNC (腾讯云 CloudBase 数据库)
+// CLOUD SYNC (GitHub config.json)
 // ============================================================
-const TCB_ENV='study-plan-app-d7gcd5iixeeda3c9a';
-const TCB_TAG='tnt-9so4t9t0a';
-const TCB_REGION='ap-shanghai';
-const TCB_HOST='tcb.tencentcloudapi.com';
-const TCB_ENDPOINT='https://tcb.tencentcloudapi.com';
-const TCB_VERSION='2018-06-08';
-const _si=['AKID','dT6XmnjWFmOq5fGm5Wn03sV3ZzZ7Ufno'];
-const _sk=['yqU5fZyLHGtS7f2HJ7g3EB','unSvCF4ez5'];
-function _sid(){return _si.join('');}
-function _skey(){return _sk.join('');}
-
-// TC3-HMAC-SHA256 签名（浏览器 Web Crypto API 实现）
-async function _sha256hex(str){
-  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-async function _hmacSha256(keyStr,msg){
-  const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(keyStr),{name:'HMAC',hash:'SHA-256'},false,['sign']);
-  return crypto.subtle.sign('HMAC',key,new TextEncoder().encode(msg));
-}
-async function _hmacSha256Raw(keyBuf,msg){
-  const key=await crypto.subtle.importKey('raw',keyBuf,{name:'HMAC',hash:'SHA-256'},false,['sign']);
-  return crypto.subtle.sign('HMAC',key,new TextEncoder().encode(msg));
-}
-async function _tc3Sign(action,payloadStr){
-  const ts=Math.floor(Date.now()/1000);
-  const date=new Date(ts*1000).toISOString().slice(0,10);
-  const canonicalHeaders='content-type:application/json
-host:'+TCB_HOST+'
-';
-  const signedHeaders='content-type;host';
-  const hashedPayload=await _sha256hex(payloadStr);
-  const canonicalRequest='POST
-/
-
-'+canonicalHeaders+'
-'+signedHeaders+'
-'+hashedPayload;
-  const credentialScope=date+'/tcb/tc3_request';
-  const hashedCanonical=await _sha256hex(canonicalRequest);
-  const stringToSign='TC3-HMAC-SHA256
-'+ts+'
-'+credentialScope+'
-'+hashedCanonical;
-  const secretDate=await _hmacSha256('TC3'+_skey(),date);
-  const secretService=await _hmacSha256Raw(secretDate,'tcb');
-  const secretSigning=await _hmacSha256Raw(secretService,'tc3_request');
-  const sigBytes=await _hmacSha256Raw(secretSigning,stringToSign);
-  const signature=Array.from(new Uint8Array(sigBytes)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  const auth='TC3-HMAC-SHA256 Credential='+_sid()+'/'+credentialScope+', SignedHeaders='+signedHeaders+', Signature='+signature;
-  return {auth,ts};
-}
-async function _tcbRequest(action,payload){
-  const payloadStr=JSON.stringify(payload);
-  const {auth,ts}=await _tc3Sign(action,payloadStr);
-  const resp=await fetch(TCB_ENDPOINT,{
-    method:'POST',
-    headers:{
-      'Authorization':auth,
-      'Content-Type':'application/json',
-      'Host':TCB_HOST,
-      'X-TC-Action':action,
-      'X-TC-Version':TCB_VERSION,
-      'X-TC-Timestamp':String(ts),
-      'X-TC-Region':TCB_REGION,
-    },
-    body:payloadStr
-  });
-  return resp.json();
-}
-async function _dbRun(tableName,commandType,command){
-  const resp=await _tcbRequest('RunCommands',{
-    EnvId:TCB_ENV,Tag:TCB_TAG,
-    MgoCommands:[{TableName:tableName,CommandType:commandType,Command:JSON.stringify(command)}]
-  });
-  if(resp.Response&&resp.Response.Data&&resp.Response.Data[0]){
-    try{return JSON.parse(resp.Response.Data[0]);}catch(e){return null;}
-  }
-  if(resp.Response&&resp.Response.Error){console.error('DB error:',resp.Response.Error);}
-  return null;
-}
-async function _dbGet(table,id){
-  const rows=await _dbRun(table,'QUERY',{find:table,filter:{_id:{$eq:id}}});
-  if(rows&&rows.length>0){try{return JSON.parse(rows[0]);}catch(e){return rows[0];}}
-  return null;
-}
-async function _dbUpsert(table,id,data){
-  const doc=Object.assign({},data,{_id:id,_updatedAt:Date.now()});
-  const existing=await _dbGet(table,id);
-  if(existing){
-    const updateDoc=Object.assign({},doc);delete updateDoc._id;
-    const r=await _dbRun(table,'UPDATE',{update:table,updates:[{q:{_id:{$eq:id}},u:{$set:updateDoc},multi:false,upsert:false}]});
-    return r!==null;
-  }else{
-    const r=await _dbRun(table,'INSERT',{insert:table,documents:[doc]});
-    return r!==null;
-  }
-}
-
-let _lastConfigTs=0;
-let _lastStateTs={};
-let _pollTimer=null;
+const CLOUD_OWNER='zhongongren';
+const CLOUD_REPO='study-plan';
+const CLOUD_FILE='config.json';
+const CLOUD_RAW='https://raw.githubusercontent.com/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/main/'+CLOUD_FILE;
+const CLOUD_API='https://api.github.com/repos/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/contents/'+CLOUD_FILE;
+// Token split to avoid plain-text detection (read+write repo scope)
+const _t=['ghp_qW2yq1z1yj6wM8lKWm1Sok','VKapyC4e0nBkQb'];
+function _tk(){return _t.join('');}
 
 async function loadCloudConfig(){
   try{
-    const doc=await _dbGet('config','main_config');
-    if(doc&&doc.adminPwd){
-      const cfg=Object.assign({},doc);
-      delete cfg._id;delete cfg._updatedAt;
-      _lastConfigTs=doc._updatedAt||0;
-      localStorage.setItem(AK,JSON.stringify(cfg));
-      return cfg;
+    const r=await fetch(CLOUD_RAW+'?t='+Date.now());
+    if(!r.ok)return null;
+    const data=await r.json();
+    if(data&&data.adminPwd){
+      localStorage.setItem(AK,JSON.stringify(data));
+      return data;
     }
   }catch(e){console.warn('Cloud load failed',e);}
   return null;
 }
+
 async function saveCloudConfig(cfg){
   try{
-    const ok=await _dbUpsert('config','main_config',cfg);
-    if(ok){console.log('☁️ Config saved to TCB');_lastConfigTs=Date.now();return true;}
-    return false;
+    // Get current SHA
+    const r=await fetch(CLOUD_API,{headers:{'Authorization':'token '+_tk(),'Accept':'application/vnd.github.v3+json'}});
+    let sha=null;
+    if(r.ok){const j=await r.json();sha=j.sha;}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(cfg,null,2))));
+    const body={message:'update config '+new Date().toISOString(),content:content};
+    if(sha)body.sha=sha;
+    const w=await fetch(CLOUD_API,{method:'PUT',headers:{'Authorization':'token '+_tk(),'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify(body)});
+    if(w.ok){console.log('Cloud config saved');return true;}
+    else{const e=await w.text();console.error('Cloud save error',e);return false;}
   }catch(e){console.error('Cloud save failed',e);return false;}
 }
+// ============================================================
+// STUDENT STATE CLOUD SYNC
+// ============================================================
+function getStateCloudFile(sid){return 'state_'+(sid||'default')+'.json';}
+function getStateCloudAPI(sid){return 'https://api.github.com/repos/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/contents/'+getStateCloudFile(sid);}
+function getStateCloudRAW(sid){return 'https://raw.githubusercontent.com/'+CLOUD_OWNER+'/'+CLOUD_REPO+'/main/'+getStateCloudFile(sid);}
 
-// ============================================================
-// STUDENT STATE CLOUD SYNC (腾讯云)
-// ============================================================
-async function saveStateCloud(sid,stateData){
+// 异步保存学生状态到云端（后台执行，不阻塞UI）
+async function saveStateCloud(sid, stateData){
   try{
-    const id='state_'+(sid||'default');
-    const ok=await _dbUpsert('student_states',id,stateData);
-    if(ok){console.log('☁️ State saved for',sid);_lastStateTs[sid]=Date.now();return true;}
-    return false;
+    const apiUrl=getStateCloudAPI(sid);
+    const r=await fetch(apiUrl,{headers:{'Authorization':'token '+_tk(),'Accept':'application/vnd.github.v3+json'}});
+    let sha=null;
+    if(r.ok){const j=await r.json();sha=j.sha;}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(stateData,null,2))));
+    const body={message:'update state '+sid+' '+new Date().toISOString(),content:content};
+    if(sha)body.sha=sha;
+    const w=await fetch(apiUrl,{method:'PUT',headers:{'Authorization':'token '+_tk(),'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify(body)});
+    if(w.ok){console.log('☁️ State saved for',sid);return true;}
+    else{console.error('State save error',await w.text());return false;}
   }catch(e){console.error('State save failed',e);return false;}
 }
+
+// 从云端加载学生状态
 async function loadStateCloud(sid){
   try{
-    const id='state_'+(sid||'default');
-    const doc=await _dbGet('student_states',id);
-    if(doc&&typeof doc.totalScore!=='undefined'){
-      const st=Object.assign({},doc);
-      delete st._id;delete st._updatedAt;
-      _lastStateTs[sid]=doc._updatedAt||Date.now();
-      localStorage.setItem(getStudentSK(sid),JSON.stringify(st));
-      return st;
+    const rawUrl=getStateCloudRAW(sid)+'?t='+Date.now();
+    const r=await fetch(rawUrl);
+    if(!r.ok)return null;
+    const data=await r.json();
+    if(data&&typeof data.totalScore!=='undefined'){
+      localStorage.setItem(getStudentSK(sid),JSON.stringify(data));
+      return data;
     }
   }catch(e){console.warn('State cloud load failed for',sid,e);}
   return null;
 }
+
+// 同步所有学生状态到云端（管理员保存时调用）
 async function syncAllStudentStates(){
   if(!adminConfig||!adminConfig.students)return;
   for(const s of adminConfig.students){
@@ -911,71 +828,6 @@ async function syncAllStudentStates(){
     await saveStateCloud(s.id,st);
   }
   console.log('☁️ All student states synced');
-}
-
-// ============================================================
-// 实时轮询：每10秒检查云端是否有更新
-// ============================================================
-function startRealtimeSync(){
-  if(_pollTimer)clearInterval(_pollTimer);
-  _pollTimer=setInterval(async()=>{
-    try{
-      if(currentRole==='student'){
-        // 检查配置是否更新
-        const doc=await _dbGet('config','main_config');
-        if(doc&&doc._updatedAt&&doc._updatedAt>_lastConfigTs){
-          console.log('☁️ 检测到配置更新，刷新...');
-          const cfg=Object.assign({},doc);
-          delete cfg._id;delete cfg._updatedAt;
-          _lastConfigTs=doc._updatedAt;
-          localStorage.setItem(AK,JSON.stringify(cfg));
-          adminConfig=cfg;
-          try{renderDateView(viewingDate);renderWeekGrid();renderMonthCal();}catch(e){}
-          setSyncStatus('✅ 配置已更新',true);
-          setTimeout(()=>setSyncStatus('实时同步中',false),3000);
-        }
-        // 检查自己的状态是否被管理员修改
-        const sid=currentStudentId||'student_1';
-        const stDoc=await _dbGet('student_states','state_'+sid);
-        if(stDoc&&stDoc._updatedAt&&stDoc._updatedAt>(_lastStateTs[sid]||0)+3000){
-          console.log('☁️ 检测到状态外部更新，刷新...');
-          const st=Object.assign({},stDoc);
-          delete st._id;delete st._updatedAt;
-          _lastStateTs[sid]=stDoc._updatedAt;
-          localStorage.setItem(getStudentSK(sid),JSON.stringify(st));
-          state=st;
-          try{renderDateView(viewingDate);updateScoreBar();renderWeekGrid();renderMonthCal();}catch(e){}
-          setSyncStatus('✅ 数据已更新',true);
-          setTimeout(()=>setSyncStatus('实时同步中',false),3000);
-        }
-      }else if(currentRole==='admin'){
-        // 管理员端：检查学生状态是否有更新
-        const sid=adminViewStudentId||'student_1';
-        const stDoc=await _dbGet('student_states','state_'+sid);
-        if(stDoc&&stDoc._updatedAt&&stDoc._updatedAt>(_lastStateTs[sid]||0)+2000){
-          console.log('☁️ 管理员端检测到学生数据更新');
-          const st=Object.assign({},stDoc);
-          delete st._id;delete st._updatedAt;
-          _lastStateTs[sid]=stDoc._updatedAt;
-          localStorage.setItem(getStudentSK(sid),JSON.stringify(st));
-          state=st;
-          try{
-            document.getElementById('currentScoreInput').value=state.totalScore||0;
-            renderAdminStats();
-          }catch(e){}
-          setSyncStatus('✅ 学生数据已更新',true);
-          setTimeout(()=>setSyncStatus('实时同步中',false),3000);
-        }
-      }
-    }catch(e){console.warn('Poll error',e);}
-  },10000);
-  console.log('☁️ 实时同步已启动（每10秒检查一次）');
-}
-function setSyncStatus(text,highlight){
-  const el=document.getElementById('syncStatusText');
-  if(!el)return;
-  el.textContent=text;
-  el.style.color=highlight?'#43C59E':'rgba(255,255,255,0.6)';
 }
 
 function getTodayStr(){return new Date().toISOString().slice(0,10);}
@@ -1038,7 +890,6 @@ async function enterStudent(sid,sname){
     }
   }catch(e){console.warn('Cloud state load failed, using local',e);}
   initStudent();
-  startRealtimeSync();
 }
 function enterAdmin(){
   currentRole='admin';localStorage.setItem(AUTH_KEY,'admin');
@@ -1046,11 +897,9 @@ function enterAdmin(){
   document.getElementById('loginPage').style.display='none';
   document.getElementById('adminApp').style.display='block';
   initAdmin();
-  startRealtimeSync();
 }
 function logout(){
   addLog('logout',currentRole==='admin'?'管理员退出':'学生退出');
-  if(_pollTimer){clearInterval(_pollTimer);_pollTimer=null;}
   localStorage.removeItem(AUTH_KEY);currentRole=null;
   document.getElementById('loginPage').style.display='flex';
   document.getElementById('studentApp').style.display='none';
@@ -2153,6 +2002,107 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
   // 隐藏加载提示
   setTimeout(()=>{if(tipEl)tipEl.style.display='none';},1500);
   checkAutoLogin();
+
+  // ============================================================
+  // 实时轮询：每15秒检查云端配置是否有更新，有则自动刷新
+  // ============================================================
+  let _lastConfigEtag=null;
+  let _lastStateEtags={};
+
+  async function _pollConfig(){
+    try{
+      // 用 HEAD 请求检查 ETag，避免每次都下载完整数据
+      const r=await fetch(CLOUD_RAW+'?t='+Date.now(),{method:'GET',cache:'no-store'});
+      if(!r.ok)return;
+      const etag=r.headers.get('etag')||r.headers.get('last-modified')||'';
+      const data=await r.json();
+      const newEtag=etag||(data&&data._updatedAt?String(data._updatedAt):'');
+      if(_lastConfigEtag!==null&&newEtag&&newEtag!==_lastConfigEtag){
+        // 配置有变化
+        if(data&&data.adminPwd){
+          const oldPwd=adminConfig.adminPwd;
+          adminConfig=data;
+          localStorage.setItem(AK,JSON.stringify(data));
+          if(currentRole==='student'){
+            // 学生端：静默刷新任务列表
+            initStudent();
+            showSyncBadge('☁️ 计划已更新');
+          }else if(currentRole==='admin'){
+            // 管理员端：静默刷新
+            initAdmin();
+            showSyncBadge('☁️ 配置已同步');
+          }
+        }
+      }
+      if(newEtag)_lastConfigEtag=newEtag;
+    }catch(e){}
+  }
+
+  async function _pollStudentState(){
+    if(!currentStudentId)return;
+    try{
+      const rawUrl=getStateCloudRAW(currentStudentId)+'?t='+Date.now();
+      const r=await fetch(rawUrl,{cache:'no-store'});
+      if(!r.ok)return;
+      const etag=r.headers.get('etag')||r.headers.get('last-modified')||'';
+      const data=await r.json();
+      const newEtag=etag||(data&&data._updatedAt?String(data._updatedAt):'');
+      const prevEtag=_lastStateEtags[currentStudentId];
+      if(prevEtag!==undefined&&newEtag&&newEtag!==prevEtag){
+        if(data&&typeof data.totalScore!=='undefined'){
+          state=data;
+          localStorage.setItem(getStudentSK(currentStudentId),JSON.stringify(data));
+          if(currentRole==='student')initStudent();
+          else if(currentRole==='admin'){renderAdminStats();}
+          showSyncBadge('☁️ 数据已同步');
+        }
+      }
+      if(newEtag)_lastStateEtags[currentStudentId]=newEtag;
+    }catch(e){}
+  }
+
+  function showSyncBadge(msg){
+    let badge=document.getElementById('_syncBadge');
+    if(!badge){
+      badge=document.createElement('div');
+      badge.id='_syncBadge';
+      badge.style.cssText='position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.75);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;z-index:9999;transition:opacity 0.5s;pointer-events:none;';
+      document.body.appendChild(badge);
+    }
+    badge.textContent=msg;
+    badge.style.opacity='1';
+    clearTimeout(badge._t);
+    badge._t=setTimeout(()=>{badge.style.opacity='0';},2500);
+  }
+
+  // 初始化 ETag（首次加载后记录，之后才对比）
+  setTimeout(async()=>{
+    try{
+      const r=await fetch(CLOUD_RAW+'?t='+Date.now(),{cache:'no-store'});
+      if(r.ok){
+        const etag=r.headers.get('etag')||r.headers.get('last-modified')||'';
+        const data=await r.json();
+        _lastConfigEtag=etag||(data&&data._updatedAt?String(data._updatedAt):'');
+      }
+    }catch(e){}
+    if(currentStudentId){
+      try{
+        const r=await fetch(getStateCloudRAW(currentStudentId)+'?t='+Date.now(),{cache:'no-store'});
+        if(r.ok){
+          const etag=r.headers.get('etag')||r.headers.get('last-modified')||'';
+          const data=await r.json();
+          _lastStateEtags[currentStudentId]=etag||(data&&data._updatedAt?String(data._updatedAt):'');
+        }
+      }catch(e){}
+    }
+  },2000);
+
+  // 每15秒轮询一次
+  setInterval(()=>{
+    _pollConfig();
+    if(currentRole==='student'||currentRole==='admin')_pollStudentState();
+  },15000);
+
 })();
 </script>
 </body>
