@@ -498,7 +498,8 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   </div>
   <div class="admin-tabs-bar">
     <div class="admin-tabs-inner">
-      <div class="admin-tab active" onclick="showAdminTab('schedule')">📅 每日任务安排</div>
+      <div class="admin-tab active" onclick="showAdminTab('today')">🔥 今日打卡</div>
+      <div class="admin-tab" onclick="showAdminTab('schedule')">📅 每日任务安排</div>
       <div class="admin-tab" onclick="showAdminTab('subjects')">📚 科目管理</div>
       <div class="admin-tab" onclick="showAdminTab('stats')">📊 学习统计</div>
       <div class="admin-tab" onclick="showAdminTab('reset')">🔄 重置管理</div>
@@ -511,6 +512,18 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="info-box">ℹ️ 修改任务后点击顶部"保存所有设置"，孩子的计划表会立即更新。<br><b>必做任务</b>：计入积分和完成率。<b>弹性任务</b>：有时间再做，不计入完成率。</div>
       <div class="admin-week-cal" id="adminWeekCal"></div>
       <div id="dayEditor"></div>
+    </div>
+    <div class="admin-page active" id="admin-today">
+      <div class="acard" style="margin-bottom:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div style="font-size:17px;font-weight:800;color:var(--text);">🔥 今日打卡监控</div>
+            <div style="font-size:12px;color:var(--light);margin-top:2px;" id="todayMonitorDate"></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="renderTodayMonitor()">🔄 刷新</button>
+        </div>
+      </div>
+      <div id="todayMonitorCards"></div>
     </div>
     <div class="admin-page" id="admin-stats">
       <div class="acard" style="margin-bottom:12px;padding:12px 16px;">
@@ -1467,6 +1480,14 @@ function initAdmin(){
   currentDay = todayDow === 0 ? 6 : todayDow - 1; // 转换为 0=周一...6=周日
   renderDayEditor();
   renderAdminWeekCal();
+  // 默认显示今日打卡监控
+  showAdminTab('today');
+  // 每30秒自动刷新今日打卡
+  if(window._todayMonitorTimer)clearInterval(window._todayMonitorTimer);
+  window._todayMonitorTimer=setInterval(()=>{
+    const todayPage=document.getElementById('admin-today');
+    if(todayPage&&todayPage.classList.contains('active'))renderTodayMonitor();
+  },30000);
   document.getElementById('adminPwdInput').value=adminConfig.adminPwd||'001';
   document.getElementById('currentScoreInput').value=state.totalScore||0;
   document.getElementById('resetDatePicker').value=getTodayStr();
@@ -1626,11 +1647,11 @@ function showAdminTab(name){
   document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   const el=document.getElementById('admin-'+name);if(el)el.classList.add('active');
-  const tabs=['schedule','subjects','stats','reset','settings','log'];const idx=tabs.indexOf(name);
+  const tabs=['today','schedule','subjects','stats','reset','settings','log'];const idx=tabs.indexOf(name);
   if(idx>=0)document.querySelectorAll('.admin-tab')[idx].classList.add('active');
-  // also sync nav-tabs
-  const navTabs=['schedule','subjects','stats','reset','settings','log'];const nidx=navTabs.indexOf(name);
+  const navTabs=['today','schedule','subjects','stats','reset','settings','log'];const nidx=navTabs.indexOf(name);
   document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',i===nidx));
+  if(name==='today')renderTodayMonitor();
   if(name==='stats')renderAdminStats();
   if(name==='settings')renderRewardEditor();
   if(name==='subjects')renderSubjectEditor();
@@ -1745,6 +1766,91 @@ function renderRewardEditor(){
   });
 }
 function saveRewards(){saveAdminConfig();showToast('✅ 奖励设置已保存','success');}
+
+
+// ============================================================
+// 今日打卡监控
+// ============================================================
+async function renderTodayMonitor(){
+  const container=document.getElementById('todayMonitorCards');
+  const dateEl=document.getElementById('todayMonitorDate');
+  if(!container)return;
+
+  const today=new Date();
+  const todayStr=today.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+  if(dateEl)dateEl.textContent=todayStr;
+
+  // 获取今天是周几（0=周一...6=周日）
+  const dow=today.getDay();
+  const dayIdx=dow===0?6:dow-1;
+  const todayTasks=(adminConfig.tasksByDay&&adminConfig.tasksByDay[dayIdx])||[];
+
+  const students=adminConfig.students||[{id:'student_1',name:'学生1',pwd:'002'}];
+
+  // 从服务器拉取所有学生的最新状态
+  container.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">正在加载...</div>';
+
+  const todayKey=today.toISOString().slice(0,10);
+  let cards='';
+
+  for(const stu of students){
+    let stuState=null;
+    try{
+      const r=await fetch(API_BASE+'/state/'+encodeURIComponent(stu.id)+'?t='+Date.now(),{cache:'no-store'});
+      if(r.ok){const res=await r.json();if(res.ok&&res.data)stuState=res.data;}
+    }catch(e){}
+
+    if(!stuState)stuState=loadState(stu.id);
+
+    const taskStatus=stuState.taskStatus||{};
+    const todayStatus=taskStatus[todayKey]||{};
+
+    // 统计今日完成情况
+    const totalTasks=todayTasks.filter(t=>t.pts>0).length;
+    let doneTasks=0;
+    let totalPts=0;
+    let earnedPts=0;
+
+    const taskRows=todayTasks.map(t=>{
+      if(!t.name)return'';
+      const done=!!todayStatus[t.id||t.name];
+      if(t.pts>0){
+        totalPts+=t.pts;
+        if(done){doneTasks++;earnedPts+=t.pts;}
+      }
+      const statusIcon=done?'✅':'⬜';
+      const statusColor=done?'#43C59E':'#ccc';
+      return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f5f5f5;">
+        <span style="font-size:16px;">${statusIcon}</span>
+        <span style="flex:1;font-size:13px;color:${done?'var(--text)':'#aaa'};${done?'':'text-decoration:none;'}">${t.name}</span>
+        ${t.pts>0?`<span style="font-size:12px;font-weight:700;color:${done?'#FF9800':'#ddd'};">+${t.pts}分</span>`:''}
+        ${t.time?`<span style="font-size:11px;color:#bbb;">${t.time}</span>`:''}
+      </div>`;
+    }).join('');
+
+    const pct=totalTasks>0?Math.round(doneTasks/totalTasks*100):0;
+    const pctColor=pct>=80?'#43C59E':pct>=50?'#FF9800':'#FF5252';
+
+    cards+=`<div class="acard" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--text);">${stu.name}</div>
+          <div style="font-size:12px;color:var(--light);margin-top:2px;">今日积分：<span style="font-weight:700;color:#FF9800;">${earnedPts}</span> / ${totalPts} 分</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:${pctColor};">${pct}%</div>
+          <div style="font-size:11px;color:var(--light);">${doneTasks}/${totalTasks} 项</div>
+        </div>
+      </div>
+      <div style="background:#f0f0f0;border-radius:99px;height:8px;margin-bottom:12px;overflow:hidden;">
+        <div style="background:${pctColor};height:100%;width:${pct}%;border-radius:99px;transition:width 0.5s;"></div>
+      </div>
+      ${totalTasks>0?taskRows:'<div style="color:#bbb;font-size:13px;text-align:center;padding:8px;">今天没有任务</div>'}
+    </div>`;
+  }
+
+  container.innerHTML=cards||'<div style="text-align:center;padding:20px;color:#aaa;">暂无学生数据</div>';
+}
 
 function renderAdminStats(){
   const sid=adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
