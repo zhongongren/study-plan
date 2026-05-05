@@ -203,6 +203,34 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .acard-title{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .acard-sub{font-size:12px;color:var(--light);margin-top:-10px;margin-bottom:16px;}
 .day-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+/* 日历条样式 */
+.week-cal-bar{display:flex;gap:4px;overflow-x:auto;padding:10px 0 6px;margin-bottom:8px;scrollbar-width:none;}
+.week-cal-bar::-webkit-scrollbar{display:none;}
+.week-cal-cell{flex:1;min-width:42px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border-radius:12px;cursor:pointer;transition:.2s;background:rgba(255,255,255,0.15);border:2px solid transparent;}
+.week-cal-cell:hover{background:rgba(255,255,255,0.3);}
+.week-cal-cell.today{background:rgba(255,255,255,0.95);border-color:rgba(255,255,255,0.95);}
+.week-cal-cell.today .cal-dow{color:var(--primary);}
+.week-cal-cell.today .cal-date{color:var(--primary);}
+.week-cal-cell.selected:not(.today){background:rgba(255,255,255,0.35);border-color:rgba(255,255,255,0.6);}
+.week-cal-cell.future{opacity:0.75;}
+.cal-dow{font-size:11px;font-weight:700;color:rgba(255,255,255,0.85);}
+.cal-date{font-size:16px;font-weight:800;color:#fff;line-height:1;}
+.cal-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.4);}
+.week-cal-cell.has-done .cal-dot{background:#4CAF50;}
+.week-cal-cell.today .cal-dot{background:var(--primary);}
+/* 管理员日历条 */
+.admin-week-cal{display:flex;gap:4px;overflow-x:auto;padding:8px 0;margin-bottom:12px;scrollbar-width:none;}
+.admin-week-cal::-webkit-scrollbar{display:none;}
+.admin-cal-cell{flex:1;min-width:44px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px;cursor:pointer;transition:.2s;background:#F0F4FF;border:2px solid transparent;color:var(--text);}
+.admin-cal-cell:hover{background:#E0E8FF;border-color:var(--primary);}
+.admin-cal-cell.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+.admin-cal-cell.today-cell{border-color:var(--primary);}
+.admin-cal-cell.weekend{background:#FFF0F0;}
+.admin-cal-cell.weekend.active{background:var(--secondary);border-color:var(--secondary);}
+.admin-cal-dow{font-size:11px;font-weight:700;opacity:0.8;}
+.admin-cal-date{font-size:16px;font-weight:800;line-height:1;}
+.admin-cal-today-dot{width:5px;height:5px;border-radius:50%;background:var(--primary);margin-top:1px;}
+.admin-cal-cell.active .admin-cal-today-dot{background:#fff;}
 .day-tab{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;border:2px solid #E8EEFF;background:#fff;color:var(--light);}
 .day-tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 .day-tab.weekend.active{background:var(--secondary);border-color:var(--secondary);}
@@ -358,15 +386,12 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   </div>
   <div class="page active" id="page-today">
     <div class="today-banner">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <button onclick="changeViewDate(-1)" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">‹</button>
-        <div style="flex:1;">
-          <div class="today-date" id="todayDate"></div>
-          <div class="today-title" id="todayGreeting">今天，继续加油！</div>
-          <div class="today-sub" id="todayWeekType"></div>
-        </div>
-        <button onclick="changeViewDate(1)" id="nextDayBtn" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">›</button>
+      <div style="margin-bottom:4px;">
+        <div class="today-date" id="todayDate"></div>
+        <div class="today-title" id="todayGreeting">今天，继续加油！</div>
+        <div class="today-sub" id="todayWeekType"></div>
       </div>
+      <div class="week-cal-bar" id="studentWeekCal"></div>
       <div style="text-align:right;"><div class="today-pct" id="todayPct">0%</div><div class="today-pct-label" id="todayPctLabel">今日完成率</div></div>
     </div>
     <div class="adj-banner" id="adjBanner" style="display:none;"><div class="adj-title">⚠️ 昨天有任务没完成，今天需要补上：</div><div id="adjTasks"></div><div style="font-size:12px;color:#E53935;margin-top:8px;font-weight:600;">💡 今天提前10分钟开始，把昨天的任务补完！</div></div>
@@ -476,15 +501,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   <div class="admin-content">
     <div class="admin-page active" id="admin-schedule">
       <div class="info-box">ℹ️ 修改任务后点击顶部"保存所有设置"，孩子的计划表会立即更新。<br><b>必做任务</b>：计入积分和完成率。<b>弹性任务</b>：有时间再做，不计入完成率。</div>
-      <div class="day-tabs" id="dayTabs">
-        <div class="day-tab active" onclick="switchDay(0)">周一</div>
-        <div class="day-tab" onclick="switchDay(1)">周二</div>
-        <div class="day-tab" onclick="switchDay(2)">周三</div>
-        <div class="day-tab" onclick="switchDay(3)">周四</div>
-        <div class="day-tab" onclick="switchDay(4)">周五</div>
-        <div class="day-tab weekend" onclick="switchDay(5)">周六</div>
-        <div class="day-tab weekend" onclick="switchDay(6)">周日</div>
-      </div>
+      <div class="admin-week-cal" id="adminWeekCal"></div>
       <div id="dayEditor"></div>
     </div>
     <div class="admin-page" id="admin-stats">
@@ -935,7 +952,7 @@ function initStudent(){
     saveState();
   }
   viewingDate=getTodayStr();
-  renderToday();updateScoreBar();renderWeekGrid();
+  renderToday();updateScoreBar();renderWeekGrid();renderStudentWeekCal();
   if(isFirstEver){
     // 第一次使用：显示欢迎弹窗
     setTimeout(()=>{
@@ -965,6 +982,78 @@ function renderToday(){
   viewingDate=viewingDate||getTodayStr();
   renderDateView(viewingDate);
 }
+function renderStudentWeekCal(){
+  const today = getTodayStr();
+  const viewing = viewingDate || today;
+  // 获取本周一
+  const d = new Date(today + 'T00:00:00');
+  const dow = d.getDay(); // 0=周日
+  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const monday = new Date(d.getTime() + mondayOffset * 86400000);
+  const DOW_NAMES = ['周日','周一','周二','周三','周四','周五','周六'];
+  const container = document.getElementById('studentWeekCal');
+  if(!container) return;
+  container.innerHTML = '';
+  // 显示本周7天 + 下周7天（共14天）
+  for(let i = 0; i < 14; i++){
+    const day = new Date(monday.getTime() + i * 86400000);
+    const ds = getDateStr(day);
+    const isToday = ds === today;
+    const isSelected = ds === viewing;
+    const isFuture = ds > today;
+    const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+    // 检查是否有完成的任务
+    const tasks = getTasksForDate(ds);
+    const hasDone = tasks.some(t => t.pts > 0 && getTaskDone(ds, t.id));
+    const cell = document.createElement('div');
+    let cls = 'week-cal-cell';
+    if(isToday) cls += ' today';
+    else if(isSelected) cls += ' selected';
+    if(isFuture) cls += ' future';
+    if(hasDone) cls += ' has-done';
+    cell.className = cls;
+    const dowName = DOW_NAMES[day.getDay()];
+    cell.innerHTML = `<div class="cal-dow">${dowName}</div><div class="cal-date">${day.getDate()}</div><div class="cal-dot"></div>`;
+    cell.onclick = () => { viewingDate = ds; renderDateView(ds); renderStudentWeekCal(); };
+    container.appendChild(cell);
+    // 自动滚动到今天
+    if(isToday){
+      setTimeout(() => cell.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'}), 50);
+    }
+  }
+}
+
+function renderAdminWeekCal(){
+  const today = getTodayStr();
+  const d = new Date(today + 'T00:00:00');
+  const dow = d.getDay();
+  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const monday = new Date(d.getTime() + mondayOffset * 86400000);
+  const DOW_NAMES = ['周日','周一','周二','周三','周四','周五','周六'];
+  const container = document.getElementById('adminWeekCal');
+  if(!container) return;
+  container.innerHTML = '';
+  for(let i = 0; i < 7; i++){
+    const day = new Date(monday.getTime() + i * 86400000);
+    const ds = getDateStr(day);
+    const isToday = ds === today;
+    const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+    // currentDay: 0=周一...6=周日，i 对应 currentDay
+    const isActive = i === currentDay;
+    const cell = document.createElement('div');
+    let cls = 'admin-cal-cell';
+    if(isWeekend) cls += ' weekend';
+    if(isActive) cls += ' active';
+    if(isToday) cls += ' today-cell';
+    cell.className = cls;
+    const dowName = DOW_NAMES[day.getDay()];
+    cell.innerHTML = `<div class="admin-cal-dow">${dowName}</div><div class="admin-cal-date">${day.getDate()}</div>${isToday ? '<div class="admin-cal-today-dot"></div>' : '<div style="height:7px"></div>'}`;
+    const dayIdx = i;
+    cell.onclick = () => { switchDay(dayIdx); };
+    container.appendChild(cell);
+  }
+}
+
 function changeViewDate(delta){
   const today=getTodayStr();
   const cur=viewingDate||today;
@@ -973,6 +1062,7 @@ function changeViewDate(delta){
   const ns=getDateStr(nd);
   viewingDate=ns;
   renderDateView(ns);
+  renderStudentWeekCal();
 }
 function renderDateView(dateStr){
   const today=getTodayStr();
@@ -1248,6 +1338,7 @@ function initAdmin(){
   state=loadState(adminViewStudentId);
   if(!adminConfig.subjects||!adminConfig.subjects.length)adminConfig.subjects=JSON.parse(JSON.stringify(DEFAULT_SUBJECTS));
   renderDayEditor();
+  renderAdminWeekCal();
   document.getElementById('adminPwdInput').value=adminConfig.adminPwd||'001';
   document.getElementById('currentScoreInput').value=state.totalScore||0;
   document.getElementById('resetDatePicker').value=getTodayStr();
@@ -1420,8 +1511,8 @@ function showAdminTab(name){
 
 function switchDay(dayIdx){
   currentDay=dayIdx;
-  document.querySelectorAll('.day-tab').forEach((t,i)=>t.classList.toggle('active',i===dayIdx));
   renderDayEditor();
+  renderAdminWeekCal();
 }
 
 function renderDayEditor(){
