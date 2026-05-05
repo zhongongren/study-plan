@@ -1960,58 +1960,52 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 // ============================================================
 // INIT
 // ============================================================
-// 保底：无论如何，5秒后强制隐藏加载提示
-setTimeout(function(){
-  var t=document.getElementById('cloudLoadingTip');
-  if(t)t.style.display='none';
-},5000);
 (async function(){
-  // 先加载本地配置作为兜底
-  adminConfig=loadAdminConfig();
-  if(!adminConfig.students)adminConfig.students=[{id:'student_1',name:'\u5b66\u751f1',pwd:'002'}];
-  const savedSid=localStorage.getItem('study_plan_current_student');
-  currentStudentId=savedSid||adminConfig.students[0]?.id||'student_1';
-  state=loadState(currentStudentId);
-  // 先等待云端配置加载完成，再执行登录验证（确保卡密同步）
-  const tipEl=document.getElementById('cloudLoadingTip');
-  const tipTxt=document.getElementById('cloudLoadingText');
+  // 1. 先加载本地配置作为兜底（确保 adminConfig 有值）
+  adminConfig = loadAdminConfig();
+  if(!adminConfig.students) adminConfig.students = [{id:'student_1',name:'学生1',pwd:'002'}];
+  const savedSid = localStorage.getItem('study_plan_current_student');
+  currentStudentId = savedSid || adminConfig.students[0]?.id || 'student_1';
+  state = loadState(currentStudentId);
+
+  // 2. 从服务器加载最新配置（5秒超时）
   try{
-    const cloudCfg=await loadCloudConfig();
-    if(cloudCfg){
-      adminConfig=cloudCfg;
-      if(!adminConfig.students)adminConfig.students=[{id:'student_1',name:'\u5b66\u751f1',pwd:'002'}];
-      const sid2=localStorage.getItem('study_plan_current_student');
-      currentStudentId=sid2||adminConfig.students[0]?.id||'student_1';
-      if(tipTxt)tipTxt.textContent='☁️ 同步完成';
-      console.log('☁️ 云端配置已加载，卡密已同步');
-    }else{
-      if(tipTxt)tipTxt.textContent='使用本地配置';
+    const ctrl = new AbortController();
+    const t = setTimeout(()=>ctrl.abort(), 5000);
+    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:ctrl.signal});
+    clearTimeout(t);
+    if(r.ok){
+      const res = await r.json();
+      if(res.ok && res.data && res.data.adminPwd){
+        adminConfig = res.data;
+        if(!adminConfig.students) adminConfig.students = [{id:'student_1',name:'学生1',pwd:'002'}];
+        const sid2 = localStorage.getItem('study_plan_current_student');
+        currentStudentId = sid2 || adminConfig.students[0]?.id || 'student_1';
+        localStorage.setItem(AK, JSON.stringify(adminConfig));
+        console.log('✅ 云端配置加载成功，adminPwd:', adminConfig.adminPwd);
+      }
     }
-    // 解锁登录按钮
-    var btn=document.getElementById('loginBtn');
-    if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';btn.textContent='进入 →';}
   }catch(e){
-    if(tipTxt)tipTxt.textContent='使用本地配置';
-    console.warn('云端配置加载失败，使用本地配置',e);
-    // 网络失败时也解锁登录按钮
-    var btn=document.getElementById('loginBtn');
-    if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';btn.textContent='进入 →';}
+    console.warn('云端配置加载失败，使用本地配置', e.message);
   }
-  // 隐藏加载提示
-  setTimeout(()=>{if(tipEl)tipEl.style.display='none';},1500);
+
+  // 3. 解锁登录按钮
+  var btn = document.getElementById('loginBtn');
+  if(btn){ btn.disabled=false; btn.style.opacity='1'; btn.style.cursor='pointer'; btn.textContent='进入 →'; }
+
+  // 4. 检查自动登录
   checkAutoLogin();
 
-  // ============================================================
-  // 实时轮询：每15秒检查云端配置是否有更新，有则自动刷新
-  // ============================================================
-  let _lastConfigTs=0;
-  let _lastStateTs={};
+  // 5. 实时轮询（每15秒同步一次）
+  let _lastConfigTs = 0;
+  let _lastStateTs = {};
+
   async function _pollConfig(){
     try{
-      const _ctrl = new AbortController();
-    const _timer = setTimeout(()=>_ctrl.abort(), 5000);
-    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:_ctrl.signal});
-    clearTimeout(_timer);
+      const ctrl = new AbortController();
+      const t = setTimeout(()=>ctrl.abort(), 5000);
+      const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:ctrl.signal});
+      clearTimeout(t);
       if(!r.ok) return;
       const res = await r.json();
       if(!res.ok || !res.data) return;
@@ -2028,6 +2022,7 @@ setTimeout(function(){
       if(newTs) _lastConfigTs = newTs;
     }catch(e){}
   }
+
   async function _pollStudentState(){
     if(!currentStudentId) return;
     try{
@@ -2050,30 +2045,28 @@ setTimeout(function(){
       if(newTs) _lastStateTs[currentStudentId] = newTs;
     }catch(e){}
   }
-    }catch(e){}
-  }
 
   function showSyncBadge(msg){
-    let badge=document.getElementById('_syncBadge');
+    let badge = document.getElementById('_syncBadge');
     if(!badge){
-      badge=document.createElement('div');
-      badge.id='_syncBadge';
-      badge.style.cssText='position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.75);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;z-index:9999;transition:opacity 0.5s;pointer-events:none;';
+      badge = document.createElement('div');
+      badge.id = '_syncBadge';
+      badge.style.cssText = 'position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.75);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;z-index:9999;transition:opacity 0.5s;pointer-events:none;';
       document.body.appendChild(badge);
     }
-    badge.textContent=msg;
-    badge.style.opacity='1';
+    badge.textContent = msg;
+    badge.style.opacity = '1';
     clearTimeout(badge._t);
-    badge._t=setTimeout(()=>{badge.style.opacity='0';},2500);
+    badge._t = setTimeout(()=>{ badge.style.opacity='0'; }, 2500);
   }
 
-  // 初始化时间戳（首次加载后记录，之后才对比）
+  // 记录初始时间戳
   setTimeout(async()=>{
     try{
-      const _ctrl = new AbortController();
-    const _timer = setTimeout(()=>_ctrl.abort(), 5000);
-    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:_ctrl.signal});
-    clearTimeout(_timer);
+      const ctrl = new AbortController();
+      const t = setTimeout(()=>ctrl.abort(), 5000);
+      const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:ctrl.signal});
+      clearTimeout(t);
       if(r.ok){ const res = await r.json(); if(res.ok) _lastConfigTs = res.updated_at || 0; }
     }catch(e){}
     if(currentStudentId){
@@ -2082,14 +2075,13 @@ setTimeout(function(){
         if(r.ok){ const res = await r.json(); if(res.ok) _lastStateTs[currentStudentId] = res.updated_at || 0; }
       }catch(e){}
     }
-  },2000);
+  }, 2000);
 
-  // 每15秒轮询一次
+  // 每15秒轮询
   setInterval(()=>{
     _pollConfig();
-    if(currentRole==='student'||currentRole==='admin')_pollStudentState();
-  },15000);
-
+    if(currentRole==='student' || currentRole==='admin') _pollStudentState();
+  }, 15000);
 })();
 </script>
 </body>
