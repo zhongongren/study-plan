@@ -369,7 +369,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
         <button class="nav-tab active" onclick="showPage('today')">今日</button>
         <button class="nav-tab" onclick="showPage('week')">本周</button>
         <button class="nav-tab" onclick="showPage('month')">月历</button>
-        <button class="nav-tab" onclick="showPage('goals')">目标</button>
+
         <button class="nav-tab" onclick="showPage('reward')">奖励</button>
       </div>
       <button class="logout-btn" onclick="confirmLogout()">退出</button>
@@ -431,25 +431,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="week-grid" id="weekGrid"></div>
       <div id="weekDayDetail" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0;"></div>
     </div>
-    <div class="card">
-      <div style="font-size:17px;font-weight:800;margin-bottom:14px;">📖 本周科目轮换</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:separate;border-spacing:0 5px;font-size:12px;min-width:480px;">
-          <thead><tr>
-            <th style="background:var(--primary);color:#fff;padding:9px 10px;border-radius:9px 0 0 9px;text-align:center;">时间段</th>
-            <th style="background:var(--primary);color:#fff;padding:9px 8px;text-align:center;">周一</th>
-            <th style="background:var(--primary);color:#fff;padding:9px 8px;text-align:center;">周二</th>
-            <th style="background:var(--primary);color:#fff;padding:9px 8px;text-align:center;">周三</th>
-            <th style="background:var(--primary);color:#fff;padding:9px 8px;text-align:center;">周四</th>
-            <th style="background:var(--primary);color:#fff;padding:9px 10px;border-radius:0 9px 9px 0;text-align:center;">周五</th>
-          </tr></thead>
-          <tbody>
-            <tr><td style="background:#F5F7FA;padding:9px 10px;font-weight:700;color:var(--light);border-radius:9px 0 0 9px;text-align:center;font-size:11px;">英语专项<br>约20:25-20:55</td><td style="background:#FFF3EF;color:var(--english);font-weight:600;padding:9px 8px;text-align:center;">单词+语法</td><td style="background:#FFF3EF;color:var(--english);font-weight:600;padding:9px 8px;text-align:center;">听力+单词</td><td style="background:#FFF3EF;color:var(--english);font-weight:600;padding:9px 8px;text-align:center;">阅读+单词</td><td style="background:#FFF3EF;color:var(--english);font-weight:600;padding:9px 8px;text-align:center;">写作+单词</td><td style="background:#FFF3EF;color:var(--english);font-weight:600;padding:9px 10px;border-radius:0 9px 9px 0;text-align:center;">英语总复习</td></tr>
-            <tr><td style="background:#F5F7FA;padding:9px 10px;font-weight:700;color:var(--light);border-radius:9px 0 0 9px;text-align:center;font-size:11px;">知识复习<br>约20:55-21:20</td><td style="background:#EFF4FF;color:var(--math);font-weight:600;padding:9px 8px;text-align:center;">数学笔记</td><td style="background:#EDFAF5;color:var(--science);font-weight:600;padding:9px 8px;text-align:center;">科学笔记</td><td style="background:#EFF4FF;color:var(--math);font-weight:600;padding:9px 8px;text-align:center;">数学错题</td><td style="background:#EDFAF5;color:var(--science);font-weight:600;padding:9px 8px;text-align:center;">科学错题</td><td style="background:#FFFBEF;color:#C07800;font-weight:600;padding:9px 10px;border-radius:0 9px 9px 0;text-align:center;">全科总结</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+
   </div>
   <div class="page" id="page-month">
     <!-- 成就统计卡片 -->
@@ -485,10 +467,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div class="cal-grid" id="monthCal"></div>
     </div>
   </div>
-  <div class="page" id="page-goals">
-    <div id="goalsContainer"></div>
-    <div class="card"><div style="font-size:17px;font-weight:800;margin-bottom:14px;">💡 学习小技巧</div><div class="tips-grid"><div class="tip-card"><div class="tip-icon">📝</div><div class="tip-content"><h4>错题本是宝藏</h4><p>每次做错的题都记下来，下次考试前翻一翻，你会发现很多题都是"老朋友"。</p></div></div><div class="tip-card"><div class="tip-icon">🔤</div><div class="tip-content"><h4>英语单词每天背</h4><p>每天10个单词，一个月就是300个。贵在坚持，睡前再复习一遍效果更好。</p></div></div><div class="tip-card"><div class="tip-icon">📱</div><div class="tip-content"><h4>App课程要主动看</h4><p>培训班App的课程是花钱买的，不看太可惜！每天就算只看20分钟也比不看强。</p></div></div><div class="tip-card"><div class="tip-icon">😴</div><div class="tip-content"><h4>睡眠很重要</h4><p>9点半上床，保证充足睡眠。睡好了第二天上课才能听进去，比熬夜刷题强多了。</p></div></div></div></div>
-  </div>
+
   <div class="page" id="page-reward">
     <div class="card"><div style="font-size:17px;font-weight:800;margin-bottom:14px;">📊 积分规则</div><div style="display:flex;flex-direction:column;gap:7px;"><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#FFF3EF;border-radius:10px;"><span style="font-size:13px;">🔥 完成英语专项训练</span><span style="font-weight:800;color:var(--english);">+3分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#FFFBEF;border-radius:10px;"><span style="font-size:13px;">📖 完成当天复习</span><span style="font-weight:800;color:#C07800;">+2分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#F5EEFF;border-radius:10px;"><span style="font-size:13px;">📱 看完1节App课程</span><span style="font-weight:800;color:var(--app);">+2分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#F0FFF8;border-radius:10px;"><span style="font-size:13px;">📡 认真参加培训班直播</span><span style="font-weight:800;color:#00796B;">+5分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#EFF4FF;border-radius:10px;"><span style="font-size:13px;">☑️ 完成每日打卡</span><span style="font-weight:800;color:var(--primary);">+1分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:linear-gradient(135deg,#FFF3EF,#F5EEFF);border-radius:10px;border:2px solid #FFD54F;"><span style="font-size:13px;">🔥 连续7天不间断</span><span style="font-weight:800;color:#C07800;">+10分奖励</span></div></div></div>
     <div class="card"><div style="font-size:17px;font-weight:800;margin-bottom:8px;">🎁 积分兑换奖励</div><div style="font-size:12px;color:var(--light);margin-bottom:12px;">和家长商量好奖励内容，达到积分就可以兑换！</div><div class="reward-grid-s" id="rewardGrid"></div></div>
@@ -1483,6 +1462,9 @@ function initAdmin(){
   adminViewStudentId=adminConfig.students[0]?.id||'student_1';
   state=loadState(adminViewStudentId);
   if(!adminConfig.subjects||!adminConfig.subjects.length)adminConfig.subjects=JSON.parse(JSON.stringify(DEFAULT_SUBJECTS));
+  // 自动定位到今天对应的星期（0=周一...6=周日）
+  const todayDow = new Date().getDay(); // 0=周日,1=周一...6=周六
+  currentDay = todayDow === 0 ? 6 : todayDow - 1; // 转换为 0=周一...6=周日
   renderDayEditor();
   renderAdminWeekCal();
   document.getElementById('adminPwdInput').value=adminConfig.adminPwd||'001';
