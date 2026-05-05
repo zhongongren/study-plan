@@ -101,10 +101,10 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .t-rest{background:#F5F7FA;}.t-rest .task-name{color:#78909C;}
 .t-live{background:#F0FFF8;}.t-live .task-name{color:#00796B;}.t-live .task-pts{background:#B2DFDB;color:#00695C;}
 .t-custom{background:#F3F0FF;}.t-custom .task-name{color:#5E35B1;}.t-custom .task-pts{background:#D1C4E9;color:#4527A0;}
-.highlight-box{background:linear-gradient(135deg,#FF7043,#FF9800);color:#fff;border-radius:12px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.highlight-box .hb-icon{font-size:22px;}
-.highlight-box h4{font-size:14px;font-weight:800;margin-bottom:2px;}
-.highlight-box p{font-size:11px;opacity:.9;}
+.highlight-box{background:linear-gradient(135deg,#FF7043,#FF9800);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(255,112,67,0.3);}
+.highlight-box .hb-icon{font-size:26px;flex-shrink:0;}
+.highlight-box h4{font-size:13px;font-weight:700;margin-bottom:3px;opacity:0.85;}
+.highlight-box p{font-size:14px;font-weight:800;line-height:1.5;margin:0;}
 .adj-banner{background:#FFF3F3;border:2px solid #FF5252;border-radius:14px;padding:14px 16px;margin-bottom:14px;}
 .adj-title{font-size:14px;font-weight:800;color:#D32F2F;margin-bottom:8px;}
 .adj-task{font-size:12px;color:#C62828;padding:5px 10px;background:#FFE5E5;border-radius:8px;margin-bottom:5px;}
@@ -416,13 +416,28 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div style="text-align:right;"><div class="today-pct" id="todayPct">0%</div><div class="today-pct-label" id="todayPctLabel">今日完成率</div></div>
     </div>
     <div class="adj-banner" id="adjBanner" style="display:none;"><div class="adj-title">⚠️ 昨天有任务没完成，今天需要补上：</div><div id="adjTasks"></div><div style="font-size:12px;color:#E53935;margin-top:8px;font-weight:600;">💡 今天提前10分钟开始，把昨天的任务补完！</div></div>
-    <div class="highlight-box" id="motivationBox" style="display:none;"><div class="hb-icon">💬</div><div><p id="motivationText" style="font-size:14px;font-weight:700;line-height:1.5;"></p></div></div>
+    <div class="highlight-box" id="motivationBox" style="display:none;">
+      <div class="hb-icon">💬</div>
+      <div style="flex:1;">
+        <h4>家长寄语</h4>
+        <p id="motivationText"></p>
+      </div>
+    </div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
         <div style="font-size:17px;font-weight:800;" id="taskCardTitle">📅 今日任务</div>
-        <div style="padding:4px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#EFF4FF;color:var(--primary);" id="todayTypeBadge">周一</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="padding:4px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#EFF4FF;color:var(--primary);" id="todayTypeBadge">周一</div>
+          <div style="padding:4px 10px;border-radius:10px;font-size:12px;font-weight:700;background:#FFF3EF;color:#FF7043;" id="todayMaxPts">可得 0分</div>
+        </div>
       </div>
       <div class="task-list" id="todayTasks"></div>
+      <div id="todayScoreHint" style="margin-top:12px;padding:10px 14px;background:linear-gradient(135deg,#FFF3EF,#FFF8F0);border-radius:12px;border:1.5px solid #FFD0B0;display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:12px;color:#C05000;font-weight:700;">⭐ 完成剩余任务可得 <span id="todayRemainPts" style="color:#FF5252;font-size:14px;">0</span> 分</div>
+          <div style="font-size:11px;color:#FF9800;font-weight:700;" id="todayNextRewardHint"></div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="page" id="page-week">
@@ -489,8 +504,54 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   </div>
 
   <div class="page" id="page-reward">
-    <div class="card"><div style="font-size:17px;font-weight:800;margin-bottom:14px;">📊 积分规则</div><div style="display:flex;flex-direction:column;gap:7px;"><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#FFF3EF;border-radius:10px;"><span style="font-size:13px;">🔥 完成英语专项训练</span><span style="font-weight:800;color:var(--english);">+3分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#FFFBEF;border-radius:10px;"><span style="font-size:13px;">📖 完成当天复习</span><span style="font-weight:800;color:#C07800;">+2分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#F5EEFF;border-radius:10px;"><span style="font-size:13px;">📱 看完1节App课程</span><span style="font-weight:800;color:var(--app);">+2分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#F0FFF8;border-radius:10px;"><span style="font-size:13px;">📡 认真参加培训班直播</span><span style="font-weight:800;color:#00796B;">+5分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#EFF4FF;border-radius:10px;"><span style="font-size:13px;">☑️ 完成每日打卡</span><span style="font-weight:800;color:var(--primary);">+1分</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:linear-gradient(135deg,#FFF3EF,#F5EEFF);border-radius:10px;border:2px solid #FFD54F;"><span style="font-size:13px;">🔥 连续7天不间断</span><span style="font-weight:800;color:#C07800;">+10分奖励</span></div></div></div>
-    <div class="card"><div style="font-size:17px;font-weight:800;margin-bottom:8px;">🎁 积分兑换奖励</div><div style="font-size:12px;color:var(--light);margin-bottom:12px;">和家长商量好奖励内容，达到积分就可以兑换！</div><div class="reward-grid-s" id="rewardGrid"></div></div>
+    <!-- 积分状态横幅 -->
+    <div id="rewardScoreBanner" style="background:linear-gradient(135deg,#1a2980,#26d0ce);border-radius:18px;padding:20px;margin-bottom:14px;color:#fff;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div>
+          <div style="font-size:12px;opacity:0.75;margin-bottom:2px;">我的积分</div>
+          <div style="font-size:38px;font-weight:900;color:#FFD54F;line-height:1;" id="rewardScoreNum">0</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;opacity:0.75;margin-bottom:2px;">连续打卡</div>
+          <div style="font-size:38px;font-weight:900;color:#FFD54F;line-height:1;"><span class="fire">🔥</span><span id="rewardStreakNum">0</span><span style="font-size:14px;font-weight:400;opacity:0.8;">天</span></div>
+        </div>
+      </div>
+      <div id="rewardNextHint" style="font-size:13px;font-weight:700;margin-bottom:8px;">距下一个奖励还差 <span id="rewardGapPts" style="color:#FFD54F;">-</span> 分</div>
+      <div style="background:rgba(255,255,255,0.2);border-radius:99px;height:8px;overflow:hidden;">
+        <div id="rewardBarFill" style="height:100%;background:linear-gradient(90deg,#FFD54F,#FF9800);border-radius:99px;width:0%;transition:width 0.7s cubic-bezier(.34,1.56,.64,1);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px;">
+        <div style="font-size:10px;opacity:0.6;" id="rewardPrevLabel"></div>
+        <div style="font-size:10px;opacity:0.6;" id="rewardNextLabel"></div>
+      </div>
+    </div>
+    <!-- 今日可得积分提示 -->
+    <div id="rewardTodayHint" style="background:linear-gradient(135deg,#FF7043,#FF9800);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#fff;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:28px;">⚡</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:800;">今天还能赚 <span id="rewardTodayRemain" style="font-size:18px;color:#FFD54F;">0</span> 分！</div>
+        <div style="font-size:11px;opacity:0.85;margin-top:2px;">完成今日任务，积分就会增加 → 离奖励更近一步</div>
+      </div>
+      <div style="text-align:center;flex-shrink:0;">
+        <div style="font-size:20px;font-weight:900;" id="rewardTodayPct">0%</div>
+        <div style="font-size:10px;opacity:0.8;">今日进度</div>
+      </div>
+    </div>
+    <!-- 奖励列表 -->
+    <div class="card">
+      <div style="font-size:17px;font-weight:800;margin-bottom:4px;">🎁 积分兑换奖励</div>
+      <div style="font-size:12px;color:var(--light);margin-bottom:14px;">每完成一项任务都在靠近奖励，加油！</div>
+      <div id="rewardGrid"></div>
+    </div>
+    <!-- 积分规则 -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:800;margin-bottom:12px;">📊 积分怎么得？</div>
+      <div id="rewardRuleList" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <div style="margin-top:10px;padding:10px 13px;background:linear-gradient(135deg,#FFF3EF,#F5EEFF);border-radius:10px;border:2px solid #FFD54F;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;">🔥 连续7天不间断</span>
+        <span style="font-weight:800;color:#C07800;">+10分奖励</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1162,6 +1223,7 @@ function renderDateView(dateStr){
     container.appendChild(el);
   });
   updateTodayPct(dateStr);
+  renderMotivationBox();
 }
 function toggleTask(dateStr,task,el){
   const done=getTaskDone(dateStr,task.id);
@@ -1181,31 +1243,73 @@ function toggleTask(dateStr,task,el){
     const allReq=getTasksForDate(dateStr).filter(t=>t.required&&t.pts>0);
     const allDone=allReq.every(t=>getTaskDone(dateStr,t.id));
     if(allDone){triggerConfetti();const msgs=['每一个完成的任务都是你进步的证明！','坚持就是胜利，你比昨天的自己更强了！','英语会越来越好的，加油！'];showModal('🎊','今日全部完成！',msgs[Math.floor(Math.random()*msgs.length)]);}
-    else{showToast(`✅ ${task.name} 完成！+${task.pts}分`,'success');triggerMiniConfetti();}
+    else{
+      // 完成任务后显示距奖励还差多少分
+      const REWARDS2=adminConfig.rewards||DEFAULT_REWARDS;
+      const newScore=state.totalScore;
+      const nextR=REWARDS2.find(r=>r.pts>newScore);
+      if(nextR){
+        const gapNow=nextR.pts-newScore;
+        showToast(`✅ +${task.pts}分！距「${nextR.name}」还差${gapNow}分`,'success');
+      }else{
+        showToast(`✅ ${task.name} 完成！+${task.pts}分`,'success');
+      }
+      triggerMiniConfetti();
+    }
     checkMilestone();
   }
   updateScoreBar();updateTodayPct(dateStr);renderWeekGrid();renderMonthCal();
+  // 如果奖励页当前已打开，同步更新
+  const rewardPage=document.getElementById('page-reward');
+  if(rewardPage&&rewardPage.classList.contains('active'))renderRewards();
 }
 
 function updateTodayPct(dateStr){
   const t=getTasksForDate(dateStr).filter(x=>x.pts>0);
   const done=t.filter(x=>getTaskDone(dateStr,x.id)).length;
   const pct=t.length?Math.round(done/t.length*100):0;
-const pctEl=document.getElementById('todayPct');
-const pctLabelEl=document.getElementById('todayPctLabel');
-if(pct===0&&done===0){
-  pctEl.textContent='加油！';
-  pctEl.style.fontSize='20px';
-  if(pctLabelEl)pctLabelEl.textContent='今天还没开始';
-}else if(pct===100){
-  pctEl.textContent='100%';
-  pctEl.style.fontSize='32px';
-  if(pctLabelEl)pctLabelEl.textContent='今日全部完成🎉';
-}else{
-  pctEl.textContent=pct+'%';
-  pctEl.style.fontSize='32px';
-  if(pctLabelEl)pctLabelEl.textContent='今日完成率';
-}
+  const totalPts=t.reduce((s,x)=>s+x.pts,0);
+  const earnedPts=t.filter(x=>getTaskDone(dateStr,x.id)).reduce((s,x)=>s+x.pts,0);
+  const remainPts=totalPts-earnedPts;
+
+  const pctEl=document.getElementById('todayPct');
+  const pctLabelEl=document.getElementById('todayPctLabel');
+  if(pct===0&&done===0){
+    pctEl.textContent='加油！';
+    pctEl.style.fontSize='20px';
+    if(pctLabelEl)pctLabelEl.textContent='今天还没开始';
+  }else if(pct===100){
+    pctEl.textContent='100%';
+    pctEl.style.fontSize='32px';
+    if(pctLabelEl)pctLabelEl.textContent='今日全部完成🎉';
+  }else{
+    pctEl.textContent=pct+'%';
+    pctEl.style.fontSize='32px';
+    if(pctLabelEl)pctLabelEl.textContent='今日完成率';
+  }
+
+  // 更新任务卡片顶部的可得积分标签
+  const maxPtsEl=document.getElementById('todayMaxPts');
+  if(maxPtsEl)maxPtsEl.textContent=earnedPts>0?`已得 ${earnedPts}分 / ${totalPts}分`:`可得 ${totalPts}分`;
+
+  // 更新底部激励条
+  const hintBox=document.getElementById('todayScoreHint');
+  const remainEl=document.getElementById('todayRemainPts');
+  const nextHintEl=document.getElementById('todayNextRewardHint');
+  if(hintBox){
+    if(remainPts>0&&pct>0&&pct<100){
+      hintBox.style.display='block';
+      if(remainEl)remainEl.textContent=remainPts;
+      if(nextHintEl){
+        const REWARDS3=adminConfig.rewards||DEFAULT_REWARDS;
+        const nextR=REWARDS3.find(r=>r.pts>(state.totalScore||0));
+        if(nextR){
+          const gapAfter=Math.max(0,nextR.pts-(state.totalScore||0)-remainPts);
+          nextHintEl.textContent=gapAfter<=0?`全部完成就能解锁「${nextR.name}」🎉`:`全部完成后距「${nextR.name}」还差${gapAfter}分`;
+        }else{nextHintEl.textContent='';}
+      }
+    }else{hintBox.style.display='none';}
+  }
 }
 
 function checkStreak(dateStr){
@@ -1436,15 +1540,112 @@ function renderGoals(){
 function toggleGoalCheck(key,el){state.goalChecks[key]=!state.goalChecks[key];saveState();el.classList.toggle('done');el.textContent=state.goalChecks[key]?'✓':'';if(state.goalChecks[key])showToast('✅ 目标完成！继续加油！','success');}
 
 function renderRewards(){
-  const score=state.totalScore;const REWARDS=adminConfig.rewards||DEFAULT_REWARDS;
+  const score=state.totalScore;
+  const streak=state.streak||0;
+  const REWARDS=adminConfig.rewards||DEFAULT_REWARDS;
   const container=document.getElementById('rewardGrid');if(!container)return;
+
+  // 更新顶部积分横幅
+  const scoreEl=document.getElementById('rewardScoreNum');
+  const streakEl=document.getElementById('rewardStreakNum');
+  if(scoreEl)scoreEl.textContent=score;
+  if(streakEl)streakEl.textContent=streak;
+
+  // 计算下一个奖励进度
+  const next=REWARDS.find(r=>r.pts>score)||REWARDS[REWARDS.length-1];
+  const prev=[...REWARDS].reverse().find(r=>r.pts<=score);
+  const prevPts=prev?prev.pts:0;
+  const barPct=next.pts>prevPts?Math.min(100,(score-prevPts)/(next.pts-prevPts)*100):100;
+  const gap=Math.max(0,next.pts-score);
+  const allUnlocked=score>=(REWARDS[REWARDS.length-1].pts);
+  const hintEl=document.getElementById('rewardNextHint');
+  const gapEl=document.getElementById('rewardGapPts');
+  const fillEl=document.getElementById('rewardBarFill');
+  const prevLabel=document.getElementById('rewardPrevLabel');
+  const nextLabel=document.getElementById('rewardNextLabel');
+  if(hintEl)hintEl.innerHTML=allUnlocked?'🏆 所有奖励已全部解锁！太棒了！':'距下一个奖励还差 <span id="rewardGapPts" style="color:#FFD54F;">'+gap+'</span> 分';
+  if(fillEl)fillEl.style.width=barPct+'%';
+  if(prevLabel)prevLabel.textContent=prev?prev.name+' ✓':'起点';
+  if(nextLabel)nextLabel.textContent=allUnlocked?'🏆':next.name+' ('+next.pts+'分)';
+
+  // 今日可得积分提示
+  const today=getTodayStr();
+  const dow=getDow(today);
+  const todayTasks=getTasksForDate(today);
+  const totalTodayPts=todayTasks.filter(t=>t.pts>0).reduce((s,t)=>s+t.pts,0);
+  const earnedTodayPts=todayTasks.filter(t=>t.pts>0&&getTaskDone(today,t.id)).reduce((s,t)=>s+t.pts,0);
+  const remainPts=totalTodayPts-earnedTodayPts;
+  const todayPct=totalTodayPts>0?Math.round(earnedTodayPts/totalTodayPts*100):0;
+  const remainEl=document.getElementById('rewardTodayRemain');
+  const pctEl2=document.getElementById('rewardTodayPct');
+  if(remainEl)remainEl.textContent=remainPts;
+  if(pctEl2)pctEl2.textContent=todayPct+'%';
+
+  // 奖励列表（大卡片式）
   container.innerHTML='';
-  REWARDS.forEach(r=>{
-    const unlocked=score>=r.pts;const pct=Math.min(100,score/r.pts*100);
-    const el=document.createElement('div');el.className=`reward-item-s${unlocked?' unlocked':''}`;
-    el.innerHTML=`<div class="reward-pts">${r.pts}</div><div class="reward-pts-label">积分</div><div class="reward-name">${r.name}</div><div class="reward-progress"><div class="reward-progress-fill" style="width:${pct}%"></div></div>`;
+  REWARDS.forEach((r,idx)=>{
+    const unlocked=score>=r.pts;
+    const pct=Math.min(100,Math.round(score/r.pts*100));
+    const gapToThis=Math.max(0,r.pts-score);
+    const el=document.createElement('div');
+    if(unlocked){
+      el.style.cssText='background:linear-gradient(135deg,#e8fff5,#d0f5e8);border:2px solid #43C59E;border-radius:16px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;';
+      el.innerHTML=`
+        <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#43C59E,#26d0ce);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🏆</div>
+        <div style="flex:1;">
+          <div style="font-size:16px;font-weight:900;color:#1a7a5e;margin-bottom:3px;">${r.name}</div>
+          <div style="font-size:12px;color:#43C59E;font-weight:700;">需要 ${r.pts} 分 · 已解锁！</div>
+          <div style="font-size:11px;color:#43C59E;margin-top:3px;">去找家长兑换吧！🎉</div>
+        </div>
+        <div style="position:absolute;top:8px;right:10px;background:#43C59E;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;">✓ 已解锁</div>
+      `;
+    }else{
+      const isNext=!REWARDS.slice(0,idx).some(rr=>rr.pts>score)&&score<r.pts;
+      const borderColor=isNext?'#FF9800':'#E8EEFF';
+      const bgColor=isNext?'linear-gradient(135deg,#fff8f0,#fff3e8)':'#F8FAFF';
+      el.style.cssText=`background:${bgColor};border:2px solid ${borderColor};border-radius:16px;padding:16px;margin-bottom:10px;`;
+      el.innerHTML=`
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+          <div style="width:52px;height:52px;border-radius:14px;background:${isNext?'linear-gradient(135deg,#FF9800,#FF7043)':'#E0E8FF'};display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;opacity:${isNext?1:0.6};">🎁</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:800;color:${isNext?'#C05000':'var(--text)'};margin-bottom:3px;">${r.name}</div>
+            <div style="font-size:12px;color:${isNext?'#FF9800':'var(--light)'};font-weight:700;">需要 ${r.pts} 分 · 还差 <b style="color:${isNext?'#FF5252':'var(--light)'}">${gapToThis}</b> 分</div>
+            ${isNext?`<div style="font-size:11px;color:#FF7043;margin-top:3px;">⭐ 正在冲刺中！就快到了！</div>`:''}
+          </div>
+        </div>
+        <div style="background:#E8EEFF;border-radius:99px;height:6px;overflow:hidden;">
+          <div style="background:${isNext?'linear-gradient(90deg,#FF9800,#FF5252)':'linear-gradient(90deg,#667eea,#764ba2)'};height:100%;width:${pct}%;border-radius:99px;transition:width 0.6s;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;">
+          <div style="font-size:10px;color:var(--light);">${score}分</div>
+          <div style="font-size:10px;color:var(--light);">${pct}%</div>
+          <div style="font-size:10px;color:var(--light);">${r.pts}分</div>
+        </div>
+      `;
+    }
     container.appendChild(el);
   });
+
+  // 积分规则动态渲染
+  const ruleList=document.getElementById('rewardRuleList');
+  if(ruleList){
+    const subjects=getSubjects();
+    const allTasks=[];
+    for(let d=0;d<7;d++)(adminConfig.tasksByDay[d]||[]).forEach(t=>{if(t.pts>0&&t.name&&!allTasks.find(x=>x.id===t.id))allTasks.push(t);});
+    const typeGroups={};
+    allTasks.forEach(t=>{if(!typeGroups[t.type])typeGroups[t.type]={pts:t.pts,names:[t.name]};else typeGroups[t.type].names.push(t.name);});
+    const COLORS={'english':'#FFF3EF','math':'#EFF4FF','science':'#EDFAF5','app':'#F5EEFF','review':'#FFFBEF','hw':'#FFF8EF','live':'#F0FFF8','rest':'#F5F7FA','custom':'#F3F0FF'};
+    const TCOLORS={'english':'var(--english)','math':'var(--math)','science':'var(--science)','app':'var(--app)','review':'#C07800','hw':'#E65100','live':'#00796B','rest':'#78909C','custom':'#5E35B1'};
+    ruleList.innerHTML=Object.entries(typeGroups).slice(0,6).map(([type,{pts,names}])=>{
+      const subj=subjects.find(s=>s.id===type)||{name:type};
+      const bg=COLORS[type]||'#F0F4FF';
+      const tc=TCOLORS[type]||'var(--primary)';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:${bg};border-radius:10px;">
+        <span style="font-size:13px;">${names[0]}</span>
+        <span style="font-weight:800;color:${tc};">+${pts}分</span>
+      </div>`;
+    }).join('');
+  }
 }
 
 function showPage(name){
