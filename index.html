@@ -741,9 +741,15 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       </div>
       <div class="acard">
         <div class="acard-title">🏆 积分奖励设置</div>
-        <div class="acard-sub">设置积分门槛和对应奖励，和孩子商量好</div>
+        <div class="acard-sub">设置积分门槛和对应奖励，和孩子商量好再填写</div>
         <div id="rewardEditor"></div>
-        <div style="margin-top:14px;"><button class="btn btn-primary" onclick="saveRewards()">💾 保存奖励</button></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="addReward()">➕ 新增奖励</button>
+          <button class="btn btn-primary" onclick="saveRewards()">&#x1F4BE; 保存并同步到学生端</button>
+        </div>
+        <div id="rewardPreview" style="margin-top:12px;padding:10px 14px;background:#F0F4FF;border-radius:10px;font-size:12px;color:var(--light);display:none;">
+          ℹ️ 保存后学生端奖励页将即时更新
+        </div>
       </div>
       <div class="acard">
         <div class="acard-title">💬 激励寄语</div>
@@ -2030,14 +2036,73 @@ function renderMotivationBox(){
 }
 function renderRewardEditor(){
   const container=document.getElementById('rewardEditor');if(!container)return;
-  const rewards=adminConfig.rewards||DEFAULT_REWARDS;container.innerHTML='';
+  if(!adminConfig.rewards||!adminConfig.rewards.length)adminConfig.rewards=JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+  const rewards=adminConfig.rewards;
+  container.innerHTML='';
   rewards.forEach((r,idx)=>{
-    const row=document.createElement('div');row.className='form-row';
-    row.innerHTML=`<div class="form-group" style="max-width:100px;"><div class="form-label">所需积分</div><input type="number" class="form-input" value="${r.pts}" min="1" onchange="adminConfig.rewards[${idx}].pts=parseInt(this.value)||0"></div><div class="form-group"><div class="form-label">奖励名称</div><input class="form-input" value="${esc(r.name)}" onchange="adminConfig.rewards[${idx}].name=this.value"></div>`;
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:10px 12px;background:#F8FAFF;border-radius:12px;border:1.5px solid #E0E8FF;';
+    row.innerHTML=`
+      <div style="flex-shrink:0;">
+        <div style="font-size:10px;color:var(--light);margin-bottom:3px;font-weight:600;">积分门槛</div>
+        <input type="number" min="1" max="9999" style="width:72px;padding:6px 8px;border-radius:8px;border:1.5px solid #D0DCFF;font-size:14px;font-weight:800;color:var(--primary);text-align:center;" value="${r.pts}" oninput="adminConfig.rewards[${idx}].pts=parseInt(this.value)||1;" />
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:10px;color:var(--light);margin-bottom:3px;font-weight:600;">奖励内容</div>
+        <input type="text" style="width:100%;padding:6px 10px;border-radius:8px;border:1.5px solid #D0DCFF;font-size:14px;" value="${esc(r.name)}" placeholder="例如：一顿喜欢的食物" oninput="adminConfig.rewards[${idx}].name=this.value;" />
+      </div>
+      <button onclick="deleteReward(${idx})" style="flex-shrink:0;width:30px;height:30px;border-radius:8px;border:none;background:#FFE5E5;color:#E53935;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">🗑</button>
+    `;
     container.appendChild(row);
   });
+  // 排序提示
+  if(rewards.length>1){
+    const hint=document.createElement('div');
+    hint.style.cssText='font-size:11px;color:var(--light);margin-top:4px;padding:0 4px;';
+    hint.textContent='💡 积分门槛请从小到大排列，保存时会自动排序';
+    container.appendChild(hint);
+  }
 }
-function saveRewards(){saveAdminConfig();showToast('✅ 奖励设置已保存','success');}
+function addReward(){
+  if(!adminConfig.rewards)adminConfig.rewards=JSON.parse(JSON.stringify(DEFAULT_REWARDS));
+  const maxPts=adminConfig.rewards.length?Math.max(...adminConfig.rewards.map(r=>r.pts)):0;
+  adminConfig.rewards.push({pts:maxPts+20,name:'🎁 新奖励（点击修改名称）'});
+  renderRewardEditor();
+  showToast('已新增一条奖励，请填写内容后保存','info');
+}
+function deleteReward(idx){
+  if(!adminConfig.rewards)return;
+  if(adminConfig.rewards.length<=1){showToast('至少保留一条奖励','warning');return;}
+  adminConfig.rewards.splice(idx,1);
+  renderRewardEditor();
+  showToast('已删除','warning');
+}
+async function saveRewards(){
+  if(!adminConfig.rewards||!adminConfig.rewards.length){showToast('奖励列表不能为空','warning');return;}
+  // 验证：每条奖励必须有名称和有效积分
+  for(let i=0;i<adminConfig.rewards.length;i++){
+    const r=adminConfig.rewards[i];
+    if(!r.name||!r.name.trim()){showToast(`第${i+1}条奖励名称不能为空`,'warning');return;}
+    if(!r.pts||r.pts<1){showToast(`第${i+1}条奖励积分门槛不能为0`,'warning');return;}
+  }
+  // 自动按积分从小到大排序
+  adminConfig.rewards.sort((a,b)=>a.pts-b.pts);
+  saveAdminConfig();
+  renderRewardEditor();
+  // 同步到云端
+  const previewEl=document.getElementById('rewardPreview');
+  if(previewEl){previewEl.style.display='block';previewEl.textContent='⏳ 正在同步到云端...'}
+  showToast('⏳ 正在同步奖励到学生端...','info');
+  const ok=await saveCloudConfig(adminConfig);
+  if(ok){
+    showToast('✅ 奖励已保存，学生端5秒内更新','success');
+    if(previewEl){previewEl.textContent='✅ 已同步！学生端奖励页将在5秒内自动更新';previewEl.style.background='#E8FFF5';}
+  }else{
+    showToast('✅ 本地已保存（云端同步失败，请检查网络）','warning');
+    if(previewEl){previewEl.textContent='⚠️ 本地已保存，但云端同步失败，请检查网络后重试';previewEl.style.background='#FFF3E0';}
+  }
+  setTimeout(()=>{if(previewEl)previewEl.style.display='none';},5000);
+}
 async function saveMotivation(){
   const txt=document.getElementById('motivationInput').value.trim();
   adminConfig.motivation=txt;
