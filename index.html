@@ -971,7 +971,6 @@ function changeViewDate(delta){
   const d=new Date(cur+'T00:00:00');
   const nd=new Date(d.getTime()+delta*86400000);
   const ns=getDateStr(nd);
-  if(ns>today){showToast('不能查看未来日期','warning');return;}
   viewingDate=ns;
   renderDateView(ns);
 }
@@ -985,10 +984,12 @@ function renderDateView(dateStr){
   const DAYS=['周日','周一','周二','周三','周四','周五','周六'];
   const MONTHS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   const dateLabel=`${d.getFullYear()}年${MONTHS[d.getMonth()]}${d.getDate()}日 · ${DAYS[dow]}`;
-  document.getElementById('todayDate').textContent=isToday?dateLabel:dateLabel+' （历史）';
+  const isFutureDate2=dateStr>today;
+  document.getElementById('todayDate').textContent=isToday?dateLabel:isFutureDate2?dateLabel+' （预览）':dateLabel+' （历史）';
   const h=new Date().getHours();
   const greetings=['早上好！新的一天，新的开始！','午后时光，保持专注！','下午好！距离完成目标又近了一步！','晚上好！黄金学习时间到了！','夜深了，快完成今天的任务吧！'];
-  document.getElementById('todayGreeting').textContent=isToday?(h<12?greetings[0]:h<14?greetings[1]:h<18?greetings[2]:h<21?greetings[3]:greetings[4]):'查看历史打卡记录';
+  const isFutureDate3=dateStr>today;
+  document.getElementById('todayGreeting').textContent=isToday?(h<12?greetings[0]:h<14?greetings[1]:h<18?greetings[2]:h<21?greetings[3]:greetings[4]):isFutureDate3?'提前查看任务计划，做好准备！':'查看历史打卡记录';
   document.getElementById('todayWeekType').textContent=isToday?((dow===0||dow===6)?'📡 今天有培训班直播课，认真听讲！':'📚 今天是学习日，晚上7点开始！'):((dow===0||dow===6)?'📡 培训班直播课日':'📚 学习日');
   document.getElementById('todayTypeBadge').textContent=DAYS[dow];
   const adjBanner=document.getElementById('adjBanner');
@@ -1001,7 +1002,10 @@ function renderDateView(dateStr){
   const titleEl=document.getElementById('taskCardTitle');
   if(titleEl)titleEl.textContent=isToday?'📅 今日任务':'📅 '+(d.getMonth()+1)+'月'+d.getDate()+'日任务';
   const nextBtn=document.getElementById('nextDayBtn');
-  if(nextBtn){nextBtn.style.opacity=isToday?'0.3':'1';nextBtn.style.cursor=isToday?'not-allowed':'pointer';}
+  // 最多查看未来7天
+  const maxDate=getDateStr(new Date(new Date(today+'T00:00:00').getTime()+7*86400000));
+  const isFutureLimit=dateStr>=maxDate;
+  if(nextBtn){nextBtn.style.opacity=isFutureLimit?'0.3':'1';nextBtn.style.cursor=isFutureLimit?'not-allowed':'pointer';}
   const tasks=getTasksForDate(dateStr);
   const container=document.getElementById('todayTasks');container.innerHTML='';
   tasks.forEach(task=>{
@@ -1010,7 +1014,9 @@ function renderDateView(dateStr){
     const el=document.createElement('div');
     el.className=`task-item t-${task.type}${done?' done':''}${!hasPts?' no-click':''}`;
     el.innerHTML=`<div class="task-check">${done?'✓':''}</div><div class="task-time">${task.time}</div><div style="flex:1;"><div class="task-name">${task.name}</div><div class="task-desc">${task.desc}</div></div>${task.flex?'<div class="flex-badge">弹性</div>':''}${hasPts?`<div class="task-pts">+${task.pts}分</div>`:''}`;
-    if(hasPts)el.addEventListener('click',()=>toggleTask(dateStr,task,el));
+    const isFutureDate=dateStr>today;
+    if(hasPts && !isFutureDate)el.addEventListener('click',()=>toggleTask(dateStr,task,el));
+    if(isFutureDate){el.style.opacity='0.7';el.title='未来任务，到时才能打卡';}
     container.appendChild(el);
   });
   updateTodayPct(dateStr);
