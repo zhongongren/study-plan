@@ -76,11 +76,44 @@
         "required": true,
         "flex": false,
         "enabled": true
+      },
+      {
+        "id": "task_1777968488305",
+        "time": "",
+        "name": "新任务",
+        "desc": "任务说明",
+        "type": "review",
+        "pts": 2,
+        "required": true,
+        "flex": false,
+        "enabled": true
       }
     ],
     [
       {
         "id": "task_1777922988853",
+        "time": "",
+        "name": "新任务",
+        "desc": "任务说明",
+        "type": "review",
+        "pts": 2,
+        "required": true,
+        "flex": false,
+        "enabled": true
+      },
+      {
+        "id": "task_1777968490169",
+        "time": "",
+        "name": "新任务",
+        "desc": "任务说明",
+        "type": "review",
+        "pts": 2,
+        "required": true,
+        "flex": false,
+        "enabled": true
+      },
+      {
+        "id": "task_1777968491868",
         "time": "",
         "name": "新任务",
         "desc": "任务说明",
