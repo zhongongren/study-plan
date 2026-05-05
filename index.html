@@ -685,12 +685,23 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       </div>
       <div class="acard">
         <div class="acard-title">🎯 积分手动调整</div>
-        <div class="form-row" style="align-items:flex-end;">
-          <div class="form-group"><div class="form-label">当前积分</div><input type="number" class="form-input" id="currentScoreInput" placeholder="0" min="0"></div>
-          <div class="form-group"><div class="form-label">调整方式</div><select class="form-select" id="scoreAdjType"><option value="set">直接设置为</option><option value="add">增加</option><option value="sub">减少</option></select></div>
-          <div class="form-group"><div class="form-label">数值</div><input type="number" class="form-input" id="scoreAdjValue" placeholder="输入数值" min="0"></div>
-          <div><button class="btn btn-primary" onclick="adjustScore()">确认</button></div>
+        <div class="acard-sub">可以对学生进行奖励加分或错误减分，每次调整都会记录在日志中</div>
+        <div class="form-row" style="align-items:flex-end;flex-wrap:wrap;">
+          <div class="form-group"><div class="form-label">当前积分</div><input type="number" class="form-input" id="currentScoreInput" placeholder="0" min="0" readonly style="background:#f5f5f5;cursor:not-allowed;"></div>
+          <div class="form-group"><div class="form-label">调整方式</div><select class="form-select" id="scoreAdjType"><option value="add">➕ 增加积分</option><option value="sub">➖ 减少积分</option><option value="set">⚙️ 直接设置为</option></select></div>
+          <div class="form-group"><div class="form-label">数值</div><input type="number" class="form-input" id="scoreAdjValue" placeholder="输入分数" min="0" style="width:80px;"></div>
+          <div class="form-group" style="flex:1;min-width:120px;"><div class="form-label">备注原因（必填）</div><input type="text" class="form-input" id="scoreAdjReason" placeholder="例如：老师表扬奖励、辅导误操作" maxlength="30"></div>
+          <div><button class="btn btn-primary" onclick="adjustScore()">确认调整</button></div>
         </div>
+        <!-- 调整历史 -->
+        <div id="scoreAdjHistory" style="margin-top:12px;"></div>
+      </div>
+      <!-- 积分快照备份 -->
+      <div class="acard">
+        <div class="acard-title">📸 积分快照（防误操作保护）</div>
+        <div class="acard-sub">每次执行重置操作前自动保存快照，最多保留最近 5 次的积分状态，可随时一键恢复</div>
+        <div id="scoreSnapshotList" style="margin-bottom:10px;"></div>
+        <button class="btn btn-primary btn-sm" onclick="takeScoreSnapshot()">📸 现在手动保存快照</button>
       </div>
       <div class="acard">
         <div class="acard-title">💾 数据备份与恢复</div>
@@ -1987,6 +1998,12 @@ function showAdminTab(name){
   if(name==='settings'){renderStudentManager();}
   if(name==='subjects')renderSubjectEditor();
   if(name==='log'){renderLog();}
+  if(name==='reset'){
+    const sid=adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
+    document.getElementById('currentScoreInput').value=loadState(sid).totalScore||0;
+    renderScoreSnapshotList(sid);
+    renderScoreAdjHistory(sid);
+  }
 }
 
 function switchDay(dayIdx){
@@ -2429,8 +2446,81 @@ function closeConfirm(){document.getElementById('confirmModal').classList.remove
 function doConfirm(){const cb=confirmCallback;closeConfirm();if(cb)cb();}
 document.getElementById('confirmModal').addEventListener('click',function(e){if(e.target===this)closeConfirm();});
 
+// ============================================================
+// 积分快照系统
+// ============================================================
+function takeScoreSnapshot(sid,label){
+  const targetSid=sid||adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
+  const s=loadState(targetSid);
+  const sname=(adminConfig.students||[]).find(st=>st.id===targetSid)?.name||targetSid;
+  const snapKey='score_snapshots_'+targetSid;
+  const snaps=JSON.parse(localStorage.getItem(snapKey)||'[]');
+  snaps.unshift({
+    time:new Date().toLocaleString('zh-CN'),
+    label:label||'手动快照',
+    score:s.totalScore||0,
+    streak:s.streak||0,
+    taskCount:Object.values(s.taskStatus||{}).filter(v=>v==='done').length,
+    state:JSON.parse(JSON.stringify(s))
+  });
+  if(snaps.length>5)snaps.pop();
+  localStorage.setItem(snapKey,JSON.stringify(snaps));
+  if(!sid){
+    showToast(`📸 快照已保存：${sname} ${s.totalScore||0}分`,'success');
+    renderScoreSnapshotList(targetSid);
+  }
+}
+
+function renderScoreSnapshotList(sid){
+  const el=document.getElementById('scoreSnapshotList');if(!el)return;
+  const targetSid=sid||adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
+  const snapKey='score_snapshots_'+targetSid;
+  const snaps=JSON.parse(localStorage.getItem(snapKey)||'[]');
+  if(snaps.length===0){
+    el.innerHTML=`<div style="font-size:12px;color:var(--light);text-align:center;padding:10px;">暂无快照记录，执行重置操作时会自动保存</div>`;
+    return;
+  }
+  el.innerHTML=snaps.map((snap,idx)=>{
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:${idx===0?'#F0FFF4':'#F8FAFF'};border-radius:10px;margin-bottom:6px;border:1.5px solid ${idx===0?'#43C59E':'#E8EEFF'};">
+      <div style="flex-shrink:0;">
+        <div style="font-size:13px;font-weight:800;color:${idx===0?'#1a7a5e':'var(--text)'}">${snap.score}分</div>
+        <div style="font-size:10px;color:#aaa;">连续${snap.streak}天</div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:12px;font-weight:700;color:#555;">${snap.label}</div>
+        <div style="font-size:11px;color:#aaa;">${snap.time}</div>
+      </div>
+      <button onclick="restoreScoreSnapshot(${idx})" style="padding:5px 10px;border-radius:8px;border:1.5px solid #667eea;background:#fff;color:#667eea;font-size:12px;font-weight:700;cursor:pointer;">恢复</button>
+    </div>`;
+  }).join('');
+}
+
+function restoreScoreSnapshot(idx){
+  const targetSid=adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
+  const snapKey='score_snapshots_'+targetSid;
+  const snaps=JSON.parse(localStorage.getItem(snapKey)||'[]');
+  const snap=snaps[idx];if(!snap)return;
+  const sname=(adminConfig.students||[]).find(st=>st.id===targetSid)?.name||targetSid;
+  // 二次确认
+  document.getElementById('confirmIcon').textContent='📸';
+  document.getElementById('confirmTitle').textContent=`恢复快照：${snap.score}分`;
+  document.getElementById('confirmSub').textContent=`将「${sname}」的积分恢复到 ${snap.time} 的状态（${snap.score}分，连续${snap.streak}天）。
+当前积分将被覆盖，确定继续吗？`;
+  confirmCallback=()=>{
+    addLog('score_restore',`恢复「${sname}」积分快照：${snap.score}分（${snap.time}）`);
+    syncState(snap.state,targetSid);
+    document.getElementById('currentScoreInput').value=snap.score;
+    showToast(`✅ 已恢复到 ${snap.score} 分`,'success');
+    renderScoreSnapshotList(targetSid);
+  };
+  document.getElementById('confirmModal').classList.add('show');
+}
+
 function doReset(type){
   const sid=adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
+  // 重置前自动保存快照
+  const typeLabels={today:'重置今天前',week:'重置本周前',all:'重置全部前',date:'重置指定日前'};
+  takeScoreSnapshot(sid,typeLabels[type]||'重置前自动备份');
   let s=loadState(sid);const today=getTodayStr();
   function calcDeducted(keys){let d=0;keys.forEach(k=>{if(s.taskStatus[k]==='done'){const taskId=k.split('_').slice(1).join('_');for(let i=0;i<7;i++){const t=(adminConfig.tasksByDay[i]||[]).find(t=>t.id===taskId);if(t){d+=t.pts||0;break;}}}});return d;}
   if(type==='today'){
@@ -2482,14 +2572,49 @@ function syncState(s,sid){
 
 function adjustScore(){
   const sid=adminViewStudentId||(adminConfig.students&&adminConfig.students[0]?.id)||'student_1';
-  let s=loadState(sid);const type=document.getElementById('scoreAdjType').value;const val=parseInt(document.getElementById('scoreAdjValue').value)||0;
+  const reason=(document.getElementById('scoreAdjReason')?.value||'').trim();
+  if(!reason){showToast('请填写备注原因','warning');document.getElementById('scoreAdjReason')?.focus();return;}
+  const type=document.getElementById('scoreAdjType').value;
+  const val=parseInt(document.getElementById('scoreAdjValue').value)||0;
+  if(val<=0&&type!=='set'){showToast('请输入大于0的数值','warning');return;}
+  let s=loadState(sid);
+  const oldScore=s.totalScore||0;
   if(type==='set')s.totalScore=Math.max(0,val);
-  else if(type==='add')s.totalScore=(s.totalScore||0)+val;
-  else if(type==='sub')s.totalScore=Math.max(0,(s.totalScore||0)-val);
-  const sname=(adminConfig.students||[]).find(s=>s.id===sid)?.name||sid;
-  addLog('score_adj',`手动调整「${sname}」积分为 ${s.totalScore} 分`);
-  syncState(s,sid);document.getElementById('currentScoreInput').value=s.totalScore;
-  showToast(`✅ 积分已调整为 ${s.totalScore} 分`,'success');
+  else if(type==='add')s.totalScore=oldScore+val;
+  else if(type==='sub')s.totalScore=Math.max(0,oldScore-val);
+  const sname=(adminConfig.students||[]).find(st=>st.id===sid)?.name||sid;
+  const adjDesc=type==='add'?`+${val}分`:type==='sub'?`-${val}分`:`设置为${s.totalScore}分`;
+  const logMsg=`手动调整「${sname}」积分 ${adjDesc}（${oldScore}→${s.totalScore}），原因：${reason}`;
+  addLog('score_adj',logMsg);
+  // 保存调整历史到 localStorage
+  const histKey='score_adj_history_'+sid;
+  const hist=JSON.parse(localStorage.getItem(histKey)||'[]');
+  hist.unshift({time:new Date().toLocaleString('zh-CN'),old:oldScore,new:s.totalScore,adj:adjDesc,reason});
+  if(hist.length>10)hist.pop();
+  localStorage.setItem(histKey,JSON.stringify(hist));
+  syncState(s,sid);
+  document.getElementById('currentScoreInput').value=s.totalScore;
+  document.getElementById('scoreAdjValue').value='';
+  document.getElementById('scoreAdjReason').value='';
+  showToast(`✅ 积分已${adjDesc}，当前共 ${s.totalScore} 分`,'success');
+  renderScoreAdjHistory(sid);
+}
+
+function renderScoreAdjHistory(sid){
+  const el=document.getElementById('scoreAdjHistory');if(!el)return;
+  const histKey='score_adj_history_'+sid;
+  const hist=JSON.parse(localStorage.getItem(histKey)||'[]');
+  if(hist.length===0){el.innerHTML='';return;}
+  el.innerHTML=`<div style="font-size:12px;font-weight:700;color:var(--light);margin-bottom:6px;">最近调整记录：</div>`+hist.slice(0,5).map(h=>{
+    const isAdd=h.adj.startsWith('+');
+    const isSet=h.adj.startsWith('设');
+    const color=isAdd?'#43C59E':isSet?'#3D5AFE':'#FF5252';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#F8FAFF;border-radius:8px;margin-bottom:4px;">
+      <div style="font-size:13px;font-weight:800;color:${color};flex-shrink:0;">${h.adj}</div>
+      <div style="flex:1;font-size:12px;color:#555;">${h.reason}</div>
+      <div style="font-size:11px;color:#aaa;flex-shrink:0;">${h.time}</div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
