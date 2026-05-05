@@ -333,6 +333,20 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   .reset-grid{grid-template-columns:1fr;}
   .task-fields{grid-template-columns:1fr;}
 }
+/* 下拉刷新 */
+#pullRefreshIndicator{
+  position:fixed;top:0;left:0;width:100%;z-index:9998;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(135deg,#4F8EF7,#26d0ce);
+  color:#fff;font-size:13px;font-weight:700;
+  padding:10px 0;
+  transform:translateY(-100%);
+  transition:transform 0.25s ease;
+  pointer-events:none;
+}
+#pullRefreshIndicator.visible{transform:translateY(0);}
+#pullRefreshIndicator.refreshing .pr-spin{animation:spin .7s linear infinite;}
+.pr-spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;}
 </style>
 </head>
 <body>
@@ -358,6 +372,12 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     <span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;"></span>
     <span id="cloudLoadingText">正在同步最新配置...</span>
   </div>
+</div>
+
+<!-- 下拉刷新指示器 -->
+<div id="pullRefreshIndicator">
+  <div class="pr-spin"></div>
+  <span id="pullRefreshText">下拉刷新</span>
 </div>
 
 <!-- STUDENT APP -->
@@ -396,7 +416,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <div style="text-align:right;"><div class="today-pct" id="todayPct">0%</div><div class="today-pct-label" id="todayPctLabel">今日完成率</div></div>
     </div>
     <div class="adj-banner" id="adjBanner" style="display:none;"><div class="adj-title">⚠️ 昨天有任务没完成，今天需要补上：</div><div id="adjTasks"></div><div style="font-size:12px;color:#E53935;margin-top:8px;font-weight:600;">💡 今天提前10分钟开始，把昨天的任务补完！</div></div>
-    <div class="highlight-box"><div class="hb-icon">⚡</div><div><h4>英语是本月最重要的突破口！</h4><p>每天完成英语专项训练，哪怕只有20分钟，坚持就是进步。</p></div></div>
+    <div class="highlight-box" id="motivationBox" style="display:none;"><div class="hb-icon">💬</div><div><p id="motivationText" style="font-size:14px;font-weight:700;line-height:1.5;"></p></div></div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
         <div style="font-size:17px;font-weight:800;" id="taskCardTitle">📅 今日任务</div>
@@ -663,6 +683,17 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
         <div class="acard-sub">设置积分门槛和对应奖励，和孩子商量好</div>
         <div id="rewardEditor"></div>
         <div style="margin-top:14px;"><button class="btn btn-primary" onclick="saveRewards()">💾 保存奖励</button></div>
+      </div>
+      <div class="acard">
+        <div class="acard-title">💬 激励寄语</div>
+        <div class="acard-sub">写给孩子的话，会显示在学生端今日任务页顶部（留空则不显示）</div>
+        <div class="form-row">
+          <div class="form-group" style="width:100%;">
+            <div class="form-label">激励寄语内容</div>
+            <textarea id="motivationInput" class="form-input" rows="3" style="width:100%;resize:vertical;" placeholder="例如：宝贝，妈妈相信你一定可以做到！每天进步一点点，一年后就是大变化。加油！"></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveMotivation()">💾 保存寄语</button>
       </div>
     </div>
   </div>
@@ -973,7 +1004,7 @@ function initStudent(){
     saveState();
   }
   viewingDate=getTodayStr();
-  renderToday();updateScoreBar();renderWeekGrid();renderStudentWeekCal();
+  renderToday();updateScoreBar();renderWeekGrid();renderStudentWeekCal();renderMotivationBox();
   if(isFirstEver){
     // 第一次使用：显示欢迎弹窗
     setTimeout(()=>{
@@ -1489,6 +1520,7 @@ function initAdmin(){
     if(todayPage&&todayPage.classList.contains('active'))renderTodayMonitor();
   },30000);
   document.getElementById('adminPwdInput').value=adminConfig.adminPwd||'001';
+  renderMotivationInput();
   document.getElementById('currentScoreInput').value=state.totalScore||0;
   document.getElementById('resetDatePicker').value=getTodayStr();
   renderRewardEditor();
@@ -1756,6 +1788,14 @@ async function savePwds(){
   if(ok){showToast('✅ 卡密已保存并同步云端！','success');}
   else{showToast('✅ 本地已保存（云端同步失败）','warning');}
 }
+function renderMotivationBox(){
+  const box=document.getElementById('motivationBox');
+  const txt=document.getElementById('motivationText');
+  if(!box||!txt)return;
+  const msg=(adminConfig&&adminConfig.motivation)||'';
+  if(msg){box.style.display='flex';txt.textContent=msg;}
+  else{box.style.display='none';}
+}
 function renderRewardEditor(){
   const container=document.getElementById('rewardEditor');if(!container)return;
   const rewards=adminConfig.rewards||DEFAULT_REWARDS;container.innerHTML='';
@@ -1766,6 +1806,19 @@ function renderRewardEditor(){
   });
 }
 function saveRewards(){saveAdminConfig();showToast('✅ 奖励设置已保存','success');}
+async function saveMotivation(){
+  const txt=document.getElementById('motivationInput').value.trim();
+  adminConfig.motivation=txt;
+  saveAdminConfig();
+  showToast('⏳ 正在同步寄语到云端...','info');
+  const ok=await saveCloudConfig(adminConfig);
+  if(ok){showToast('✅ 寄语已保存，学生端将立即看到','success');}
+  else{showToast('✅ 本地已保存（云端同步失败，请检查网络）','warning');}
+}
+function renderMotivationInput(){
+  const el=document.getElementById('motivationInput');
+  if(el)el.value=adminConfig.motivation||'';
+}
 
 
 // ============================================================
@@ -2408,11 +2461,70 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
     }
   }, 2000);
 
-  // 每15秒轮询
+  // 每5秒轮询（快速同步）
   setInterval(()=>{
     _pollConfig();
     if(currentRole==='student' || currentRole==='admin') _pollStudentState();
-  }, 15000);
+  }, 5000);
+
+  // ============================================================
+  // 下拉刷新（iOS 手势支持）
+  // ============================================================
+  (function initPullRefresh(){
+    const indicator = document.getElementById('pullRefreshIndicator');
+    const prText = document.getElementById('pullRefreshText');
+    if(!indicator) return;
+    let startY = 0, pulling = false, refreshing = false;
+    const THRESHOLD = 70; // 触发刷新的下拉距离
+
+    document.addEventListener('touchstart', e=>{
+      if(window.scrollY > 5) return; // 只有在顶部才触发
+      startY = e.touches[0].clientY;
+      pulling = true;
+    }, {passive:true});
+
+    document.addEventListener('touchmove', e=>{
+      if(!pulling || refreshing) return;
+      const dy = e.touches[0].clientY - startY;
+      if(dy < 10) return;
+      const progress = Math.min(dy / THRESHOLD, 1);
+      if(progress > 0.2){
+        indicator.classList.add('visible');
+        prText.textContent = progress >= 1 ? '松手立即刷新' : '下拉刷新';
+      }
+    }, {passive:true});
+
+    document.addEventListener('touchend', async e=>{
+      if(!pulling || refreshing) return;
+      pulling = false;
+      const dy = e.changedTouches[0].clientY - startY;
+      if(dy >= THRESHOLD && window.scrollY <= 5){
+        refreshing = true;
+        indicator.classList.add('refreshing');
+        prText.textContent = '正在刷新...';
+        try{
+          await _pollConfig();
+          await _pollStudentState();
+          // 如果是学生端，强制重新加载配置
+          if(currentRole==='student'){
+            const fresh = await loadCloudConfig();
+            if(fresh){ adminConfig=fresh; initStudent(); }
+          }
+          prText.textContent = '✅ 已是最新数据';
+        }catch(e){
+          prText.textContent = '刷新失败，请检查网络';
+        }
+        setTimeout(()=>{
+          indicator.classList.remove('visible','refreshing');
+          prText.textContent = '下拉刷新';
+          refreshing = false;
+        }, 1200);
+      } else {
+        indicator.classList.remove('visible');
+      }
+    }, {passive:true});
+  })();
+
 })();
 </script>
 </body>
