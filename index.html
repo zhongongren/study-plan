@@ -454,25 +454,6 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     </div>
   </div>
   <div class="page" id="page-week">
-    <button class="custom-plan-btn" onclick="toggleCustomPanel()"><span style="font-size:18px;">✨</span><span>自定义本周学习计划 — 输入你的想法，自动生成任务</span><span style="margin-left:auto;font-size:16px;" id="cpbArrow">▼</span></button>
-    <div class="custom-panel" id="customPanel">
-      <div style="font-size:16px;font-weight:800;color:#5E35B1;margin-bottom:4px;">✨ 本周学习计划自定义</div>
-      <div style="font-size:12px;color:var(--light);margin-bottom:14px;">告诉我这周想重点学什么，我来帮你安排每天的具体任务</div>
-      <div style="margin-bottom:8px;font-size:12px;font-weight:700;color:var(--light);">快速选择：</div>
-      <div class="cp-examples">
-        <div class="cp-example" onclick="fillExample('这周英语语法很差，重点练语法和背单词')">英语语法突破</div>
-        <div class="cp-example" onclick="fillExample('这周数学方程式不会，重点攻克方程题')">数学方程攻克</div>
-        <div class="cp-example" onclick="fillExample('这周科学有考试，重点复习科学知识点')">科学备考冲刺</div>
-        <div class="cp-example" onclick="fillExample('这周英语单词量太少，每天大量背单词')">英语单词强化</div>
-        <div class="cp-example" onclick="fillExample('这周全面复习，英语数学科学都要兼顾')">全科均衡复习</div>
-        <div class="cp-example" onclick="fillExample('这周英语听力很差，重点练听力和口语')">英语听力口语</div>
-      </div>
-      <div class="cp-input-row">
-        <textarea class="cp-input" id="cpInput" rows="2" placeholder="例如：这周英语语法很差，想重点练习语法，同时每天背10个单词…"></textarea>
-        <button class="cp-generate-btn" id="cpGenBtn" onclick="generateWeekPlan()">生成计划</button>
-      </div>
-      <div id="cpResult" class="cp-result"></div>
-    </div>
     <div class="card">
       <div style="font-size:17px;font-weight:800;margin-bottom:6px;">📊 本周完成情况</div>
       <div style="font-size:12px;color:var(--light);margin-bottom:14px;">点击任意一天，查看当天任务详情</div>
@@ -593,11 +574,19 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     </div>
     <!-- 积分规则 -->
     <div class="card">
-      <div style="font-size:15px;font-weight:800;margin-bottom:12px;">📊 积分怎么得？</div>
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px;">📊 积分怎么得？</div>
+      <div style="font-size:12px;color:var(--light);margin-bottom:12px;">完成下面每一项任务，就能获得对应积分</div>
+      <!-- 今日任务积分明细 -->
+      <div id="rewardTodayTaskList" style="margin-bottom:12px;"></div>
+      <!-- 奖励规则列表 -->
       <div id="rewardRuleList" style="display:flex;flex-direction:column;gap:6px;"></div>
-      <div style="margin-top:10px;padding:10px 13px;background:linear-gradient(135deg,#FFF3EF,#F5EEFF);border-radius:10px;border:2px solid #FFD54F;display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:13px;">🔥 连续7天不间断</span>
-        <span style="font-weight:800;color:#C07800;">+10分奖励</span>
+      <!-- 连续奖励 -->
+      <div style="margin-top:10px;padding:12px 14px;background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border-radius:12px;border:1.5px solid #FFD54F;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <span style="font-size:13px;font-weight:700;">🔥 连续打卡奖励</span>
+          <span style="font-weight:800;color:#C07800;font-size:14px;">+10分</span>
+        </div>
+        <div style="font-size:11px;color:#888;">每连续7天完成所有任务，额外奖励10分！目前已连续 <span id="rewardStreakInRule" style="color:#FF7043;font-weight:800;">0</span> 天</div>
       </div>
     </div>
   </div>
@@ -1395,12 +1384,11 @@ function updateScoreBar(){
   document.getElementById('totalScore').textContent=score;
   document.getElementById('streakNum').textContent=state.streak||0;
   const allUnlocked=score>=(REWARDS[REWARDS.length-1].pts);
+  // 找到下一个未解锁的奖励
   const next=REWARDS.find(r=>r.pts>score)||REWARDS[REWARDS.length-1];
-  const prev=[...REWARDS].reverse().find(r=>r.pts<=score);
-  const prevPts=prev?prev.pts:0;
-  const pct=next.pts>prevPts?Math.min(100,(score-prevPts)/(next.pts-prevPts)*100):100;
+  // 进度条：基于0到下一个奖励门槛的绝对进度，更直观
+  const pct=next.pts>0?Math.min(100,Math.round(score/next.pts*100)):100;
   const remaining=Math.max(0,next.pts-score);
-  // 目标奖励名称：显示当前冒尖目标
   const nameEl=document.getElementById('nextRewardName');
   const ptsEl=document.getElementById('nextRewardPts');
   const subtitleEl=document.getElementById('scoreBarSubtitle');
@@ -1409,14 +1397,15 @@ function updateScoreBar(){
     if(ptsEl)ptsEl.textContent='🎉';
     if(subtitleEl)subtitleEl.textContent='太棒了！去找家长兑换奖励吧！';
   }else{
-    if(nameEl)nameEl.textContent='目标：'+next.name;
+    if(nameEl)nameEl.textContent='🎯 目标：'+next.name+'('+next.pts+'分)';
     if(ptsEl)ptsEl.textContent='还差 '+remaining+' 分';
-    if(subtitleEl)subtitleEl.textContent='每天打卡赚积分 → 兑换「'+next.name+'」';
+    if(subtitleEl)subtitleEl.textContent='已得'+score+'分，打卡赚分 → 兑换「'+next.name+'」';
   }
-  document.getElementById('scoreFill').style.width=pct+'%';
   const fillEl=document.getElementById('scoreFill');
-  if(fillEl)fillEl.title=`${score}分 / ${next.pts}分`;
-  renderRewards();
+  if(fillEl){fillEl.style.width=pct+'%';fillEl.title=score+'分 / '+next.pts+'分 ('+pct+'%)';}
+  // 如果奖励页当前已打开，同步更新
+  const rewardPage=document.getElementById('page-reward');
+  if(rewardPage&&rewardPage.classList.contains('active'))renderRewards();
 }
 
 function renderWeekGrid(selectedDate){
@@ -1705,7 +1694,34 @@ function renderRewards(){
     container.appendChild(el);
   });
 
-  // 积分规则动态渲染
+  // 今日任务积分明细
+  const todayTaskListEl=document.getElementById('rewardTodayTaskList');
+  if(todayTaskListEl){
+    const todayTasksFull=getTasksForDate(today).filter(t=>t.pts>0);
+    if(todayTasksFull.length>0){
+      todayTaskListEl.innerHTML=`
+        <div style="font-size:12px;font-weight:700;color:var(--light);margin-bottom:8px;">— 今日任务（点击打卡可得分）—</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+          ${todayTasksFull.map(t=>{
+            const isDone=getTaskDone(today,t.id);
+            return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:${isDone?'#E8FFF5':'#F8FAFF'};border:1.5px solid ${isDone?'#43C59E':'#E8EEFF'};">
+              <div style="width:20px;height:20px;border-radius:50%;background:${isDone?'#43C59E':'#E0E8FF'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:${isDone?'#fff':'#aaa'};flex-shrink:0;">${isDone?'✓':''}</div>
+              <div style="flex:1;font-size:13px;font-weight:600;color:${isDone?'#1a7a5e':'var(--text)'}">${t.name}</div>
+              <div style="font-size:13px;font-weight:800;color:${isDone?'#43C59E':'var(--primary)'};">+${t.pts}分</div>
+            </div>`;
+          }).join('')}
+        </div>
+      `;
+    }else{
+      todayTaskListEl.innerHTML=`<div style="font-size:12px;color:var(--light);text-align:center;padding:10px;">今日暂无得分任务</div>`;
+    }
+  }
+
+  // 更新连续天数
+  const streakInRuleEl=document.getElementById('rewardStreakInRule');
+  if(streakInRuleEl)streakInRuleEl.textContent=streak;
+
+  // 积分规则动态渲染（按科目分组）
   const ruleList=document.getElementById('rewardRuleList');
   if(ruleList){
     const subjects=getSubjects();
@@ -1713,17 +1729,20 @@ function renderRewards(){
     for(let d=0;d<7;d++)(adminConfig.tasksByDay[d]||[]).forEach(t=>{if(t.pts>0&&t.name&&!allTasks.find(x=>x.id===t.id))allTasks.push(t);});
     const typeGroups={};
     allTasks.forEach(t=>{if(!typeGroups[t.type])typeGroups[t.type]={pts:t.pts,names:[t.name]};else typeGroups[t.type].names.push(t.name);});
-    const COLORS={'english':'#FFF3EF','math':'#EFF4FF','science':'#EDFAF5','app':'#F5EEFF','review':'#FFFBEF','hw':'#FFF8EF','live':'#F0FFF8','rest':'#F5F7FA','custom':'#F3F0FF'};
+    const COLORS={'english':'#FFE0D6','math':'#D6E4FF','science':'#C8F0E4','app':'#E4D5FF','review':'#FFE9A0','hw':'#FFE0B2','live':'#B2DFDB','rest':'#E0E6EB','custom':'#D1C4E9'};
     const TCOLORS={'english':'var(--english)','math':'var(--math)','science':'var(--science)','app':'var(--app)','review':'#C07800','hw':'#E65100','live':'#00796B','rest':'#78909C','custom':'#5E35B1'};
-    ruleList.innerHTML=Object.entries(typeGroups).slice(0,6).map(([type,{pts,names}])=>{
-      const subj=subjects.find(s=>s.id===type)||{name:type};
-      const bg=COLORS[type]||'#F0F4FF';
-      const tc=TCOLORS[type]||'var(--primary)';
-      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:${bg};border-radius:10px;">
-        <span style="font-size:13px;">${names[0]}</span>
-        <span style="font-weight:800;color:${tc};">+${pts}分</span>
-      </div>`;
-    }).join('');
+    if(Object.keys(typeGroups).length>0){
+      ruleList.innerHTML=`<div style="font-size:12px;font-weight:700;color:var(--light);margin-bottom:8px;">— 本周全部任务积分表 —</div>`+Object.entries(typeGroups).slice(0,8).map(([type,{pts,names}])=>{
+        const bg=COLORS[type]||'#F0F4FF';
+        const tc=TCOLORS[type]||'var(--primary)';
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:${bg};border-radius:10px;margin-bottom:4px;">
+          <span style="font-size:13px;">${names[0]}</span>
+          <span style="font-weight:800;color:${tc};">+${pts}分</span>
+        </div>`;
+      }).join('');
+    }else{
+      ruleList.innerHTML=`<div style="font-size:12px;color:var(--light);text-align:center;padding:10px;">请先在管理员后台配置任务</div>`;
+    }
   }
 }
 
