@@ -319,7 +319,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <span class="login-eye" onclick="togglePwd()">👁</span>
     </div>
     <div class="login-error" id="loginError"></div>
-    <button class="login-btn" onclick="doLogin()">进入 →</button>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()" disabled style="opacity:0.6;cursor:not-allowed;">同步中...</button>
     <div class="login-hint">
       <span style="color:#ccc;font-size:11px;">忘记卡密请联系家长</span>
     </div>
@@ -1987,9 +1987,15 @@ setTimeout(function(){
     }else{
       if(tipTxt)tipTxt.textContent='使用本地配置';
     }
+    // 解锁登录按钮
+    var btn=document.getElementById('loginBtn');
+    if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';btn.textContent='进入 →';}
   }catch(e){
-    if(tipTxt)tipTxt.textContent='网络不可用，使用本地配置';
+    if(tipTxt)tipTxt.textContent='使用本地配置';
     console.warn('云端配置加载失败，使用本地配置',e);
+    // 网络失败时也解锁登录按钮
+    var btn=document.getElementById('loginBtn');
+    if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';btn.textContent='进入 →';}
   }
   // 隐藏加载提示
   setTimeout(()=>{if(tipEl)tipEl.style.display='none';},1500);
