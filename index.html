@@ -750,7 +750,10 @@ const API_BASE = 'http://117.72.124.61/api';
 
 async function loadCloudConfig(){
   try{
-    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store'});
+    const _ctrl = new AbortController();
+    const _timer = setTimeout(()=>_ctrl.abort(), 5000);
+    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:_ctrl.signal});
+    clearTimeout(_timer);
     if(!r.ok) return null;
     const res = await r.json();
     if(res.ok && res.data && res.data.adminPwd){
@@ -792,7 +795,10 @@ async function saveStateCloud(sid, stateData){
 
 async function loadStateCloud(sid){
   try{
-    const r = await fetch(API_BASE + '/state/' + encodeURIComponent(sid) + '?t=' + Date.now(), {cache:'no-store'});
+    const _ctrl2 = new AbortController();
+    const _timer2 = setTimeout(()=>_ctrl2.abort(), 5000);
+    const r = await fetch(API_BASE + '/state/' + encodeURIComponent(sid) + '?t=' + Date.now(), {cache:'no-store', signal:_ctrl2.signal});
+    clearTimeout(_timer2);
     if(!r.ok) return null;
     const res = await r.json();
     if(res.ok && res.data && typeof res.data.totalScore !== 'undefined'){
@@ -1954,6 +1960,11 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 // ============================================================
 // INIT
 // ============================================================
+// 保底：无论如何，5秒后强制隐藏加载提示
+setTimeout(function(){
+  var t=document.getElementById('cloudLoadingTip');
+  if(t)t.style.display='none';
+},5000);
 (async function(){
   // 先加载本地配置作为兜底
   adminConfig=loadAdminConfig();
@@ -1991,7 +2002,10 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
   let _lastStateTs={};
   async function _pollConfig(){
     try{
-      const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store'});
+      const _ctrl = new AbortController();
+    const _timer = setTimeout(()=>_ctrl.abort(), 5000);
+    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:_ctrl.signal});
+    clearTimeout(_timer);
       if(!r.ok) return;
       const res = await r.json();
       if(!res.ok || !res.data) return;
@@ -2050,7 +2064,10 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
   // 初始化时间戳（首次加载后记录，之后才对比）
   setTimeout(async()=>{
     try{
-      const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store'});
+      const _ctrl = new AbortController();
+    const _timer = setTimeout(()=>_ctrl.abort(), 5000);
+    const r = await fetch(API_BASE + '/config?t=' + Date.now(), {cache:'no-store', signal:_ctrl.signal});
+    clearTimeout(_timer);
       if(r.ok){ const res = await r.json(); if(res.ok) _lastConfigTs = res.updated_at || 0; }
     }catch(e){}
     if(currentStudentId){
