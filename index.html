@@ -405,7 +405,7 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
       <!-- 中：目标奖励进度 -->
       <div class="score-progress-wrap">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-          <div style="font-size:11px;color:rgba(255,255,255,0.7);"><span style="color:#FFD54F;font-weight:700;" id="nextRewardName">加载中...</span></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);"><span style="color:#FFD54F;font-weight:700;" id="nextRewardName">--</span></div>
           <div style="font-size:11px;color:#FFD54F;font-weight:700;" id="nextRewardPts">-</div>
         </div>
         <div class="score-progress"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
@@ -510,6 +510,12 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     <!-- 打卡日历 -->
     <div class="card">
       <div style="font-size:17px;font-weight:800;margin-bottom:8px;">📆 打卡日历</div>
+      <div style="display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:14px;height:14px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:900;">✓</div>全部完成</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:14px;height:14px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:900;">~</div>部分完成</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:14px;height:14px;border-radius:50%;background:#ef4444;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:900;">✗</div>未完成</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:14px;height:14px;border-radius:50%;border:1.5px dashed #ccc;"></div>未来</div>
+      </div>
       <div style="font-size:12px;color:var(--light);margin-bottom:12px;">点击任意一天查看当天任务详情</div>
       <div class="cal-header"><div class="cal-header-day weekday">周一</div><div class="cal-header-day weekday">周二</div><div class="cal-header-day weekday">周三</div><div class="cal-header-day weekday">周四</div><div class="cal-header-day weekday">周五</div><div class="cal-header-day weekend">周六</div><div class="cal-header-day weekend">周日</div></div>
       <div class="cal-grid" id="monthCal"></div>
@@ -553,7 +559,36 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     <!-- 奖励列表 -->
     <div class="card">
       <div style="font-size:17px;font-weight:800;margin-bottom:4px;">🎁 积分兑换奖励</div>
-      <div style="font-size:12px;color:var(--light);margin-bottom:14px;">每完成一项任务都在靠近奖励，加油！</div>
+      <div style="font-size:12px;color:var(--light);margin-bottom:12px;">每完成一项任务都在靠近奖励，加油！</div>
+      <!-- 兑换流程说明 -->
+      <div style="background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1.5px solid #FFD54F;">
+        <div style="font-size:13px;font-weight:800;color:#C07800;margin-bottom:8px;">📝 如何兑换奖励？</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:18px;">✅</div>
+            <div style="text-align:center;font-weight:700;color:#333;">1. 每天打卡</div>
+            <div style="text-align:center;color:#888;font-size:11px;">完成任务就得分</div>
+          </div>
+          <div style="font-size:18px;color:#ccc;">→</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FF7043,#FF9800);display:flex;align-items:center;justify-content:center;font-size:18px;">⭐</div>
+            <div style="text-align:center;font-weight:700;color:#333;">2. 积累积分</div>
+            <div style="text-align:center;color:#888;font-size:11px;">达到展示的分数</div>
+          </div>
+          <div style="font-size:18px;color:#ccc;">→</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#43C59E,#26d0ce);display:flex;align-items:center;justify-content:center;font-size:18px;">🎁</div>
+            <div style="text-align:center;font-weight:700;color:#333;">3. 找家长兑换</div>
+            <div style="text-align:center;color:#888;font-size:11px;">展示这个页面给家长</div>
+          </div>
+        </div>
+      </div>
+      <!-- 奖励图例 -->
+      <div style="display:flex;gap:12px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:12px;height:12px;border-radius:3px;background:#43C59E;"></div>已解锁</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:12px;height:12px;border-radius:3px;background:#FF9800;"></div>冲刺中</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;"><div style="width:12px;height:12px;border-radius:3px;background:#e0e0e0;"></div>未解锁</div>
+      </div>
       <div id="rewardGrid"></div>
     </div>
     <!-- 积分规则 -->
@@ -1535,8 +1570,12 @@ function renderMonthCal(){
     const el=document.createElement('div');
     el.className=`cal-cell ${isWeekend?'weekend':'weekday'}${isToday?' today-cell':''}${allDone?' all-done':''}${partDone?' part-done':''}`;
     el.style.cursor='pointer';
-    const icon=allDone?'✅':partDone?'🔸':isFuture?'📅':'❌';
-    el.innerHTML=`<div class="cal-num">${day.getDate()}</div><div style="font-size:14px;text-align:center;margin-top:2px;">${icon}</div>`;
+    // 用彩色圆点替代emoji，更简洁美观
+    const dotColor=allDone?'#22c55e':partDone?'#f59e0b':isFuture?'transparent':'#ef4444';
+    const dotBorder=isFuture?'1.5px dashed #ccc':'';
+    const dotContent=allDone?'✓':partDone?'~':isFuture?'':'✗';
+    const dotTextColor=allDone?'#fff':partDone?'#fff':isFuture?'#ccc':'#fff';
+    el.innerHTML=`<div class="cal-num">${day.getDate()}</div><div style="width:18px;height:18px;border-radius:50%;background:${dotColor};${dotBorder}margin:3px auto 0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:${dotTextColor};">${dotContent}</div>`;
     el.onclick=()=>{
       const dateLabel=`${day.getMonth()+1}月${day.getDate()}日（${['周日','周一','周二','周三','周四','周五','周六'][dow]}）`;
       let html=`<div style="font-size:16px;font-weight:700;margin-bottom:12px;color:#333;">${dateLabel}</div>`;
