@@ -1,0 +1,111 @@
+/* ==================== 全局滚动进度条 ==================== */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF6B35, #FF8C61);
+    z-index: 99999;
+    transition: width 0.1s ease;
+}
+
+/* ==================== 导航栏滚动效果 ==================== */
+.navbar.scrolled {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== 滚动淡入动画 ==================== */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 延迟淡入效果 */
+.fade-in-up:nth-child(1) { transition-delay: 0.1s; }
+.fade-in-up:nth-child(2) { transition-delay: 0.2s; }
+.fade-in-up:nth-child(3) { transition-delay: 0.3s; }
+.fade-in-up:nth-child(4) { transition-delay: 0.4s; }
+.fade-in-up:nth-child(5) { transition-delay: 0.5s; }
+
+/* ==================== 滚动放大效果 ==================== */
+.scale-in {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scale-in.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ==================== 滚动左右滑入效果 ==================== */
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ==================== 数字滚动动画 ==================== */
+.counter-number {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
+
+/* ==================== 视差滚动效果 ==================== */
+.parallax {
+    transition: transform 0.1s ease-out;
+}
+
+/* ==================== 卡片悬停效果增强 ==================== */
+.portfolio-item,
+.work-card,
+.industry-card,
+.case-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.portfolio-item:hover,
+.work-card:hover,
+.industry-card:hover,
+.case-card:hover {
+    transform: translateY(-8px);
+}
+
+/* ==================== 响应式优化 ==================== */
+@media (prefers-reduced-motion: reduce) {
+    .fade-in-up,
+    .scale-in,
+    .slide-in-left,
+    .slide-in-right,
+    .parallax {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+}

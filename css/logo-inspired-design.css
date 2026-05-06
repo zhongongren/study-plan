@@ -1,0 +1,338 @@
+/**
+ * 基于 CQ Logo 的视觉设计系统
+ * 2026-01-22
+ * 
+ * 设计理念：
+ * 1. 不用CSS伪造3D效果
+ * 2. 直接使用Logo PNG作为设计元素
+ * 3. 提取Logo的真实颜色和质感
+ * 4. 用真实的3D渲染图片，而不是普通照片
+ */
+
+/* ==========================================
+   核心颜色系统（从Logo提取）
+   ========================================== */
+:root {
+    /* Logo橙色发光核心 */
+    --logo-orange-primary: #FF6B35;
+    --logo-orange-glow: #ff8c5a;
+    --logo-orange-bright: #FFA06B;
+    
+    /* Logo金属银灰色 */
+    --logo-metal-light: #E8E8E8;
+    --logo-metal-mid: #B8B8B8;
+    --logo-metal-dark: #888888;
+    
+    /* Logo背景与透明度 */
+    --logo-bg-dark: rgba(0, 0, 0, 0.85);
+    --logo-border-glow: rgba(255, 107, 53, 0.3);
+}
+
+/* ==========================================
+   Logo图片装饰系统
+   ========================================== */
+
+/* Logo作为装饰图标 */
+.logo-icon-decoration {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.4));
+    transition: all 0.3s ease;
+}
+
+.logo-icon-decoration:hover {
+    filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.8));
+    transform: scale(1.1);
+}
+
+/* Logo作为水印 */
+.logo-watermark {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    opacity: 0.08;
+    pointer-events: none;
+    object-fit: contain;
+}
+
+/* Logo作为角标 */
+.logo-badge {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* ==========================================
+   橙色发光核心效果（Logo配色）
+   ========================================== */
+
+/* 橙色发光按钮 - Logo风格 */
+.btn-logo-orange {
+    background: linear-gradient(135deg, var(--logo-orange-primary), var(--logo-orange-glow));
+    color: white;
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 12px rgba(255, 107, 53, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-logo-orange::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-logo-orange:hover::before {
+    left: 100%;
+}
+
+.btn-logo-orange:hover {
+    box-shadow: 
+        0 6px 24px rgba(255, 107, 53, 0.4),
+        0 0 30px rgba(255, 107, 53, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   金属质感卡片（Logo风格）
+   ========================================== */
+
+/* 深色金属卡片 */
+.card-metal-dark {
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(50, 50, 50, 0.95));
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-metal-dark::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        transparent 0%, 
+        rgba(255, 107, 53, 0.05) 50%, 
+        transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card-metal-dark:hover::before {
+    opacity: 1;
+}
+
+.card-metal-dark:hover {
+    border-color: var(--logo-orange-primary);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 107, 53, 0.1);
+    transform: translateY(-4px);
+}
+
+/* ==========================================
+   橙色发光边框（Logo配色）
+   ========================================== */
+
+.glow-border-orange {
+    border: 2px solid rgba(255, 107, 53, 0.3);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.glow-border-orange:hover {
+    border-color: var(--logo-orange-primary);
+    box-shadow: 
+        0 0 20px rgba(255, 107, 53, 0.3),
+        inset 0 0 20px rgba(255, 107, 53, 0.05);
+}
+
+/* ==========================================
+   数字展示 - Logo橙色发光
+   ========================================== */
+
+.number-glow-orange {
+    color: var(--logo-orange-primary);
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+}
+
+.number-glow-orange:hover {
+    text-shadow: 
+        0 0 30px rgba(255, 107, 53, 0.6),
+        0 0 50px rgba(255, 107, 53, 0.3);
+}
+
+/* ==========================================
+   标题装饰 - 使用Logo图标
+   ========================================== */
+
+.section-title-with-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+}
+
+.section-title-with-logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px rgba(255, 107, 53, 0.4));
+}
+
+.section-title-with-logo h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================
+   圆角方形风格（Logo几何形状）
+   ========================================== */
+
+.logo-shape-square {
+    border-radius: 16px; /* Logo的圆角风格 */
+    overflow: hidden;
+}
+
+/* ==========================================
+   高质感图片容器
+   ========================================== */
+
+.premium-image-container {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(50, 50, 50, 0.9));
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        transparent 0%, 
+        rgba(255, 107, 53, 0.08) 50%, 
+        transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.premium-image-container:hover::before {
+    opacity: 1;
+}
+
+.premium-image-container:hover {
+    border-color: var(--logo-orange-primary);
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(255, 107, 53, 0.15);
+    transform: translateY(-6px);
+}
+
+.premium-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.premium-image-container:hover img {
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   Logo角标叠加效果
+   ========================================== */
+
+.work-card-with-logo {
+    position: relative;
+}
+
+.work-card-with-logo::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background-image: url('../images/logo.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.work-card-with-logo:hover::after {
+    opacity: 0.25;
+}
+
+/* ==========================================
+   成就卡片增强
+   ========================================== */
+.achievement-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.achievement-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ==========================================
+   响应式设计
+   ========================================== */
+
+@media (max-width: 768px) {
+    .section-title-with-logo img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .section-title-with-logo h2 {
+        font-size: 2rem;
+    }
+    
+    .number-glow-orange {
+        font-size: 2rem;
+    }
+    
+    .btn-logo-orange {
+        padding: 12px 24px;
+    }
+}

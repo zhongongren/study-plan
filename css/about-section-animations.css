@@ -1,0 +1,101 @@
+/* ==========================================
+   About Me Section - 震撼视觉动画
+   ========================================== */
+
+/* 背景光晕浮动 */
+@keyframes floatGlow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.1);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translate(-20px, 30px) scale(0.95);
+    opacity: 0.9;
+  }
+}
+
+/* 作品卡片悬停效果 */
+.work-showcase-card {
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.work-showcase-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.25) !important;
+}
+
+.work-showcase-card:hover img {
+  transform: scale(1.08);
+}
+
+.work-showcase-card img {
+  transition: transform 0.5s ease;
+}
+
+/* 数据卡片悬停发光 */
+.data-card-glow:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.4);
+  border-color: rgba(255, 107, 53, 0.5);
+}
+
+.data-card-glow:hover > div:first-child {
+  opacity: 1;
+}
+
+/* 能力卡片悬停 */
+.about-info > div > div {
+  transition: all 0.3s ease;
+}
+
+.about-info > div > div:hover {
+  transform: translateX(8px);
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+/* 核心数字动画计数效果 */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.data-number {
+  animation: countUp 0.8s ease-out;
+}
+
+/* 绿点脉冲 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.9);
+  }
+}
+
+/* 响应式优化 */
+@media (max-width: 968px) {
+  .about .container > div:nth-child(2) {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  
+  .about-works > div {
+    height: auto !important;
+    grid-template-rows: repeat(6, 100px) !important;
+  }
+}

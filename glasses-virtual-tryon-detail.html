@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>眼镜类目 AI虚拟试戴解决方案 — 陈群超</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/contact-fab.css">
+    <link rel="stylesheet" href="css/case-detail-template.css">
+    <style>
+        :root { --bg:#080c10; --bg2:#10161c; --bg3:#151d25; --text:#f5f7fa; --text-mid:#aeb8c4; --text-dim:#6f7a86; --line:rgba(255,255,255,.10); --orange:#ff6b35; --orange-dim:rgba(255,107,53,.10); }
+        body { margin:0; background:var(--bg); color:var(--text); font-family:'Noto Sans SC',sans-serif; }
+        .breadcrumb-bar { position:fixed; top:75px; left:0; right:0; z-index:80; padding:10px 8vw; background:rgba(8,12,16,.72); backdrop-filter:blur(16px); border-bottom:1px solid var(--line); display:flex; gap:8px; align-items:center; font-size:13px; color:var(--text-dim); }
+        .breadcrumb-bar a { color:var(--text-dim); text-decoration:none; } .breadcrumb-bar a:hover { color:var(--orange); } .breadcrumb-bar .current { color:var(--text-mid); }
+        .case-hero { min-height:86vh; display:flex; align-items:center; padding:120px 8vw 70px; position:relative; overflow:hidden; background:#0a0f14; }
+        .case-hero-bg { position:absolute; inset:0; background-image:url('images/covers/glasses-tryon-cover-new.webp'); background-size:cover; background-position:center; opacity:.54; transform:scale(1.03); filter:saturate(.82) contrast(.95); }
+        .case-hero-overlay { position:absolute; inset:0; background:linear-gradient(to right, rgba(8,12,16,.94), rgba(8,12,16,.72) 44%, rgba(8,12,16,.18)), linear-gradient(to top, rgba(8,12,16,.96), transparent 52%); }
+        .case-hero-content { position:relative; z-index:2; max-width:760px; }
+        .case-tag { display:inline-flex; align-items:center; gap:8px; color:var(--orange); border:1px solid rgba(255,107,53,.35); padding:7px 16px; font-size:11px; letter-spacing:.22em; text-transform:uppercase; margin-bottom:30px; }
+        .case-hero-title { font-size:clamp(42px,7vw,88px); line-height:1.06; letter-spacing:-.04em; font-weight:900; margin:0 0 20px; }
+        .case-hero-desc { font-size:16px; line-height:2; color:var(--text-mid); max-width:640px; }
+        .section { padding:96px 8vw; border-top:1px solid var(--line); max-width:1200px; margin:0 auto; }
+        .section-label { font-size:11px; letter-spacing:.25em; color:var(--orange); text-transform:uppercase; margin-bottom:14px; }
+        .section-title { font-size:clamp(28px,3.5vw,48px); font-weight:700; line-height:1.2; margin:0 0 24px; }
+        .divider { width:36px; height:2px; background:var(--orange); margin:20px 0 36px; }
+        .section-body { font-size:15px; color:var(--text-mid); line-height:2; max-width:720px; }
+        .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--line); border:1px solid var(--line); margin-top:42px; }
+        .compare-card { background:var(--bg2); padding:32px 28px; } .compare-card.highlight { background:var(--bg3); border:1px solid rgba(255,107,53,.22); }
+        .compare-brand { font-size:12px; color:var(--orange); letter-spacing:.16em; margin-bottom:12px; } .compare-name { font-size:21px; font-weight:700; margin-bottom:22px; } .compare-point { color:var(--text-mid); border-top:1px solid var(--line); padding:13px 0; font-size:14px; }
+        .decision-list { margin-top:44px; border:1px solid var(--line); } .decision-item { display:grid; grid-template-columns:220px 1fr; border-bottom:1px solid var(--line); } .decision-item:last-child { border-bottom:none; } .decision-q { padding:24px 28px; color:var(--orange); font-weight:600; background:var(--bg2); border-right:1px solid var(--line); } .decision-a { padding:24px 28px; color:var(--text-mid); line-height:1.9; }
+        .result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--line); border:1px solid var(--line); margin-top:48px; } .result-card { background:var(--bg2); padding:36px 28px; } .result-num { font-size:44px; color:var(--orange); font-weight:800; } .result-unit { font-size:18px; margin-left:4px; } .result-label { font-weight:700; margin:8px 0; } .result-note { color:var(--text-dim); font-size:13px; line-height:1.7; }
+        .case-nav { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); } .case-nav-item { padding:34px 8vw; text-decoration:none; color:var(--text); background:var(--bg2); border-right:1px solid var(--line); } .case-nav-item:hover { background:var(--bg3); } .case-nav-dir { color:var(--orange); font-size:12px; letter-spacing:.16em; } .case-nav-name { display:block; font-size:20px; font-weight:700; margin-top:8px; } .case-nav-cat { display:block; color:var(--text-dim); font-size:13px; margin-top:4px; }
+        .fade-up { opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; } .fade-up.visible { opacity:1; transform:translateY(0); }
+        @media (max-width:800px) { .compare-grid,.result-grid,.case-nav { grid-template-columns:1fr; } .decision-item { grid-template-columns:1fr; } .decision-q { border-right:none; border-bottom:1px solid var(--line); } }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body class="loading">
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <img src="images/logo-icon-cq.webp" alt="CQ" class="logo-icon">
+            <div class="logo-text"><div class="logo-name">陈群超</div><div class="logo-tag">3D Designer</div></div>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">首页</a></li>
+            <li><a href="design-philosophy.html" class="nav-link">设计理念</a></li>
+            <li><a href="portfolio.html" class="nav-link active">项目案例</a></li>
+            <li><a href="ai-solutions.html" class="nav-link">AI解决方案</a></li>
+            <li><a href="index.html#contact" class="nav-link">联系方式</a></li>
+        </ul>
+        <div class="nav-actions"><a href="index.html#contact" class="nav-contact">联系合作</a><a href="portfolio.html" class="nav-cta">查看作品</a></div>
+        <button class="menu-toggle" aria-label="菜单"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+<div class="breadcrumb-bar"><a href="index.html">首页</a><span>/</span><a href="portfolio.html">项目案例</a><span>/</span><span class="current">眼镜类目 AI虚拟试戴解决方案</span></div>
+<section class="case-hero"><div class="case-hero-bg"></div><div class="case-hero-overlay"></div><div class="case-hero-content"><div class="case-tag">AI解决方案 · 虚拟试用</div><h1 class="case-hero-title">眼镜类目 AI虚拟试戴解决方案</h1><p class="case-hero-desc">围绕眼镜产品的脸型适配、镜框质感、光影统一与佩戴自然度，构建可用于电商详情页和投放素材的 AI 试戴视觉流程。</p></div></section>
+<section class="section"><div class="section-label fade-up">第一章</div><h2 class="section-title fade-up">行业痛点与设计目标</h2><div class="divider fade-up"></div><p class="section-body fade-up">传统拍摄受模特、场地、货期与预算限制，难以覆盖多风格、多场景、多 SKU 的内容需求。本方案以 AI 图像生成与电商视觉设计经验结合，建立从商品理解、提示词设计、视觉筛选到精修输出的闭环流程。</p><div class="compare-grid fade-up"><div class="compare-card"><div class="compare-brand">传统方式</div><div class="compare-name">拍摄成本高，迭代慢</div><div class="compare-point">模特与场地档期不稳定</div><div class="compare-point">单次拍摄难以覆盖多风格</div><div class="compare-point">后期返修成本高</div></div><div class="compare-card highlight"><div class="compare-brand">AI方案</div><div class="compare-name">快速生成，批量适配</div><div class="compare-point">适配不同脸型与人群风格</div>
+<div class="compare-point">保持镜框材质与透视关系</div>
+<div class="compare-point">可批量生成种草图和详情页图</div>
+<div class="compare-point">降低模特拍摄与后期返修成本</div></div></div></section>
+<section class="section"><div class="section-label fade-up">第二章</div><h2 class="section-title fade-up">工作流设计</h2><div class="divider fade-up"></div><p class="section-body fade-up">页面保留为可继续扩展的标准案例结构，便于后续补充真实对比图、参数截图与上线数据。</p><div class="decision-list fade-up"><div class="decision-item"><div class="decision-q">商品拆解</div><div class="decision-a">提取镜框形状、颜色、材质、镜片透明度和佩戴角度，建立生成约束。</div></div>
+<div class="decision-item"><div class="decision-q">人像设定</div><div class="decision-a">按目标消费群体设置脸型、肤色、妆发、服装和场景情绪。</div></div>
+<div class="decision-item"><div class="decision-q">生成与筛选</div><div class="decision-a">批量生成多组视觉方向，优先筛选佩戴自然、镜腿透视正确、反光合理的画面。</div></div>
+<div class="decision-item"><div class="decision-q">精修输出</div><div class="decision-a">统一肤色、镜片高光、边缘遮挡关系和品牌视觉调性。</div></div></div></section>
+<section class="section"><div class="section-label fade-up">第三章</div><h2 class="section-title fade-up">项目价值</h2><div class="divider fade-up"></div><p class="section-body fade-up">该方案适合电商主图、详情页、站外投放素材和内容种草场景，可在低成本前提下快速探索多种视觉方向。</p><div class="result-grid fade-up"><div class="result-card"><div class="result-num">4<span class="result-unit">类</span></div><div class="result-label">核心场景</div><div class="result-note">通勤、商务、时尚、户外场景均可扩展</div></div>
+<div class="result-card"><div class="result-num">30<span class="result-unit">+</span></div><div class="result-label">单轮素材</div><div class="result-note">适合快速筛选主图方向</div></div>
+<div class="result-card"><div class="result-num">1<span class="result-unit">套</span></div><div class="result-label">复用流程</div><div class="result-note">可迁移到太阳镜、防蓝光镜等品类</div></div></div></section>
+<nav class="case-nav"><a href="ai-scene-solution-document.html" class="case-nav-item prev"><span class="case-nav-dir">← 上一个</span><span class="case-nav-name">装修行业痛点解决方案</span><span class="case-nav-cat">项目案例</span></a><a href="swimming-goggles-tryon-detail.html" class="case-nav-item next"><span class="case-nav-dir">下一个 →</span><span class="case-nav-name">泳镜类目 AI虚拟试戴解决方案</span><span class="case-nav-cat">项目案例</span></a></nav>
+<div class="contact-fab-wrapper" id="contactFab">
+    <button class="contact-fab-btn" id="contactFabBtn" aria-label="联系我">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </button>
+</div>
+<script src="js/main.js"></script><script src="js/contact-fab.js"></script><script>const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}})},{threshold:.06,rootMargin:'0px 0px -32px 0px'});document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));window.addEventListener('load',()=>document.body.classList.remove('loading'));</script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

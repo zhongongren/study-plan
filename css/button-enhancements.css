@@ -1,0 +1,313 @@
+/* ========================================
+   按钮增强样式 - 统一交互体验
+   主色调: #FF6B35
+   参考: webstacks.com
+   ======================================== */
+
+/* 全局按钮基础样式重置 */
+button,
+.btn,
+.cta-primary,
+.cta-text,
+.product-cta,
+.project-cta,
+.btn-detail,
+.btn-primary-detail,
+.btn-ghost-detail,
+.project-link,
+.back-button,
+a[class*="btn"],
+a[class*="cta"] {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+/* 主要按钮 - 3D金属质感 + 橙色发光 */
+.cta-primary,
+.product-cta,
+.project-cta,
+.btn-primary-detail,
+.project-link,
+a.product-cta {
+  background: linear-gradient(135deg, 
+    rgba(50, 50, 50, 0.9) 0%, 
+    rgba(30, 30, 30, 0.95) 100%) !important;
+  color: #FF6B35 !important;
+  border: 2px solid rgba(255, 107, 53, 0.5) !important;
+  box-shadow: 
+    0 4px 15px rgba(255, 107, 53, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+/* 内部橙色发光效果 */
+.cta-primary::before,
+.product-cta::before,
+.project-cta::before,
+.btn-primary-detail::before,
+.project-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.1), 
+    rgba(255, 140, 90, 0.05));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 悬停效果 - 金属发光增强 */
+.cta-primary:hover,
+.product-cta:hover,
+.project-cta:hover,
+.btn-primary-detail:hover,
+.project-link:hover,
+a.product-cta:hover {
+  background: linear-gradient(135deg, 
+    rgba(60, 60, 60, 0.95) 0%, 
+    rgba(40, 40, 40, 1) 100%) !important;
+  border-color: #FF6B35 !important;
+  color: #ff8c5a !important;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 30px rgba(255, 107, 53, 0.5),
+    0 0 40px rgba(255, 107, 53, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6) !important;
+}
+
+.cta-primary:hover::before,
+.product-cta:hover::before,
+.project-cta:hover::before,
+.btn-primary-detail:hover::before,
+.project-link:hover::before {
+  opacity: 1;
+}
+
+/* 点击效果 - 3D按压感 */
+.cta-primary:active,
+.product-cta:active,
+.project-cta:active,
+.btn-primary-detail:active,
+.project-link:active,
+a.product-cta:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 10px rgba(255, 107, 53, 0.3),
+    inset 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+  border-color: #FF6B35 !important;
+}
+
+/* 涟漪动效 */
+.cta-primary::after,
+.product-cta::after,
+.project-cta::after,
+.btn-primary-detail::after,
+.project-link::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.cta-primary:active::after,
+.product-cta:active::after,
+.project-cta:active::after,
+.btn-primary-detail:active::after,
+.project-link:active::after {
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+}
+
+/* 次要按钮 - 描边样式 */
+.cta-text,
+.btn-ghost-detail {
+  background: transparent !important;
+  border: 2px solid #FF6B35 !important;
+  color: #FF6B35 !important;
+  box-shadow: 0 0 0 rgba(255, 107, 53, 0);
+}
+
+.cta-text:hover,
+.btn-ghost-detail:hover {
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-color: #F7931E !important;
+  color: #F7931E !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+}
+
+.cta-text:active,
+.btn-ghost-detail:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* 返回按钮 */
+.back-button {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(255, 107, 53, 0.2) !important;
+  border-color: #FF6B35 !important;
+  transform: translateX(-3px);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.back-button:active {
+  transform: translateX(0) scale(0.95);
+}
+
+/* 轮播控制按钮 */
+.carousel-control,
+.carousel-pause {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s ease;
+}
+
+.carousel-control:hover,
+.carousel-pause:hover {
+  background: rgba(255, 107, 53, 0.3) !important;
+  border-color: #FF6B35 !important;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.carousel-control:active,
+.carousel-pause:active {
+  transform: scale(0.95);
+}
+
+/* 指示器 */
+.carousel-indicators .indicator,
+.indicator {
+  transition: all 0.3s ease;
+}
+
+.carousel-indicators .indicator:hover,
+.indicator:hover {
+  transform: scale(1.2);
+  background: #FF6B35 !important;
+}
+
+.carousel-indicators .indicator.active,
+.indicator.active {
+  background: #FF6B35 !important;
+}
+
+/* 菜单切换按钮 */
+.menu-toggle {
+  transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle:hover span {
+  background: #FF6B35 !important;
+}
+
+.menu-toggle:active {
+  transform: scale(0.9);
+}
+
+/* 禁用状态 */
+button:disabled,
+.btn:disabled,
+[class*="btn"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+button:disabled:hover,
+.btn:disabled:hover,
+[class*="btn"]:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 加载状态 */
+.btn-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn-loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .cta-primary,
+  .product-cta,
+  .project-cta,
+  .btn-primary-detail,
+  .project-link {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+  
+  /* 移动端减弱悬停效果（触摸设备） */
+  @media (hover: none) {
+    .cta-primary:hover,
+    .product-cta:hover,
+    .project-cta:hover,
+    .btn-primary-detail:hover,
+    .project-link:hover {
+      transform: none;
+    }
+  }
+}
+
+/* 确保按钮文字不被选中 */
+button,
+.btn,
+[class*="cta"],
+[class*="btn"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+/* 焦点样式 - 无障碍访问 */
+button:focus-visible,
+.btn:focus-visible,
+[class*="cta"]:focus-visible,
+[class*="btn"]:focus-visible {
+  outline: 2px solid #FF6B35;
+  outline-offset: 2px;
+}

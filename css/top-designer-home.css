@@ -1,0 +1,1993 @@
+/*
+ * 顶尖个人设计师作品集首页优化
+ * 方向：作品驱动、克制高级、招聘者快速判断、保留首屏轮播图。
+ */
+
+:root {
+  --tdh-bg: #07080a;
+  --tdh-panel: rgba(10, 12, 15, 0.72);
+  --tdh-line: rgba(255,255,255,0.12);
+  --tdh-text: rgba(255,255,255,0.88);
+  --tdh-muted: rgba(255,255,255,0.58);
+  --tdh-accent: #ff6b35;
+}
+
+body {
+  background: var(--tdh-bg) !important;
+}
+
+/* 导航：更接近高端作品集的轻量黑玻璃导航 */
+.navbar {
+  background: rgba(5, 6, 8, 0.82) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.28) !important;
+  backdrop-filter: blur(18px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+}
+
+.nav-container {
+  max-width: 1480px !important;
+}
+
+.nav-link {
+  color: rgba(255,255,255,0.72) !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.06em !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #fff !important;
+  background: rgba(255,255,255,0.055) !important;
+}
+
+.nav-cta {
+  border-radius: 999px !important;
+  box-shadow: 0 12px 36px rgba(255,107,53,.28) !important;
+}
+
+/* 首屏轮播：保留大图，但降低噪声、强化项目叙事 */
+.hero-carousel-wrapper {
+  background: #050608 !important;
+  isolation: isolate;
+}
+
+.hero-carousel-slide .hero-magazine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    linear-gradient(180deg, rgba(5,6,8,0.10) 0%, rgba(5,6,8,0.08) 56%, rgba(5,6,8,0.92) 100%),
+    radial-gradient(circle at 76% 42%, rgba(255,107,53,0.10), transparent 34%);
+}
+
+.hero-carousel-slide .product-slide-bg {
+  filter: saturate(0.92) contrast(1.05) brightness(0.86) !important;
+  transform: scale(1.015) !important;
+}
+
+.product-slide-content {
+  z-index: 8 !important;
+}
+
+.product-tag {
+  width: fit-content !important;
+  max-width: 520px !important;
+  padding: 8px 14px !important;
+  border: 1px solid rgba(255,255,255,0.13) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,0.06) !important;
+  color: rgba(255,255,255,0.70) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.10em !important;
+}
+
+.product-title {
+  max-width: 760px !important;
+  letter-spacing: -0.065em !important;
+  text-shadow: 0 26px 70px rgba(0,0,0,0.50) !important;
+}
+
+.product-desc {
+  max-width: 680px !important;
+  color: rgba(255,255,255,0.70) !important;
+  font-size: clamp(15px, 1.25vw, 20px) !important;
+  line-height: 1.85 !important;
+}
+
+.product-features {
+  gap: 16px !important;
+}
+
+.product-feature {
+  min-width: 112px;
+  padding: 14px 16px !important;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  background: rgba(5,6,8,0.42);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.feature-value {
+  color: var(--tdh-accent) !important;
+  text-shadow: 0 8px 28px rgba(255,107,53,.28) !important;
+}
+
+.feature-label {
+  color: rgba(255,255,255,.58) !important;
+}
+
+.product-cta {
+  border-radius: 999px !important;
+  min-height: 54px !important;
+  padding: 0 26px !important;
+  background: rgba(255,107,53,0.12) !important;
+  border: 1px solid rgba(255,107,53,0.45) !important;
+  color: #fff !important;
+  box-shadow: 0 18px 60px rgba(255,107,53,0.18) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+
+.product-cta:hover,
+.product-cta:focus-visible {
+  background: #ff6b35 !important;
+  color: #160906 !important;
+  transform: translateY(-2px) !important;
+}
+
+.hero-carousel-indicators {
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  background: rgba(5,6,8,0.58) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.hero-carousel-control,
+.hero-carousel-pause {
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  background: rgba(255,255,255,0.06) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+/* 顶部招聘者判断条：不是堆信息，而是像高端网站的证据导航 */
+.tdh-proof-bar {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1.25fr repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.tdh-proof-cell {
+  padding: 26px 30px;
+  min-height: 112px;
+  background: #08090b;
+}
+
+.tdh-proof-cell small {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,.42);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.tdh-proof-cell strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(19px, 2.2vw, 30px);
+  line-height: 1.14;
+}
+
+.tdh-proof-cell span {
+  display: block;
+  margin-top: 7px;
+  color: rgba(255,255,255,.58);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tdh-proof-cell.is-intro strong {
+  color: #ff7a49;
+  font-size: 18px;
+  letter-spacing: .08em;
+}
+
+/* 首页下方模块整体更像作品集，而不是模板页面 */
+#about,
+.experience-skills,
+#works,
+#contact {
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+#about .section-label,
+#works .section-label,
+#contact .section-label {
+  letter-spacing: .14em !important;
+}
+
+.portfolio-card,
+.work-card,
+.ai-work-card,
+[class*="card"] {
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, filter .28s ease !important;
+}
+
+.portfolio-card:hover,
+.work-card:hover,
+.ai-work-card:hover {
+  transform: translateY(-8px) !important;
+  filter: saturate(1.04) contrast(1.03) !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,.36) !important;
+}
+
+/* 移动端：保留轮播图气质，确保文字完整 */
+@media (max-width: 768px) {
+  .nav-container {
+    height: 66px !important;
+    padding-left: 20px !important;
+    padding-right: 74px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide .product-slide-content {
+    top: 104px !important;
+    left: 20px !important;
+    right: 20px !important;
+    max-width: calc(100vw - 40px) !important;
+  }
+
+  .product-tag {
+    max-width: 100% !important;
+    font-size: 11px !important;
+  }
+
+  .product-title {
+    font-size: clamp(32px, 10.2vw, 44px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.045em !important;
+  }
+
+  .product-desc {
+    font-size: 13px !important;
+    line-height: 1.72 !important;
+    max-width: 96% !important;
+  }
+
+  .product-feature {
+    min-width: 0 !important;
+    padding: 10px 8px !important;
+  }
+
+  .product-cta {
+    width: min(100%, 280px) !important;
+    min-height: 50px !important;
+  }
+
+  .tdh-proof-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tdh-proof-cell {
+    min-height: 92px;
+    padding: 18px 16px;
+  }
+
+  .tdh-proof-cell.is-intro {
+    grid-column: 1 / -1;
+  }
+}
+
+/* 首页已有清晰联系与作品入口，隐藏悬浮按钮以保持顶级作品集的干净首屏 */
+.contact-fab,
+.contact-fab-wrapper {
+  display: none !important;
+}
+
+/* 桌面端首屏更像精品案例封面：减少元素浮躁感 */
+@media (min-width: 769px) {
+  .hero-carousel-wrapper .hero-carousel-slide.active .product-slide-content {
+    max-width: 780px !important;
+  }
+
+  .hero-carousel-wrapper .product-title span[style] {
+    color: var(--tdh-accent) !important;
+  }
+}
+
+/* 底部判断条与关于我之间保留呼吸感 */
+.tdh-proof-bar + #about {
+  padding-top: 92px !important;
+}
+
+/* 下方内容：从“模块堆叠”调整为“作品集叙事” */
+#about {
+  background: radial-gradient(circle at 50% 0%, rgba(255,107,53,0.08), transparent 36%), #08090b !important;
+}
+
+#about .container,
+.experience-skills .container,
+#works .container,
+#contact .container {
+  max-width: 1220px !important;
+}
+
+#about h2,
+#works h2,
+#contact h2,
+.experience-skills h2 {
+  letter-spacing: -0.045em !important;
+}
+
+.experience-skills {
+  background: linear-gradient(180deg, #08090b 0%, #0a0c10 100%) !important;
+}
+
+#works {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255,107,53,0.08), transparent 26%),
+    radial-gradient(circle at 86% 16%, rgba(255,255,255,0.045), transparent 24%),
+    #08090b !important;
+}
+
+#works::before {
+  content: "SELECTED COMMERCIAL WORK";
+  position: absolute;
+  top: 34px;
+  right: 5vw;
+  color: rgba(255,255,255,0.035);
+  font-size: clamp(54px, 10vw, 150px);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.filter-btn {
+  border-radius: 999px !important;
+  border-color: rgba(255,255,255,0.14) !important;
+  background: rgba(255,255,255,0.035) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: rgba(255,107,53,0.16) !important;
+  color: #fff !important;
+  border-color: rgba(255,107,53,0.42) !important;
+  box-shadow: 0 16px 46px rgba(255,107,53,0.12) !important;
+}
+
+#contact {
+  background:
+    linear-gradient(180deg, #08090b 0%, #050608 100%),
+    radial-gradient(circle at 50% 0%, rgba(255,107,53,0.08), transparent 32%) !important;
+}
+
+#contact input,
+#contact textarea {
+  background: rgba(255,255,255,0.045) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+
+#contact input:focus,
+#contact textarea:focus {
+  border-color: rgba(255,107,53,0.48) !important;
+  box-shadow: 0 0 0 4px rgba(255,107,53,0.09) !important;
+}
+
+@media (max-width: 768px) {
+  .tdh-proof-bar + #about {
+    padding-top: 68px !important;
+  }
+
+  #works::before {
+    display: none;
+  }
+
+  .filter-btn {
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* 移动端最终微调：首屏文案完整、菜单入口可见但克制 */
+@media (max-width: 768px) {
+  .hero-carousel-wrapper .product-desc {
+    max-width: 86% !important;
+    font-size: 12.5px !important;
+    line-height: 1.7 !important;
+  }
+
+  .interaction-mobile-trigger {
+    top: 13px !important;
+    right: 16px !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: rgba(6,8,11,0.58) !important;
+    border-color: rgba(255,255,255,0.16) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.24) !important;
+  }
+}
+
+/* 移动端导航兜底：即使脚本未创建额外按钮，原生菜单按钮也必须可见 */
+@media (max-width: 768px) {
+  .navbar .menu-toggle {
+    display: flex !important;
+    position: absolute !important;
+    right: 18px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 270 !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255,255,255,0.16) !important;
+    background: rgba(8,10,13,0.62) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+  }
+
+  .navbar .menu-toggle span {
+    display: block !important;
+    width: 18px !important;
+    height: 2px !important;
+    border-radius: 99px !important;
+    background: rgba(255,255,255,0.9) !important;
+  }
+
+  .hero-carousel-wrapper .product-desc {
+    max-width: 80% !important;
+  }
+}
+
+/* 移动端导航父级兜底：旧样式可能隐藏 nav-actions，导致菜单按钮不可见 */
+@media (max-width: 768px) {
+  .navbar .nav-actions {
+    display: flex !important;
+    position: absolute !important;
+    right: 18px !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 280 !important;
+  }
+
+  .navbar .nav-actions .nav-cta {
+    display: none !important;
+  }
+}
+
+/* 最终兜底：菜单按钮固定在视口右上角，避免被导航网格布局挤出 */
+@media (max-width: 768px) {
+  .navbar .menu-toggle {
+    position: fixed !important;
+    right: 16px !important;
+    top: 13px !important;
+    transform: none !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* 移动端菜单最终安全区：兼容部分浏览器视口宽度计算异常，确保按钮落在可见范围 */
+@media (max-width: 768px) {
+  .portfolio-loader {
+    pointer-events: none !important;
+  }
+
+  .navbar .nav-contact {
+    display: none !important;
+  }
+
+  .navbar .menu-toggle,
+  .interaction-mobile-trigger {
+    left: min(calc(100vw - 56px), 334px) !important;
+    right: auto !important;
+    top: 13px !important;
+  }
+}
+
+/* 求职首屏移动端优化：让个人定位帧的 CTA 更早露出 */
+@media (max-width: 768px) {
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-slide-content {
+    top: 92px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-tag {
+    margin-bottom: 10px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-title {
+    font-size: clamp(29px, 8.6vw, 36px) !important;
+    line-height: 1.04 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-desc {
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+    max-width: 94% !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .content-bottom {
+    margin-top: 14px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-features {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-feature {
+    padding: 7px 6px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .feature-value {
+    font-size: clamp(21px, 5.8vw, 26px) !important;
+    margin-bottom: 2px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .feature-label {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-cta {
+    width: min(100%, 220px) !important;
+    min-height: 44px !important;
+    padding: 12px 22px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-slide-content {
+    top: 86px !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-title {
+    font-size: clamp(28px, 8.3vw, 34px) !important;
+  }
+
+  .hero-carousel-wrapper .hero-carousel-slide:first-child .product-features {
+    margin-bottom: 10px !important;
+  }
+}
+
+/* =========================================================
+   Carousel Manual Navigation Enhancement - 2026-04-28
+   目标：让首页轮播可以被清晰地手动切换，桌面端显示左右箭头、底部圆点和暂停按钮，移动端保留可点击控制且不遮挡 CTA。
+   ========================================================= */
+.hero-carousel-wrapper .hero-carousel-control {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    background: rgba(12, 12, 14, 0.46) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    color: #fff !important;
+    opacity: 0.88 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 60 !important;
+    transition: opacity 0.22s ease, transform 0.22s ease, background 0.22s ease, border-color 0.22s ease !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-control.prev {
+    left: clamp(18px, 3.2vw, 52px) !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-control.next {
+    right: clamp(18px, 3.2vw, 52px) !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-control svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke: currentColor !important;
+    stroke-width: 2.2 !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-control:hover,
+.hero-carousel-wrapper .hero-carousel-control:focus-visible {
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1.06) !important;
+    background: rgba(255, 107, 53, 0.86) !important;
+    border-color: rgba(255, 107, 53, 0.95) !important;
+    outline: none !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-indicators {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    position: absolute !important;
+    left: 50% !important;
+    bottom: clamp(22px, 4vh, 46px) !important;
+    transform: translateX(-50%) !important;
+    z-index: 62 !important;
+    padding: 10px 14px !important;
+    border-radius: 999px !important;
+    background: rgba(10, 10, 10, 0.28) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    pointer-events: auto !important;
+}
+
+.hero-carousel-wrapper .hero-indicator {
+    display: block !important;
+    width: 9px !important;
+    height: 9px !important;
+    min-width: 9px !important;
+    min-height: 9px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.42) !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    transition: width 0.24s ease, background 0.24s ease, transform 0.24s ease !important;
+}
+
+.hero-carousel-wrapper .hero-indicator.active,
+.hero-carousel-wrapper .hero-indicator[aria-current="true"] {
+    width: 28px !important;
+    background: #FF6B35 !important;
+    box-shadow: 0 0 18px rgba(255, 107, 53, 0.45) !important;
+}
+
+.hero-carousel-wrapper .hero-indicator:hover,
+.hero-carousel-wrapper .hero-indicator:focus-visible {
+    transform: scale(1.18) !important;
+    background: rgba(255, 255, 255, 0.86) !important;
+    outline: none !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-pause {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    right: clamp(18px, 3vw, 44px) !important;
+    bottom: clamp(22px, 4vh, 46px) !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    background: rgba(10, 10, 10, 0.32) !important;
+    color: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    opacity: 0.9 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 63 !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-pause svg {
+    width: 17px !important;
+    height: 17px !important;
+    fill: currentColor !important;
+}
+
+.hero-carousel-wrapper .hero-carousel-pause:hover,
+.hero-carousel-wrapper .hero-carousel-pause:focus-visible {
+    background: rgba(255, 107, 53, 0.82) !important;
+    color: #fff !important;
+    outline: none !important;
+}
+
+@media (max-width: 768px) {
+    .hero-carousel-wrapper .hero-carousel-control {
+        display: flex !important;
+        width: 38px !important;
+        height: 38px !important;
+        top: auto !important;
+        bottom: 108px !important;
+        transform: none !important;
+        background: rgba(10, 10, 10, 0.34) !important;
+        opacity: 0.82 !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control.prev {
+        left: 16px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control.next {
+        right: 16px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control:hover,
+    .hero-carousel-wrapper .hero-carousel-control:focus-visible {
+        transform: scale(1.04) !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control svg {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-indicators {
+        bottom: 58px !important;
+        gap: 8px !important;
+        padding: 8px 12px !important;
+    }
+
+    .hero-carousel-wrapper .hero-indicator {
+        width: 7px !important;
+        height: 7px !important;
+        min-width: 7px !important;
+        min-height: 7px !important;
+    }
+
+    .hero-carousel-wrapper .hero-indicator.active,
+    .hero-carousel-wrapper .hero-indicator[aria-current="true"] {
+        width: 23px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-pause {
+        right: 16px !important;
+        bottom: 56px !important;
+        width: 32px !important;
+        height: 32px !important;
+        opacity: 0.82 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-carousel-wrapper .hero-carousel-control {
+        bottom: 100px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-indicators {
+        bottom: 50px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-pause {
+        bottom: 48px !important;
+    }
+}
+
+/* 移动端轮播控件最终兜底：部分浏览器会因首屏背景图与容器宽度计算导致右箭头/圆点落到可视区外，使用 100vw 锚定到手机视口内。 */
+@media (max-width: 768px) {
+    .hero-carousel-wrapper .hero-carousel-control {
+        position: absolute !important;
+        top: auto !important;
+        bottom: 104px !important;
+        width: 36px !important;
+        height: 36px !important;
+        z-index: 10020 !important;
+        opacity: 0.9 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control.prev {
+        left: 16px !important;
+        right: auto !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control.next {
+        left: calc(100vw - 52px) !important;
+        right: auto !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-indicators {
+        left: 50vw !important;
+        right: auto !important;
+        bottom: 54px !important;
+        transform: translateX(-50%) !important;
+        z-index: 10019 !important;
+        opacity: 0.92 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-pause {
+        left: calc(100vw - 48px) !important;
+        right: auto !important;
+        bottom: 54px !important;
+        z-index: 10020 !important;
+        opacity: 0.86 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-carousel-wrapper .hero-carousel-control {
+        bottom: 104px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-indicators {
+        bottom: 54px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-pause {
+        bottom: 54px !important;
+    }
+}
+
+/* 移动端可见性增强：右侧按钮位于人物暗部区域时，使用品牌橙提升识别度。 */
+@media (max-width: 768px) {
+    .hero-carousel-wrapper .hero-carousel-control {
+        background: rgba(255, 107, 53, 0.78) !important;
+        border-color: rgba(255, 139, 96, 0.92) !important;
+        color: #fff !important;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.14) inset !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control svg {
+        stroke: #fff !important;
+        stroke-width: 2.6 !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-pause {
+        background: rgba(255, 107, 53, 0.72) !important;
+        border-color: rgba(255, 139, 96, 0.9) !important;
+        color: #fff !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.12) inset !important;
+    }
+}
+
+/* 移动端右侧控件安全区修正：兼容 headless/部分安卓 WebView 将 CSS 视口计算为 500px、但实际可见宽度更窄的情况。 */
+@media (max-width: 768px) {
+    .hero-carousel-wrapper .hero-carousel-control.next {
+        left: auto !important;
+        right: max(16px, calc(100vw - 374px)) !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-pause {
+        left: auto !important;
+        right: max(16px, calc(100vw - 374px)) !important;
+    }
+}
+
+
+/* Priority featured cases: placed immediately after hero to shorten decision path */
+.priority-cases {
+    position: relative;
+    padding: clamp(72px, 8vw, 116px) 24px;
+    background:
+        radial-gradient(circle at 18% 8%, rgba(255, 107, 53, 0.16), transparent 34%),
+        linear-gradient(180deg, #090909 0%, #0d0d0d 55%, #080808 100%);
+    overflow: hidden;
+}
+
+.priority-cases::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(180deg, transparent, #000 18%, #000 76%, transparent);
+}
+
+.priority-cases__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1220px;
+    margin: 0 auto;
+}
+
+.priority-cases__header {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.75fr);
+    gap: 36px;
+    align-items: end;
+    margin-bottom: 34px;
+}
+
+.priority-cases__eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 16px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 107, 53, 0.38);
+    border-radius: 999px;
+    color: #ff8c5a;
+    background: rgba(255, 107, 53, 0.08);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.priority-cases__header h2 {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(2.2rem, 5vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    font-weight: 900;
+}
+
+.priority-cases__header p {
+    margin: 0;
+    color: rgba(255,255,255,0.68);
+    font-size: clamp(1rem, 1.3vw, 1.18rem);
+    line-height: 1.85;
+}
+
+.priority-cases__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    grid-template-rows: repeat(2, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.priority-case {
+    position: relative;
+    min-height: 260px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: #111;
+    color: #fff;
+    text-decoration: none;
+    transform: translateZ(0);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+}
+
+.priority-case--hero {
+    grid-row: span 2;
+    min-height: 538px;
+}
+
+.priority-case img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), filter 0.65s ease;
+}
+
+.priority-case__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.18) 34%, rgba(0,0,0,0.82) 100%);
+}
+
+.priority-case__content {
+    position: relative;
+    z-index: 2;
+    padding: clamp(22px, 3vw, 38px);
+    max-width: 620px;
+}
+
+.priority-case__tag {
+    display: inline-block;
+    margin-bottom: 13px;
+    color: #ffad8c;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.priority-case h3 {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: clamp(1.55rem, 2.8vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+}
+
+.priority-case p {
+    margin: 0 0 18px;
+    color: rgba(255,255,255,0.76);
+    font-size: 0.98rem;
+    line-height: 1.75;
+}
+
+.priority-case__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.priority-case:hover,
+.priority-case:focus-visible {
+    border-color: rgba(255,107,53,0.72);
+    outline: none;
+}
+
+.priority-case:hover img,
+.priority-case:focus-visible img {
+    transform: scale(1.075);
+    filter: saturate(1.08) contrast(1.06);
+}
+
+.priority-cases__actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+}
+
+.priority-cases__primary,
+.priority-cases__secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+}
+
+.priority-cases__primary {
+    color: #fff;
+    background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
+    box-shadow: 0 10px 28px rgba(255,107,53,0.28);
+}
+
+.priority-cases__secondary {
+    color: rgba(255,255,255,0.88);
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.045);
+}
+
+.priority-cases__primary:hover,
+.priority-cases__secondary:hover,
+.priority-cases__primary:focus-visible,
+.priority-cases__secondary:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(255,107,53,0.5);
+}
+
+@media (max-width: 900px) {
+    .priority-cases {
+        padding: 56px 18px 64px;
+    }
+
+    .priority-cases__header,
+    .priority-cases__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .priority-cases__header {
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .priority-cases__grid {
+        grid-template-rows: none;
+        gap: 14px;
+    }
+
+    .priority-case,
+    .priority-case--hero {
+        grid-row: auto;
+        min-height: 330px;
+        border-radius: 22px;
+    }
+}
+
+@media (max-width: 520px) {
+    .priority-cases {
+        padding: 46px 14px 56px;
+    }
+
+    .priority-cases__header h2 {
+        font-size: clamp(2rem, 11vw, 3.2rem);
+    }
+
+    .priority-case,
+    .priority-case--hero {
+        min-height: 292px;
+    }
+
+    .priority-case__content {
+        padding: 22px;
+    }
+
+    .priority-case p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .priority-cases__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Mobile hero tightening: improve first-screen hierarchy without hiding manual carousel controls */
+@media (max-width: 768px) {
+    .hero-carousel-wrapper,
+    .hero-carousel-wrapper .hero,
+    .hero-carousel-wrapper .hero-carousel-slide {
+        min-height: 92svh !important;
+        height: 92svh !important;
+    }
+
+    .hero-carousel-wrapper .product-slide-content {
+        padding-top: max(76px, env(safe-area-inset-top)) !important;
+        padding-bottom: 142px !important;
+        justify-content: space-between !important;
+    }
+
+    .hero-carousel-wrapper .content-top {
+        max-width: min(86vw, 360px) !important;
+    }
+
+    .hero-carousel-wrapper .product-tag {
+        margin-bottom: 10px !important;
+        font-size: 0.74rem !important;
+        letter-spacing: 0.08em !important;
+    }
+
+    .hero-carousel-wrapper .product-title {
+        font-size: clamp(2.35rem, 12vw, 3.65rem) !important;
+        line-height: 0.94 !important;
+        letter-spacing: -0.065em !important;
+        margin-bottom: 12px !important;
+    }
+
+    .hero-carousel-wrapper .product-desc {
+        max-width: 330px !important;
+        font-size: 0.92rem !important;
+        line-height: 1.55 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .hero-carousel-wrapper .content-bottom {
+        gap: 14px !important;
+        max-width: min(88vw, 360px) !important;
+    }
+
+    .hero-carousel-wrapper .product-features {
+        gap: 8px !important;
+        transform: scale(0.92) !important;
+        transform-origin: left bottom !important;
+    }
+
+    .hero-carousel-wrapper .product-feature {
+        padding: 9px 10px !important;
+        min-width: 70px !important;
+    }
+
+    .hero-carousel-wrapper .feature-value {
+        font-size: 1.08rem !important;
+    }
+
+    .hero-carousel-wrapper .feature-label {
+        font-size: 0.68rem !important;
+    }
+
+    .hero-carousel-wrapper .product-cta {
+        width: fit-content !important;
+        min-height: 44px !important;
+        padding: 12px 20px !important;
+        font-size: 0.92rem !important;
+    }
+
+    .tdh-proof-bar {
+        margin-top: 0 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero-carousel-wrapper,
+    .hero-carousel-wrapper .hero,
+    .hero-carousel-wrapper .hero-carousel-slide {
+        min-height: 90svh !important;
+        height: 90svh !important;
+    }
+
+    .hero-carousel-wrapper .product-slide-content {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+        padding-bottom: 132px !important;
+    }
+
+    .hero-carousel-wrapper .product-title {
+        font-size: clamp(2.18rem, 11vw, 3.25rem) !important;
+    }
+
+    .hero-carousel-wrapper .product-desc {
+        font-size: 0.88rem !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-control {
+        bottom: 94px !important;
+    }
+
+    .hero-carousel-wrapper .hero-carousel-indicators,
+    .hero-carousel-wrapper .hero-carousel-pause {
+        bottom: 44px !important;
+    }
+}
+
+
+/* Desktop hero headline readability: prevent the last Chinese character from being isolated at common laptop/desktop widths */
+@media (min-width: 1024px) and (max-width: 1599px) {
+    .hero-carousel-wrapper .content-top {
+        max-width: 620px !important;
+    }
+
+    .hero-carousel-wrapper .product-title {
+        font-size: clamp(5rem, 6vw, 5.95rem) !important;
+        line-height: 1.02 !important;
+        letter-spacing: -0.055em !important;
+    }
+}
+
+@media (min-width: 1600px) {
+    .hero-carousel-wrapper .content-top {
+        max-width: 720px !important;
+    }
+}
+
+
+/* Stronger desktop headline fix for 1366–1440px screens */
+@media (min-width: 1024px) and (max-width: 1499px) {
+    .hero-carousel-wrapper .product-title {
+        font-size: clamp(4.35rem, 5.15vw, 4.9rem) !important;
+        line-height: 1.04 !important;
+    }
+}
+
+
+/* Keep the role phrase visually intact in the hero headline */
+.hero-carousel-wrapper .headline-nowrap {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+@media (max-width: 480px) {
+    .hero-carousel-wrapper .headline-nowrap {
+        white-space: nowrap;
+    }
+}
+
+
+/* Tablet navigation safety: collapse crowded menu before labels start wrapping vertically */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .navbar .nav-menu {
+        display: none !important;
+    }
+
+    .navbar .nav-contact {
+        display: none !important;
+    }
+
+    .navbar .nav-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+        margin-left: auto !important;
+    }
+
+    .navbar .menu-toggle {
+        display: flex !important;
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(255,255,255,0.16) !important;
+        background: rgba(8,10,13,0.68) !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+    }
+
+    .navbar .menu-toggle span {
+        display: block !important;
+        width: 18px !important;
+        height: 2px !important;
+        border-radius: 99px !important;
+        background: rgba(255,255,255,0.9) !important;
+    }
+}
+
+
+/* Homepage visual rollback + polish 2026-04-29
+   目标：去掉上一版过重、过满、过吵的信息密度，保留作品入口但恢复高级留白。 */
+.priority-cases {
+    padding: clamp(76px, 7vw, 112px) 24px !important;
+    background:
+        radial-gradient(circle at 18% 0%, rgba(255, 107, 53, 0.10), transparent 30%),
+        linear-gradient(180deg, #080808 0%, #0b0b0b 52%, #070707 100%) !important;
+}
+.priority-cases::before {
+    opacity: 0.36 !important;
+    background-size: 96px 96px !important;
+}
+.priority-cases__inner {
+    max-width: 1180px !important;
+}
+.priority-cases__header {
+    display: block !important;
+    max-width: 820px !important;
+    margin: 0 0 34px !important;
+}
+.priority-cases__eyebrow {
+    margin-bottom: 18px !important;
+    padding: 7px 13px !important;
+    border-color: rgba(255, 107, 53, 0.28) !important;
+    background: rgba(255, 107, 53, 0.055) !important;
+    color: rgba(255, 151, 108, 0.92) !important;
+    letter-spacing: 0.16em !important;
+}
+.priority-cases__header h2 {
+    max-width: 760px !important;
+    font-size: clamp(2.35rem, 4.1vw, 4.15rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.045em !important;
+    text-wrap: balance;
+}
+.priority-cases__header p {
+    max-width: 700px !important;
+    margin-top: 18px !important;
+    color: rgba(255,255,255,0.62) !important;
+    font-size: clamp(1rem, 1.05vw, 1.08rem) !important;
+    line-height: 1.85 !important;
+}
+.priority-cases__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr) !important;
+    gap: 16px !important;
+}
+.priority-case {
+    border-radius: 24px !important;
+    border-color: rgba(255,255,255,0.105) !important;
+    box-shadow: 0 18px 48px rgba(0,0,0,0.24) !important;
+    background: #0d0d0d !important;
+}
+.priority-case--hero {
+    min-height: 500px !important;
+}
+.priority-case img {
+    opacity: 0.84 !important;
+    filter: saturate(0.96) contrast(0.96) brightness(0.92) !important;
+}
+.priority-case--hero img {
+    object-position: 68% center !important;
+}
+.priority-case__shade {
+    background:
+        linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.28) 46%, rgba(0,0,0,0.86) 100%),
+        linear-gradient(90deg, rgba(0,0,0,0.24), transparent 56%) !important;
+}
+.priority-case__content {
+    padding: clamp(24px, 2.6vw, 34px) !important;
+}
+.priority-case__tag {
+    margin-bottom: 11px !important;
+    color: rgba(255, 168, 126, 0.88) !important;
+    font-size: 12px !important;
+    letter-spacing: 0.075em !important;
+}
+.priority-case h3 {
+    max-width: 560px !important;
+    font-size: clamp(1.55rem, 2.15vw, 2.55rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.03em !important;
+}
+.priority-case p {
+    max-width: 560px !important;
+    margin-bottom: 16px !important;
+    color: rgba(255,255,255,0.70) !important;
+    font-size: 0.96rem !important;
+    line-height: 1.75 !important;
+}
+.priority-case__meta {
+    color: rgba(255,255,255,0.94) !important;
+    font-size: 0.92rem !important;
+}
+.priority-cases__actions {
+    justify-content: flex-start !important;
+    margin-top: 28px !important;
+}
+.priority-cases__primary,
+.priority-cases__secondary {
+    min-height: 44px !important;
+    padding: 12px 22px !important;
+    font-size: 0.94rem !important;
+}
+
+@media (max-width: 900px) {
+    .priority-cases {
+        padding: 54px 20px 66px !important;
+    }
+    .priority-cases__header {
+        margin-bottom: 24px !important;
+    }
+    .priority-cases__header h2 {
+        max-width: 9.5em !important;
+        font-size: clamp(2.38rem, 11vw, 3.15rem) !important;
+        line-height: 1.03 !important;
+        letter-spacing: -0.052em !important;
+    }
+    .priority-cases__header p {
+        margin-top: 16px !important;
+        font-size: 1.02rem !important;
+        line-height: 1.78 !important;
+    }
+    .priority-cases__grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: none !important;
+        gap: 14px !important;
+    }
+    .priority-case,
+    .priority-case--hero {
+        min-height: 292px !important;
+        grid-row: auto !important;
+        border-radius: 22px !important;
+    }
+    .priority-case--hero img {
+        object-position: 72% center !important;
+    }
+    .priority-case img {
+        opacity: 0.76 !important;
+        filter: saturate(0.92) contrast(0.95) brightness(0.86) !important;
+    }
+    .priority-case__shade {
+        background:
+            linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.42) 42%, rgba(0,0,0,0.91) 100%),
+            linear-gradient(90deg, rgba(0,0,0,0.34), transparent 58%) !important;
+    }
+    .priority-case__content {
+        padding: 24px 22px !important;
+    }
+    .priority-case__tag {
+        font-size: 11px !important;
+    }
+    .priority-case h3 {
+        font-size: clamp(1.62rem, 7vw, 2.15rem) !important;
+        line-height: 1.12 !important;
+    }
+    .priority-case p {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        font-size: 0.96rem !important;
+        line-height: 1.66 !important;
+    }
+    .priority-cases__actions {
+        justify-content: flex-start !important;
+        gap: 10px !important;
+        margin-top: 22px !important;
+    }
+    .priority-cases__primary,
+    .priority-cases__secondary {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .priority-cases {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+    .priority-cases__eyebrow {
+        font-size: 11px !important;
+        padding: 6px 11px !important;
+    }
+    .priority-cases__header h2 {
+        font-size: clamp(2.15rem, 10vw, 2.65rem) !important;
+        max-width: 9.2em !important;
+    }
+    .priority-cases__header p {
+        font-size: 0.98rem !important;
+    }
+    .priority-case,
+    .priority-case--hero {
+        min-height: 268px !important;
+        border-radius: 20px !important;
+    }
+    .priority-case__content {
+        padding: 22px 20px !important;
+    }
+    .priority-case h3 {
+        font-size: 1.72rem !important;
+    }
+}
+
+/* 作品区回调：恢复卡片本身的呼吸感，避免像信息表格。 */
+.portfolio-info {
+    padding-top: clamp(18px, 2vw, 24px) !important;
+}
+.portfolio-title {
+    line-height: 1.35 !important;
+    letter-spacing: -0.018em !important;
+}
+.portfolio-stats {
+    opacity: 0.92 !important;
+}
+
+
+/* Final homepage rebuild 2026-04-29
+   核心原则：封面完整优先、卡片比例统一、文字不压图、整体更像高端作品集而非信息面板。 */
+.priority-cases {
+    padding: clamp(72px, 8vw, 118px) 24px !important;
+    background:
+        radial-gradient(circle at 12% 4%, rgba(255, 107, 53, 0.12), transparent 28%),
+        linear-gradient(180deg, #070707 0%, #0a0b0d 58%, #070707 100%) !important;
+}
+.priority-cases::before {
+    opacity: 0.18 !important;
+    background-size: 120px 120px !important;
+}
+.priority-cases__inner {
+    max-width: 1180px !important;
+}
+.priority-cases__header {
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.8fr) !important;
+    gap: clamp(28px, 5vw, 76px) !important;
+    align-items: end !important;
+    margin-bottom: clamp(30px, 4vw, 48px) !important;
+}
+.priority-cases__eyebrow {
+    margin-bottom: 18px !important;
+    padding: 6px 12px !important;
+    border-color: rgba(255, 107, 53, 0.24) !important;
+    background: rgba(255, 107, 53, 0.045) !important;
+    color: rgba(255, 150, 106, 0.88) !important;
+    font-size: 11px !important;
+    letter-spacing: 0.18em !important;
+}
+.priority-cases__header h2 {
+    max-width: 620px !important;
+    font-size: clamp(2.2rem, 4vw, 4rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.045em !important;
+    text-wrap: balance !important;
+}
+.priority-cases__header p {
+    max-width: 480px !important;
+    color: rgba(255,255,255,0.58) !important;
+    font-size: clamp(0.98rem, 1vw, 1.05rem) !important;
+    line-height: 1.95 !important;
+}
+.priority-cases__grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: none !important;
+    gap: clamp(18px, 2.2vw, 26px) !important;
+}
+.priority-case,
+.priority-case--hero {
+    grid-row: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(255,255,255,0.095) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018)) !important;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.30) !important;
+}
+.priority-case img,
+.priority-case--hero img {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100% !important;
+    height: clamp(250px, 24vw, 330px) !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    padding: clamp(12px, 1.6vw, 18px) !important;
+    background:
+        radial-gradient(circle at 50% 32%, rgba(255,255,255,0.08), transparent 42%),
+        #0d0f12 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: transform 0.45s ease, background 0.45s ease !important;
+}
+.priority-case:hover img,
+.priority-case:focus-visible img {
+    transform: scale(1.015) !important;
+    filter: none !important;
+}
+.priority-case__shade {
+    display: none !important;
+}
+.priority-case__content {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: clamp(20px, 2.2vw, 28px) !important;
+    max-width: none !important;
+    border-top: 1px solid rgba(255,255,255,0.075) !important;
+    background: rgba(9, 10, 12, 0.92) !important;
+}
+.priority-case__tag {
+    margin: 0 !important;
+    color: rgba(255, 155, 108, 0.82) !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0.10em !important;
+}
+.priority-case h3 {
+    margin: 0 !important;
+    color: rgba(255,255,255,0.96) !important;
+    font-size: clamp(1.22rem, 1.55vw, 1.55rem) !important;
+    line-height: 1.22 !important;
+    letter-spacing: -0.025em !important;
+}
+.priority-case p {
+    margin: 0 !important;
+    color: rgba(255,255,255,0.58) !important;
+    font-size: 0.92rem !important;
+    line-height: 1.72 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+.priority-case__meta {
+    margin-top: auto !important;
+    padding-top: 6px !important;
+    color: rgba(255,255,255,0.88) !important;
+    font-size: 0.9rem !important;
+}
+.priority-cases__actions {
+    justify-content: center !important;
+    margin-top: clamp(28px, 3.4vw, 42px) !important;
+}
+.priority-cases__primary,
+.priority-cases__secondary {
+    min-height: 43px !important;
+    padding: 11px 20px !important;
+    font-size: 0.92rem !important;
+    box-shadow: none !important;
+}
+
+@media (max-width: 980px) {
+    .priority-cases__header {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+        margin-bottom: 28px !important;
+    }
+    .priority-cases__header h2 {
+        max-width: 11em !important;
+        font-size: clamp(2.15rem, 8vw, 3.15rem) !important;
+        line-height: 1.1 !important;
+    }
+    .priority-cases__header p {
+        max-width: 620px !important;
+        font-size: 0.98rem !important;
+        line-height: 1.8 !important;
+    }
+    .priority-cases__grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    .priority-case img,
+    .priority-case--hero img {
+        height: clamp(218px, 56vw, 320px) !important;
+        padding: 12px !important;
+    }
+    .priority-case__content {
+        padding: 18px 18px 20px !important;
+    }
+    .priority-case h3 {
+        font-size: 1.35rem !important;
+    }
+    .priority-case p {
+        -webkit-line-clamp: 2 !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .priority-cases {
+        padding: 58px 16px 68px !important;
+    }
+    .priority-cases__header h2 {
+        max-width: 10.6em !important;
+        font-size: clamp(2rem, 9.2vw, 2.45rem) !important;
+        letter-spacing: -0.04em !important;
+    }
+    .priority-case img,
+    .priority-case--hero img {
+        height: 218px !important;
+    }
+    .priority-cases__actions {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+}
+
+
+/* Priority header correction: 避免大标题在桌面端漂到中间、移动端过度压迫。 */
+.priority-cases__header {
+    display: block !important;
+    max-width: 860px !important;
+    margin: 0 0 clamp(30px, 4vw, 46px) 0 !important;
+    text-align: left !important;
+}
+.priority-cases__header h2 {
+    max-width: 720px !important;
+    margin: 0 !important;
+    font-size: clamp(2.15rem, 3.2vw, 3.35rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.04em !important;
+}
+.priority-cases__header p {
+    max-width: 620px !important;
+    margin: 22px 0 0 !important;
+    font-size: 1rem !important;
+    line-height: 1.9 !important;
+}
+
+@media (max-width: 980px) {
+    .priority-cases__header {
+        max-width: none !important;
+        margin-bottom: 26px !important;
+    }
+    .priority-cases__header h2 {
+        max-width: 12.5em !important;
+        font-size: clamp(2rem, 7.6vw, 2.8rem) !important;
+        line-height: 1.12 !important;
+    }
+    .priority-cases__header p {
+        max-width: 31em !important;
+        margin-top: 18px !important;
+        font-size: 0.96rem !important;
+        line-height: 1.82 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .priority-cases__header h2 {
+        max-width: 11.6em !important;
+        font-size: clamp(1.86rem, 8.1vw, 2.18rem) !important;
+        line-height: 1.16 !important;
+    }
+    .priority-cases__header p {
+        font-size: 0.92rem !important;
+        line-height: 1.78 !important;
+    }
+}
+
+
+/* Contact section rebuild: 由厚重信息面板改为轻量收口区，避免首页尾部显得沉、散。 */
+#contact.contact {
+    padding: clamp(76px, 8vw, 104px) 0 !important;
+    background: linear-gradient(180deg, #080808 0%, #060606 100%) !important;
+}
+#contact.contact > div[style*="radial-gradient"] {
+    opacity: 0.42 !important;
+    width: 560px !important;
+    height: 560px !important;
+    filter: blur(130px) !important;
+}
+#contact .container {
+    max-width: 1080px !important;
+}
+#contact .container > div:first-child {
+    margin-bottom: 40px !important;
+}
+#contact .container > div:first-child > div {
+    margin-bottom: 14px !important;
+    font-size: 0.76rem !important;
+    letter-spacing: 0.24em !important;
+    color: rgba(255, 139, 96, 0.82) !important;
+}
+#contact .container > div:first-child h2 {
+    margin-bottom: 18px !important;
+    font-size: clamp(2.25rem, 4.6vw, 4rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.045em !important;
+}
+#contact .container > div:first-child p {
+    font-size: 1rem !important;
+    line-height: 1.75 !important;
+    color: rgba(255,255,255,0.54) !important;
+}
+#contact .container > div:first-child p:last-child {
+    max-width: 620px !important;
+    font-size: 0.92rem !important;
+    color: rgba(255,255,255,0.42) !important;
+}
+#contact .container > div:nth-child(2) {
+    margin-bottom: 42px !important;
+}
+#contact .container > div:nth-child(2) a {
+    padding: 13px 24px !important;
+    border-width: 1px !important;
+    border-color: rgba(255, 107, 53, 0.24) !important;
+    background: rgba(255,255,255,0.035) !important;
+    font-size: 0.95rem !important;
+    box-shadow: none !important;
+}
+#contact .container > div:nth-child(2) p {
+    margin-top: 10px !important;
+    font-size: 0.86rem !important;
+    color: rgba(255,255,255,0.42) !important;
+}
+#contact .container > div:nth-child(3) {
+    grid-template-columns: minmax(280px, 0.86fr) minmax(420px, 1.14fr) !important;
+    gap: clamp(28px, 4vw, 46px) !important;
+    align-items: stretch !important;
+}
+#contact .container > div:nth-child(3) > div:first-child {
+    gap: 14px !important;
+}
+#contact .container > div:nth-child(3) > div:first-child > div {
+    padding: 18px 20px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    box-shadow: none !important;
+}
+#contact .container > div:nth-child(3) > div:first-child > div > div:first-child {
+    opacity: 0.72 !important;
+}
+#contact .container > div:nth-child(3) > div:first-child > div > div:last-child {
+    gap: 14px !important;
+}
+#contact .container > div:nth-child(3) > div:first-child img {
+    width: 38px !important;
+    height: 38px !important;
+    filter: drop-shadow(0 3px 8px rgba(255,107,53,0.18)) !important;
+}
+#contact .container > div:nth-child(3) > div:first-child h3 {
+    margin-bottom: 6px !important;
+    font-size: 0.82rem !important;
+    color: rgba(255,255,255,0.44) !important;
+}
+#contact .container > div:nth-child(3) > div:first-child p {
+    font-size: clamp(1.02rem, 1.25vw, 1.18rem) !important;
+    font-weight: 650 !important;
+    color: rgba(255,255,255,0.88) !important;
+}
+#contact .contact-form {
+    padding: clamp(24px, 3.2vw, 34px) !important;
+    border-width: 1px !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    border-radius: 20px !important;
+    background: rgba(255,255,255,0.026) !important;
+    box-shadow: none !important;
+}
+#contact .contact-form h3 {
+    margin-bottom: 22px !important;
+    font-size: 1.22rem !important;
+}
+#contact .contact-form input,
+#contact .contact-form textarea {
+    padding: 13px 16px !important;
+    border-radius: 10px !important;
+    background: rgba(255,255,255,0.04) !important;
+    font-size: 0.95rem !important;
+}
+#contact .contact-form textarea {
+    min-height: 132px !important;
+}
+#contact .contact-form button[type="submit"] {
+    padding: 14px !important;
+    border-radius: 10px !important;
+    font-size: 1rem !important;
+    box-shadow: 0 8px 22px rgba(255, 107, 53, 0.18) !important;
+}
+
+@media (max-width: 968px) {
+    #contact .container > div:nth-child(3) {
+        grid-template-columns: 1fr !important;
+        gap: 22px !important;
+    }
+    #contact .container > div:nth-child(3) > div:first-child {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    #contact.contact {
+        padding: 64px 0 78px !important;
+    }
+    #contact .container > div:first-child {
+        margin-bottom: 28px !important;
+    }
+    #contact .container > div:first-child h2 {
+        font-size: clamp(2rem, 9vw, 2.55rem) !important;
+    }
+    #contact .container > div:nth-child(2) {
+        margin-bottom: 28px !important;
+    }
+    #contact .container > div:nth-child(3) > div:first-child {
+        grid-template-columns: 1fr !important;
+    }
+    #contact .container > div:nth-child(3) > div:first-child > div {
+        padding: 16px 18px !important;
+    }
+    #contact .contact-form {
+        padding: 22px 18px !important;
+    }
+}
+
+
+/* Final mobile comfort pass: 进一步降低强案例首屏压迫感。 */
+@media (max-width: 640px) {
+    .priority-cases {
+        padding-top: 70px !important;
+        padding-bottom: 76px !important;
+    }
+    .priority-cases__header {
+        margin-bottom: 24px !important;
+    }
+    .priority-cases__header h2 {
+        max-width: 10.8em !important;
+        font-size: clamp(1.74rem, 7.35vw, 2.02rem) !important;
+        line-height: 1.2 !important;
+        letter-spacing: -0.035em !important;
+    }
+    .priority-cases__header p {
+        margin-top: 14px !important;
+        font-size: 0.88rem !important;
+        line-height: 1.72 !important;
+    }
+    .priority-case {
+        border-radius: 18px !important;
+    }
+    .priority-case__media,
+    .priority-case > img {
+        padding: 16px !important;
+    }
+    .priority-case__content {
+        padding: 18px 18px 20px !important;
+    }
+    .priority-case__content h3 {
+        font-size: 1.22rem !important;
+        line-height: 1.28 !important;
+    }
+    .priority-case__content p {
+        font-size: 0.91rem !important;
+        line-height: 1.72 !important;
+    }
+}

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云犀京东618自营首页 - PC端设计案例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #E4393C 0%, #FF6B6B 100%);
+            line-height: 1.6;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #E4393C;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 2px solid #E4393C;
+        }
+        
+        .back-button:hover {
+            background: #E4393C;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(228, 57, 60, 0.4);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Hero */
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 60px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(228,57,60,0.3);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #E4393C 0%, #FF6B6B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item .label {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .meta-item .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #E4393C;
+            margin-top: 5px;
+        }
+
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #E4393C 0%, #FF6B6B 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .tag {
+            padding: 10px 18px;
+            background: #FFF5F5;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #E4393C;
+            font-weight: 600;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .image {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+        }
+
+        .image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(228,57,60,0.3);
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .detail {
+            padding: 24px;
+            background: #FFF9F9;
+            border-radius: 14px;
+            border-left: 5px solid #E4393C;
+        }
+
+        .detail-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 12px;
+        }
+
+        .detail-text {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Alternate */
+        .section:nth-child(even) .content {
+            direction: rtl;
+        }
+
+        .section:nth-child(even) .details {
+            direction: ltr;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .section:nth-child(even) .content {
+                direction: ltr;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: white;
+            font-size: 15px;
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <a href="index.html" class="back-button">← 返回首页</a>
+    
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>云犀京东618自营首页</h1>
+            <p class="subtitle">PC端电商首页设计 | 2024年618大促活动</p>
+            <div class="meta">
+                <div class="meta-item">
+                    <div class="label">项目类型</div>
+                    <div class="value">京东PC端首页</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">活动周期</div>
+                    <div class="value">5月31日-6月20日</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">设计模块</div>
+                    <div class="value">10个核心模块</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 01 -->
+        <div class="section">
+            <span class="section-number">01 设计策略</span>
+            <h2 class="section-title">618狂欢节 Hero Banner</h2>
+            <p class="section-desc">粉红色狂欢主题，城市建筑背景营造节日氛围，科技产品（相机/平板/手机）集中展示，礼盒与丝带元素强化促销感。</p>
+            <div class="tags">
+                <span class="tag">粉红渐变</span>
+                <span class="tag">节日氛围</span>
+                <span class="tag">产品矩阵</span>
+                <span class="tag">C4D渲染</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-02.webp" alt="618 Hero Banner" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">🎨 节日视觉</div>
+                        <div class="detail-text">粉红色渐变（#FF6B9D → #FFA5BC）配合城市天际线背景，营造618狂欢节日氛围，时间标注5月31日-6月20日清晰可见</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📦 产品展示</div>
+                        <div class="detail-text">多款科技产品（直播相机、平板、手机）C4D渲染，3D立体展示，配合礼盒、丝带装饰元素</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎯 视觉焦点</div>
+                        <div class="detail-text">超大"618狂欢节"文字居中放置（72px+粗体），形成强烈视觉冲击，引导用户关注促销活动</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🏙️ 背景技术</div>
+                        <div class="detail-text">城市建筑剪影（透明度40%）+ 粒子特效，增强空间感与科技感，层次分明</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="section">
+            <span class="section-number">02 设计策略</span>
+            <h2 class="section-title">促销福利信息栏</h2>
+            <p class="section-desc">9折优惠主标题+四大购物保障（分期/退货/客服/价保），京东红配色强化促销信息，图标化展示增强可读性。</p>
+            <div class="tags">
+                <span class="tag">京东红主色</span>
+                <span class="tag">信息图标化</span>
+                <span class="tag">服务保障</span>
+                <span class="tag">促销标签</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-03.webp" alt="促销信息栏" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">🔖 主标题</div>
+                        <div class="detail-text">"全店爆款9折起"大字号（48px+加粗），京东红（#E4393C）填充，白色描边，视觉权重最高</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🛡️ 四大保障</div>
+                        <div class="detail-text">分期免息/7天无理由/专业客服/6.20前价保，每项配图标（SVG 48x48px），横向4等分布局</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎨 色彩策略</div>
+                        <div class="detail-text">京东红（#E4393C）作为主色，白色背景（#FFFFFF），黑色文字（#333333），形成高对比度</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📐 布局技术</div>
+                        <div class="detail-text">上下两层结构，上层主优惠信息，下层服务保障，Flex等分布局（justify-content: space-around）</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="section">
+            <span class="section-number">03 设计策略</span>
+            <h2 class="section-title">松下25mm镜头套装 - 单品促销</h2>
+            <p class="section-desc">绿幕实景拍摄，女性主播展示产品使用场景，优惠400元+赠送三脚架，价格对比强化促销力度。</p>
+            <div class="tags">
+                <span class="tag">实景拍摄</span>
+                <span class="tag">绿幕背景</span>
+                <span class="tag">价格对比</span>
+                <span class="tag">赠品营销</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-04.webp" alt="单品促销" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">📸 场景摄影</div>
+                        <div class="detail-text">专业绿幕直播间实拍（Chroma Key Green），女主播持产品展示，柔光箱布光（5500K色温），消除硬阴影</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">💰 价格展示</div>
+                        <div class="detail-text">划线价5049元（灰色删除线）→ 促销价4649元（京东红+加粗），优惠金额400元醒目标注</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎁 赠品策略</div>
+                        <div class="detail-text">赠送三脚架，配产品实拍图（100x100px缩略图），增强购买动力</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎨 视觉层次</div>
+                        <div class="detail-text">左侧人物场景（60%宽度）+ 右侧价格信息（40%宽度），黄金分割比例布局</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 04 -->
+        <div class="section">
+            <span class="section-number">04 设计策略</span>
+            <h2 class="section-title">直播套餐矩阵 - 2x2网格</h2>
+            <p class="section-desc">四大直播套餐（基础/实景/绿幕/企业），实景拍摄+产品组合展示，价格优惠信息清晰标注，火焰图标强化促销感。</p>
+            <div class="tags">
+                <span class="tag">2x2网格</span>
+                <span class="tag">实景拍摄</span>
+                <span class="tag">套餐对比</span>
+                <span class="tag">价格标签</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-05.webp" alt="套餐矩阵" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">📦 四大套餐</div>
+                        <div class="detail-text">基础套餐¥5770（-¥525）、实景套餐¥8655（-¥845）、绿幕套餐¥10544（-¥1055）、企业套餐¥11804（-¥1195）</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📸 场景拍摄</div>
+                        <div class="detail-text">每个套餐配实景使用照片，展示真实直播环境（灯光+三脚架+摄像机+背景），增强代入感</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🔥 促销元素</div>
+                        <div class="detail-text">火焰图标（Icon 32x32px）+ 优惠金额标注（京东红加粗），左上角"9折起"标签强化折扣信息</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📐 网格布局</div>
+                        <div class="detail-text">2x2等分网格（Grid gap: 20px），每个卡片包含图片+标题+价格+购买按钮完整结构</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05 -->
+        <div class="section">
+            <span class="section-number">05 设计策略</span>
+            <h2 class="section-title">高配套餐专区 - 企业级方案</h2>
+            <p class="section-desc">企业高配套餐（¥13244）+ 双机位套餐（¥17939），高端场景实拍（厨房/豪宅），目标客户为企业/MCN机构。</p>
+            <div class="tags">
+                <span class="tag">高端定位</span>
+                <span class="tag">场景实拍</span>
+                <span class="tag">专业级配置</span>
+                <span class="tag">B端营销</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-06.webp" alt="高配套餐" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">🏢 企业高配</div>
+                        <div class="detail-text">厨房直播场景实拍（男主播+专业灯光阵列），¥13244（-¥1355），适合美食/生活类企业直播</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎬 双机位</div>
+                        <div class="detail-text">豪宅室内场景（女主播+多角度拍摄），¥17939（-¥1760），强调多机位切换专业性</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📸 高端摄影</div>
+                        <div class="detail-text">专业摄影棚拍摄，三点布光（主光6500K+辅光3200K+轮廓光），景深f/2.8背景虚化突出人物</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎯 目标客群</div>
+                        <div class="detail-text">B端企业客户/MCN机构，价格梯度设计（13k-18k），满足专业直播需求</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06 -->
+        <div class="section">
+            <span class="section-number">06 设计策略</span>
+            <h2 class="section-title">一体机专区 - MAX Pro & MIX Pro</h2>
+            <p class="section-desc">大屏一体机MAX Pro（¥12676）+ 小屏一体机MIX Pro（¥5399），展示设备界面与实际使用场景，强调便捷性。</p>
+            <div class="tags">
+                <span class="tag">一体机</span>
+                <span class="tag">界面展示</span>
+                <span class="tag">实拍场景</span>
+                <span class="tag">便捷性</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-07.webp" alt="一体机" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">📺 MAX Pro</div>
+                        <div class="detail-text">大屏触控一体机（15.6寸），¥12676（-¥1409），实拍展示多机位监看+专业灯光阵列使用场景</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📱 MIX Pro</div>
+                        <div class="detail-text">小屏便携一体机（8寸），¥5399（-¥1600），突出便携性+触控界面操作，降价幅度最大吸引个人用户</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🖥️ 界面展示</div>
+                        <div class="detail-text">设备屏幕清晰展示操作界面（UI截图），可视化呈现功能，降低理解门槛</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">💡 卖点对比</div>
+                        <div class="detail-text">MAX Pro强调专业性（多机位/大屏），MIX Pro强调便携性（小屏/触控），差异化定位明确</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 07 -->
+        <div class="section">
+            <span class="section-number">07 设计策略</span>
+            <h2 class="section-title">专业设备区 - 智瞳II & BOX5.0</h2>
+            <p class="section-desc">云犀智瞳II摄像机（¥3599）+ BOX5.0导播台（¥5382），产品特写+功能标注，专业级设备展示。</p>
+            <div class="tags">
+                <span class="tag">产品特写</span>
+                <span class="tag">功能标注</span>
+                <span class="tag">专业设备</span>
+                <span class="tag">技术参数</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-08.webp" alt="专业设备" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">📷 智瞳II</div>
+                        <div class="detail-text">1080P高清+远程遥控旋转，¥3599（-¥1400），产品特写（镜头正面45°角拍摄），突出专业级摄像头</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📺 BOX5.0</div>
+                        <div class="detail-text">导播台设备，¥5382（-¥1598），双屏幕展示界面（导播切换+监看画面），强调专业导播功能</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎨 产品摄影</div>
+                        <div class="detail-text">纯白背景（#FFFFFF）+ 柔光箱无硬阴影，底部渐变阴影（0 4px 12px rgba(0,0,0,0.08)）形成悬浮效果</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🔴 CTA设计</div>
+                        <div class="detail-text">京东红按钮（#E4393C），圆角8px，"立即抢购 >"文案+箭头，Hover效果（background: #C81623）</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 08 -->
+        <div class="section">
+            <span class="section-number">08 设计策略</span>
+            <h2 class="section-title">专业配件区 - BOX4.0 & HDMI采集卡</h2>
+            <p class="section-desc">BOX4.0导播台（¥6282）+ HDMI采集卡（¥900），配件生态完善，满足专业用户扩展需求。</p>
+            <div class="tags">
+                <span class="tag">配件生态</span>
+                <span class="tag">导播设备</span>
+                <span class="tag">采集卡</span>
+                <span class="tag">专业扩展</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-09.webp" alt="专业配件" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">📺 BOX4.0</div>
+                        <div class="detail-text">四路推流导播台，¥6282（-¥195），支持4路信号源同时导播，展示多屏监看界面</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🔌 HDMI采集卡</div>
+                        <div class="detail-text">视频采集卡，¥900（-¥100），配产品实拍图+接口特写，强调即插即用便捷性</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎨 布局设计</div>
+                        <div class="detail-text">上下双屏布局，每个产品独立展示区域（图片+标题+参数+价格+按钮），结构一致性</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🔗 生态策略</div>
+                        <div class="detail-text">与前面的一体机、摄像机形成配件生态，满足用户从基础到专业的扩展需求</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 09 -->
+        <div class="section">
+            <span class="section-number">09 设计策略</span>
+            <h2 class="section-title">618配件专区 - 麦克风 & 补光灯</h2>
+            <p class="section-desc">直播专用麦克风套装（¥759）+ 专业摄影补光灯（¥930），红色横幅标题强化618主题，配件生态补充。</p>
+            <div class="tags">
+                <span class="tag">配件专区</span>
+                <span class="tag">麦克风</span>
+                <span class="tag">补光灯</span>
+                <span class="tag">618主题</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-10.webp" alt="配件专区" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">🎤 麦克风套装</div>
+                        <div class="detail-text">直播专用麦克风+防喷罩+支架，¥759，配实拍产品图（白色背景），强调专业收音效果</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">💡 补光灯</div>
+                        <div class="detail-text">专业摄影补光灯（环形灯+三脚架），¥930，展示开灯效果（柔光圈），适合美妆/美食直播</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎨 专区设计</div>
+                        <div class="detail-text">顶部红色横幅"618配件专区"（background: #E4393C），与整体618主题呼应</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">📐 布局技术</div>
+                        <div class="detail-text">左右并列布局（50/50分割），每个产品独立卡片（border-radius: 12px，shadow: 0 4px 16px）</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10 -->
+        <div class="section">
+            <span class="section-number">10 设计策略</span>
+            <h2 class="section-title">便携绿幕配件</h2>
+            <p class="section-desc">300x400cm便携式多功能绿幕（¥288），配收纳包展示，强调便携性与性价比，满足移动直播需求。</p>
+            <div class="tags">
+                <span class="tag">绿幕背景</span>
+                <span class="tag">便携式</span>
+                <span class="tag">性价比</span>
+                <span class="tag">移动直播</span>
+            </div>
+            <div class="content">
+                <img src="images/jd-618/pc-slice-11.webp" alt="便携绿幕" class="image">
+                <div class="details">
+                    <div class="detail">
+                        <div class="detail-title">🎬 绿幕规格</div>
+                        <div class="detail-text">300CM x 400CM超大尺寸，Chroma Key Green标准色值（#00FF00），适合全身直播抠图</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎒 便携设计</div>
+                        <div class="detail-text">配黑色收纳包（展开/折叠双状态展示），强调便携性，适合外拍/移动直播场景</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">💰 性价比</div>
+                        <div class="detail-text">¥288超低价格，相比专业绿幕背景布（2000+），性价比极高，适合入门用户</div>
+                    </div>
+                    <div class="detail">
+                        <div class="detail-title">🎨 产品摄影</div>
+                        <div class="detail-text">纯白背景产品摄影，绿幕完全展开平铺拍摄，配旁边收纳包对比，强调收纳前后大小差异</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section" style="background: linear-gradient(135deg, #E4393C 0%, #FF6B6B 100%); color: white;">
+            <span class="section-number" style="background: white; color: #E4393C;">设计总结</span>
+            <h2 class="section-title" style="color: white;">京东618 PC端设计技术要点</h2>
+            <div class="details" style="width: 100%;">
+                <div class="detail" style="background: rgba(255,255,255,0.15); border-left-color: white;">
+                    <div class="detail-title" style="color: white;">🎨 视觉策略</div>
+                    <div class="detail-text" style="color: rgba(255,255,255,0.95);">
+                        京东红（#E4393C）作为主色贯穿全局，粉色节日氛围+白色简洁背景，形成"狂欢+专业"的双重心理暗示。实景拍摄+C4D渲染相结合，场景化展示与产品特写并重。
+                    </div>
+                </div>
+                <div class="detail" style="background: rgba(255,255,255,0.15); border-left-color: white;">
+                    <div class="detail-title" style="color: white;">📐 布局技术</div>
+                    <div class="detail-text" style="color: rgba(255,255,255,0.95);">
+                        2x2产品矩阵、左右分栏、上下双屏等多种布局方式。9折优惠信息栏+四大保障横向展示，价格对比（划线价→促销价）清晰可见，火焰图标强化促销感。
+                    </div>
+                </div>
+                <div class="detail" style="background: rgba(255,255,255,0.15); border-left-color: white;">
+                    <div class="detail-title" style="color: white;">📷 摄影技术</div>
+                    <div class="detail-text" style="color: rgba(255,255,255,0.95);">
+                        实景拍摄采用专业摄影棚三点布光（主光5600K+辅光3200K+轮廓光），景深f/2.8背景虚化。绿幕抠图Chroma Key Green #00FF00，柔光箱消除硬阴影。产品摄影纯白背景+渐变底影悬浮效果。
+                    </div>
+                </div>
+                <div class="detail" style="background: rgba(255,255,255,0.15); border-left-color: white;">
+                    <div class="detail-title" style="color: white;">🎯 转化设计</div>
+                    <div class="detail-text" style="color: rgba(255,255,255,0.95);">
+                        每屏京东红CTA按钮（立即抢购 >），价格优惠金额醒目标注（-¥XXX），赠品营销（送三脚架）、服务保障（7天无理由/价保）降低决策门槛。从基础套餐到企业高配，价格梯度覆盖全客群（¥288-¥17939）。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>云犀京东618自营首页 | 2024年PC端设计案例</p>
+        <p style="margin-top: 10px; opacity: 0.9;">采用实景拍摄 + C4D渲染 + 专业摄影技术</p>
+    </div>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

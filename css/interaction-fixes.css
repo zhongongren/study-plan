@@ -1,0 +1,533 @@
+/*
+ * 交互优化补丁
+ * 目标：先改善加载层、移动端导航、按钮反馈、作品卡片可读性与详情页滚动交互。
+ * 设计保持当前黑橙高对比风格，不改变原有品牌视觉方向。
+ */
+
+:root {
+  --interaction-orange: #ff6b35;
+  --interaction-orange-soft: rgba(255, 107, 53, 0.18);
+  --interaction-panel: rgba(10, 12, 16, 0.96);
+  --interaction-line: rgba(255, 255, 255, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-tap-highlight-color: rgba(255, 107, 53, 0.18);
+}
+
+body.menu-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+/* 加载层：缩短感知等待，并提供可点击跳过提示 */
+.portfolio-loader {
+  cursor: pointer;
+}
+
+.portfolio-loader::after {
+  content: "点击可跳过";
+  position: fixed;
+  left: 50%;
+  bottom: clamp(28px, 7vh, 72px);
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.portfolio-loader:hover::after,
+.portfolio-loader:focus-within::after {
+  opacity: 1;
+}
+
+.portfolio-loader.loaded {
+  pointer-events: none !important;
+}
+
+/* 移动端导航：补齐菜单展开态、遮罩、触控反馈 */
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 88;
+  background: rgba(0, 0, 0, 0.54);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.mobile-nav-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menu-toggle {
+  position: relative;
+  z-index: 120;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus-visible {
+  background: rgba(255, 107, 53, 0.14) !important;
+  border-color: rgba(255, 107, 53, 0.45) !important;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    z-index: 130 !important;
+  }
+
+  .nav-container {
+    grid-template-columns: auto auto !important;
+    justify-content: space-between !important;
+  }
+
+  .nav-menu {
+    display: flex !important;
+    position: fixed !important;
+    top: 65px !important;
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-height: calc(100vh - 92px);
+    overflow-y: auto;
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding: 16px !important;
+    background: rgba(9, 11, 14, 0.97) !important;
+    border: 1px solid rgba(255, 107, 53, 0.20) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255,255,255,0.04) inset !important;
+    transform: translateY(-16px) scale(0.98) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 0.26s ease, transform 0.26s ease, visibility 0.26s ease !important;
+    z-index: 110 !important;
+  }
+
+  .nav-menu.active {
+    transform: translateY(0) scale(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .nav-menu li {
+    width: 100%;
+  }
+
+  .nav-menu .nav-link,
+  .nav-link {
+    width: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
+    border-bottom: 0 !important;
+    color: rgba(255, 255, 255, 0.84) !important;
+  }
+
+  .nav-menu .nav-link::after {
+    content: "→";
+    color: rgba(255, 107, 53, 0.65);
+    transform: translateX(-4px);
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+
+  .nav-menu .nav-link:hover,
+  .nav-menu .nav-link:focus-visible,
+  .nav-menu .nav-link.active {
+    color: #fff !important;
+    background: rgba(255, 107, 53, 0.14) !important;
+    padding-left: 16px !important;
+    outline: none;
+  }
+
+  .nav-menu .nav-link:hover::after,
+  .nav-menu .nav-link:focus-visible::after,
+  .nav-menu .nav-link.active::after {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 按钮与链接：统一 hover、focus 与按压反馈 */
+a,
+button,
+[role="button"] {
+  transition-property: transform, opacity, color, background, border-color, box-shadow, filter;
+  transition-duration: 0.24s;
+  transition-timing-function: ease;
+}
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(255, 107, 53, 0.72) !important;
+  outline-offset: 3px;
+}
+
+.nav-cta,
+.nav-contact,
+.product-cta,
+.filter-btn,
+.prev-btn,
+.next-btn,
+.page-btn,
+.case-nav-item,
+.contact-fab-btn,
+.philosophy-cta-btn,
+.cta-primary,
+.btn-minimal {
+  will-change: transform;
+}
+
+.nav-cta:hover,
+.nav-contact:hover,
+.product-cta:hover,
+.filter-btn:hover,
+.prev-btn:hover,
+.next-btn:hover,
+.page-btn:hover,
+.contact-fab-btn:hover,
+.philosophy-cta-btn:hover,
+.cta-primary:hover,
+.btn-minimal:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.nav-cta:active,
+.nav-contact:active,
+.product-cta:active,
+.filter-btn:active,
+.prev-btn:active,
+.next-btn:active,
+.page-btn:active,
+.contact-fab-btn:active,
+.philosophy-cta-btn:active,
+.cta-primary:active,
+.btn-minimal:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* 作品卡片：提升可点击感与移动端可读性 */
+.work-item,
+.portfolio-card {
+  position: relative;
+  transform-origin: center;
+  cursor: pointer;
+}
+
+.work-item::after,
+.portfolio-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 0 rgba(255, 107, 53, 0);
+  transition: box-shadow 0.28s ease;
+}
+
+.work-item:hover::after,
+.work-item:focus-within::after,
+.portfolio-card:hover::after,
+.portfolio-card:focus-within::after {
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 53, 0.48);
+}
+
+.work-item:focus-within,
+.portfolio-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 44px rgba(255, 107, 53, 0.22);
+}
+
+.work-overlay,
+.portfolio-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.82) 100%) !important;
+}
+
+@media (hover: none) {
+  .work-overlay,
+  .portfolio-overlay {
+    opacity: 1 !important;
+    background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.78) 100%) !important;
+  }
+
+  .work-item:hover,
+  .portfolio-card:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .works-grid,
+  .portfolio-grid {
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+  }
+
+  .work-info,
+  .portfolio-info {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .work-image img,
+  .portfolio-image img {
+    object-fit: cover !important;
+  }
+
+  .filter-btn {
+    min-height: 48px;
+  }
+}
+
+/* 详情页滚动反馈 */
+.interaction-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  z-index: 300;
+  background: linear-gradient(90deg, #ff6b35, #ffb088);
+  box-shadow: 0 0 18px rgba(255, 107, 53, 0.55);
+  pointer-events: none;
+}
+
+.interaction-back-top {
+  position: fixed;
+  right: 22px;
+  bottom: 96px;
+  z-index: 220;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 107, 53, 0.35);
+  background: rgba(12, 14, 18, 0.82);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px) scale(0.94);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease, background 0.24s ease;
+}
+
+.interaction-back-top.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.interaction-back-top:hover,
+.interaction-back-top:focus-visible {
+  background: rgba(255, 107, 53, 0.92);
+  transform: translateY(-2px) scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .interaction-back-top {
+    right: 16px;
+    bottom: 84px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* 降低动效用户偏好：尊重系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 简化详情页联系按钮：补齐弹层交互 */
+.contact-fab-wrapper {
+  position: fixed;
+  right: 24px;
+  bottom: 28px;
+  z-index: 230;
+}
+
+.interaction-contact-panel {
+  position: absolute;
+  right: 0;
+  bottom: 62px;
+  width: min(280px, calc(100vw - 32px));
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 107, 53, 0.26);
+  background: rgba(10, 12, 16, 0.94);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.interaction-contact-panel.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.interaction-contact-panel button,
+.interaction-contact-panel a {
+  width: 100%;
+  display: block;
+  padding: 12px 13px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.88);
+  text-align: left;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+
+.interaction-contact-panel button:last-child,
+.interaction-contact-panel a:last-child {
+  margin-bottom: 0;
+}
+
+.interaction-contact-panel button:hover,
+.interaction-contact-panel button:focus-visible,
+.interaction-contact-panel a:hover,
+.interaction-contact-panel a:focus-visible {
+  background: rgba(255,107,53,0.16);
+  color: #fff;
+  transform: translateX(-2px);
+}
+
+.contact-fab-btn.active,
+.fab-button.active {
+  box-shadow: 0 16px 46px rgba(255,107,53,0.35) !important;
+}
+
+@media (max-width: 768px) {
+  .contact-fab-wrapper {
+    right: 16px;
+    bottom: 22px;
+  }
+}
+
+/* 移动端菜单按钮强制可见：避免旧网格布局把按钮挤出视口 */
+@media (max-width: 768px) {
+  .navbar .menu-toggle {
+    display: flex !important;
+    position: absolute !important;
+    right: 18px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .navbar .menu-toggle:hover,
+  .navbar .menu-toggle:focus-visible {
+    transform: translateY(calc(-50% - 1px)) !important;
+  }
+
+  .navbar .menu-toggle span {
+    display: block !important;
+    flex: 0 0 auto;
+  }
+
+  .navbar .nav-logo {
+    max-width: calc(100vw - 96px);
+  }
+
+  .navbar .nav-container {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-right: 76px !important;
+    overflow: visible !important;
+  }
+}
+
+/* 兜底移动端菜单按钮：独立于旧导航网格，确保交互入口始终可见 */
+.interaction-mobile-trigger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .interaction-mobile-trigger {
+    position: fixed;
+    right: 18px;
+    top: 12px;
+    z-index: 260;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 107, 53, 0.34);
+    background: rgba(8, 10, 13, 0.78);
+    box-shadow: 0 12px 32px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .interaction-mobile-trigger span {
+    width: 20px;
+    height: 2px;
+    border-radius: 99px;
+    background: #fff;
+    transition: transform .24s ease, opacity .24s ease;
+  }
+
+  .interaction-mobile-trigger.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .interaction-mobile-trigger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .interaction-mobile-trigger.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}

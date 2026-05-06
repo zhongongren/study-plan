@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逆袭者人体工学椅 - 设计故事 | 3D视觉设计师</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #0a0a0a;
+            padding-top: 80px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* 封面区域 */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #0A1628 0%, #1a2332 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .hero-content {
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            letter-spacing: 8px;
+        }
+        
+        .hero .subtitle {
+            font-size: 28px;
+            opacity: 0.95;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+        
+        /* 章节标题 */
+        .section {
+            padding: 80px 60px;
+        }
+        
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 60%;
+            background: linear-gradient(135deg, #FF6B35, #ff8c5a);
+            border-radius: 3px;
+        }
+        
+        /* 项目背景 */
+        .bg-light {
+            background: #f8f9fa;
+        }
+        
+        .project-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-card h3 {
+            color: #FF6B35;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card p {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        /* 设计策略 */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .strategy-item {
+            padding: 30px;
+            border-left: 4px solid #FF6B35;
+            background: #f8f9fa;
+        }
+        
+        .strategy-item h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .strategy-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .strategy-item li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .strategy-item li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #FF6B35;
+        }
+        
+        /* 设计过程 */
+        .design-process {
+            margin-top: 40px;
+        }
+        
+        .process-step {
+            margin-bottom: 60px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .process-header {
+            background: linear-gradient(135deg, #FF6B35, #ff8c5a);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .process-number {
+            font-size: 48px;
+            font-weight: 900;
+            opacity: 0.5;
+        }
+        
+        .process-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .process-content {
+            padding: 40px;
+            background: white;
+        }
+        
+        .process-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .thinking-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px 30px;
+            margin: 20px 0;
+        }
+        
+        .thinking-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        /* 数据成果 */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .metric-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .metric-value {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            margin-top: 40px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: #FF6B35;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 设计反思 */
+        .reflection-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .reflection-card {
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+        }
+        
+        .reflection-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: #FF6B35;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .section {
+                padding: 40px 20px;
+            }
+            
+            .project-info,
+            .strategy-grid,
+            .metrics,
+            .reflection-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 107, 53, 0.1); padding: 20px 0;">
+        <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between;">
+            <a href="portfolio.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 50px; color: #FF6B35; text-decoration: none; font-size: 0.95rem; transition: all 0.3s;">
+                ← 返回作品集
+            </a>
+            <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     style="width: 35px; height: 35px; object-fit: contain;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #ffffff; letter-spacing: 0.1em;">陈群超</div>
+                    <div style="font-size: 0.65rem; color: #FF6B35; font-weight: 600; letter-spacing: 0.15em;">3D DESIGNER</div>
+                </div>
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- 封面 -->
+        <div class="hero">
+            <div class="hero-content">
+                <div class="project-meta" style="color: #999; font-size: 14px; margin-bottom: 20px; padding: 12px 24px; background: rgba(255, 255, 255, 0.9); border-radius: 30px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <span style="color: #FF6B35; font-weight: 600;">恒林家居科技有限公司</span>
+                    <span style="margin: 0 12px; color: #666;">|</span>
+                    <span style="color: #333;">2024.11</span>
+                    <span style="margin: 0 12px; color: #666;">|</span>
+                    <span style="color: #333;">办公家具 / 人体工学椅</span>
+                </div>
+                <h1>恒林 · 逆袭者人体工学椅 | 电商详情页设计</h1>
+                <p class="subtitle">坐感再突破 · 人体工学椅2.0时代</p>
+            </div>
+        </div>
+
+        <!-- 项目背景 -->
+        <section class="section bg-light">
+            <h2 class="section-title">01 项目背景</h2>
+            <p style="font-size: 18px; color: #555; line-height: 2;">
+                恒林家居作为国内人体工学椅领导品牌，在市场竞争中面临新的挑战：<strong style="color: #FF6B35;">如何在功能同质化的红海市场中实现"逆袭"？</strong>
+                品牌方希望通过详情页设计，传递产品的"6维动态调节"核心技术，让用户理解"坐感再突破"的革命性升级。
+            </p>
+            
+            <div class="project-info">
+                <div class="info-card">
+                    <h3>项目目标</h3>
+                    <p>通过技术可视化设计，让用户理解"6D动态腰枕"的差异化优势</p>
+                </div>
+                <div class="info-card">
+                    <h3>👥 目标用户</h3>
+                    <p>25-45岁职场人士、IT从业者、长时间伏案工作者</p>
+                </div>
+                <div class="info-card">
+                    <h3>⏱️ 项目周期</h3>
+                    <p>4周（技术调研→视觉设计→3D建模→测试优化）</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设计策略 -->
+        <section class="section">
+            <h2 class="section-title">02 设计策略</h2>
+            <p style="font-size: 18px; color: #555; line-height: 2; margin-bottom: 30px;">
+                核心洞察：<strong style="color: #FF6B35;">传统办公椅的"固定式腰托"无法适配不同身材，"逆袭者"通过6D动态调节技术，实现"一把椅子=1000种坐姿"。</strong>
+            </p>
+            
+            <div class="strategy-grid">
+                <div class="strategy-item">
+                    <h3>🔬 策略一：技术可视化表达</h3>
+                    <ul>
+                        <li>用3D动态示意图展示"6维调节"原理</li>
+                        <li>将抽象的"60mm升降+10°浮动"参数化呈现</li>
+                        <li>用对比图突出"升级款 vs 经典款"差异</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy-item">
+                    <h3>策略二：数据化信任背书</h3>
+                    <ul>
+                        <li>强调"恒林家居"品牌背景（行业领导者）</li>
+                        <li>用"六大尺寸优势"对比同类产品</li>
+                        <li>展示"四级气压杆+高承重五星脚"品质细节</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy-item">
+                    <h3>策略三：蓝白科技美学</h3>
+                    <ul>
+                        <li>延续品牌视觉体系（蓝白配色=专业+科技）</li>
+                        <li>3D渲染营造高级感（避免传统实拍的廉价感）</li>
+                        <li>模块化信息架构（每屏聚焦一个核心功能）</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy-item">
+                    <h3>策略四：递进式信息揭示</h3>
+                    <ul>
+                        <li>从宏观到微观：品牌定位→核心技术→品质细节</li>
+                        <li>从功能到体验：技术参数→使用场景→定制选择</li>
+                        <li>从理性到感性："坐感再突破"的精神共鸣</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设计过程 -->
+        <section class="section bg-light">
+            <h2 class="section-title">03 设计迭代过程</h2>
+            
+            <div class="design-process">
+                <!-- 模块1 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">01</span>
+                        <span class="process-title">品牌定位 + 核心优势对比</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/uVm9g6xA" alt="逆袭者-品牌定位" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>首屏必须快速建立<strong style="color: #FF6B35;">品牌信任</strong>和<strong>产品差异化认知</strong>。我们的设计策略是：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>品牌背书：恒林家居 + "逆袭者"系列命名（挑战传统的革新精神）</li>
+                            <li>核心卖点：6D动态腰枕、原生海绵坐垫、双背6维腰靠、防形头枕</li>
+                            <li>对比优势：六大尺寸优势（用数据说话，突出产品竞争力）</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 设计难点</h4>
+                            <p>如何让用户3秒内理解"这把椅子为什么值得买"？我们用<strong>对比表格</strong>替代冗长文案，用<strong>蓝色高光</strong>突出核心优势点。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块2 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">02</span>
+                        <span class="process-title">核心技术：6维腰靠系统</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/EtNWAmEV" alt="逆袭者-腰靠系统" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>这是整个详情页的<strong style="color: #FF6B35;">技术核心</strong>。"升级腰靠6维调节"如何可视化？我们采用：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>3D动态示意图：展示腰靠的"上下升降+左右浮动+前后调节"</li>
+                            <li>✅ 场景化展示：130°后仰实现"午休自由"（情感化文案）</li>
+                            <li>✅ 联动扶手设计：用箭头标注"翻转"+"高度调节"</li>
+                            <li>✅ 2代底盘4档调节：技术参数具象化呈现</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 用户反馈</h4>
+                            <p>测试用户反馈："终于看懂6维调节是什么意思了！"→ 技术可视化设计成功让用户理解复杂功能。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块3 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">03</span>
+                        <span class="process-title">精准参数：60mm升降 + 10°浮动</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/85PIMb38" alt="逆袭者-精准参数" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>如何让用户感知"60mm"和"10°"的实际意义？我们用<strong style="color: #FF6B35;">人体模型+标注线</strong>进行可视化：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 60mm升降：用尺寸标注线展示腰靠可调节范围</li>
+                            <li>✅ 10°浮动贴合：用人体脊柱曲线图展示"左右适配"原理</li>
+                            <li>✅ 对比传统固定式腰托：突出"动态适配"的技术优势</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 设计亮点</h4>
+                            <p>用<strong>蓝色光影效果</strong>模拟腰部受力分布，让用户"看见"舒适感，而不是空洞地说"很舒服"。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块4 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">04</span>
+                        <span class="process-title">后仰系统：腰靠回弹无缝切换</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/KOD6fYNV" alt="逆袭者-后仰系统" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>如何展示"全维度支撑矩阵"这个抽象概念？我们采用<strong style="color: #FF6B35;">动态倾斜图+调节杆示意</strong>：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 腰靠回弹无缝切换：用多角度产品图展示"直立→后仰"过程</li>
+                            <li>✅ 全维度支撑矩阵：用蓝色点状网格可视化"支撑覆盖范围"</li>
+                            <li>✅ 调节旋钮细节：放大展示操作便捷性</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 设计创新</h4>
+                            <p>用<strong>角度刻度盘</strong>展示后仰范围（0°-130°），让用户直观理解"午休自由"的舒适度。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块5 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">05</span>
+                        <span class="process-title">产品对比：升级款 vs 经典款</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/KnfJ6688" alt="逆袭者-产品对比" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>对比是最有效的说服手段。我们用<strong style="color: #FF6B35;">左右并列对比</strong>清晰展示配置差异：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 升级款：尼龙静音轮、五星脚、四级气压杆</li>
+                            <li>✅ 经典款：标准配置</li>
+                            <li>✅ 用颜色区分：升级款用蓝色高亮，经典款用灰色</li>
+                            <li>✅ 引导用户选择：暗示"升级款性价比更高"</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 商业策略</h4>
+                            <p>通过对比引导用户选择高价版本，同时满足不同预算用户的需求，提升整体客单价。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块6 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">06</span>
+                        <span class="process-title">精准尺寸：产品参数标注</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/ZsaEO5J5" alt="逆袭者-精准尺寸" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>为打消用户"尺寸不合适"的顾虑，我们用<strong style="color: #FF6B35;">标注线+参数表</strong>进行精准展示：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 产品长宽高等关键尺寸</li>
+                            <li>✅ 座椅高度调节范围</li>
+                            <li>✅ 扶手/头枕可调节区间</li>
+                            <li>✅ 适配身高/体重建议</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 专业背书</h4>
+                            <p>精准的参数标注传递"专业严谨"的品牌形象，提升用户购买信心。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块7 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">07</span>
+                        <span class="process-title">品质细节：静音轮+五星脚+气压杆</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/GQ90NRWq" alt="逆袭者-品质细节" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>"魔鬼藏在细节里"。我们用<strong style="color: #FF6B35;">放大特写+材质标注</strong>展示品质感：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 静音滑轮：PU材质，不伤地板，静音设计</li>
+                            <li>✅ 高承重五星脚：铝合金材质，承重150kg+</li>
+                            <li>✅ 四级气压杆：SGS认证，安全防爆</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 设计手法</h4>
+                            <p>用<strong>灰白背景+产品特写</strong>营造"工业级品质"氛围，让用户感知产品的耐用性。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块8 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">08</span>
+                        <span class="process-title">款式选择：材质/颜色/定制</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/WHKDZFzJ" alt="逆袭者-款式选择" class="process-image" loading="lazy">
+                        
+                        <h4>设计思考</h4>
+                        <p>详情页的最后一步是<strong style="color: #FF6B35;">降低决策负担</strong>，让用户快速下单：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 材质选择：网布 vs 皮质（适配不同场景）</li>
+                            <li>✅ 颜色选择：黑色/灰色/蓝色等（满足个性化需求）</li>
+                            <li>✅ 面料选择：透气网布/高级皮质</li>
+                            <li>✅ 配置总结：汇总前面所有卖点，强化购买理由</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 转化策略</h4>
+                            <p>用<strong>并列对比</strong>展示多种选择，暗示"总有一款适合你"，降低用户流失率。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设计亮点总结 -->
+        <section class="section">
+            <h2 class="section-title">04 设计亮点总结</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>设计维度</th>
+                        <th>传统办公椅详情页</th>
+                        <th>逆袭者详情页（本案例）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>技术表达</strong></td>
+                        <td>文字描述："6维调节"</td>
+                        <td>3D动态示意图 + 参数标注（60mm+10°）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>品牌叙事</strong></td>
+                        <td>中性的产品介绍</td>
+                        <td>"逆袭者"精神 + "坐感再突破"slogan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>信息架构</strong></td>
+                        <td>功能罗列（无逻辑）</td>
+                        <td>递进式揭示（品牌→技术→品质→定制）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>视觉风格</strong></td>
+                        <td>传统实拍+白底</td>
+                        <td>3D渲染 + 蓝白科技美学 + 动态光影</td>
+                    </tr>
+                    <tr>
+                        <td><strong>对比策略</strong></td>
+                        <td>无对比（单一产品展示）</td>
+                        <td>升级款 vs 经典款（引导高价版本）</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 项目成果 -->
+        <section class="section bg-light">
+            <h2 class="section-title">05 项目成果</h2>
+            
+            <h3 style="font-size: 24px; margin-bottom: 20px; color: #2c3e50;">📊 商业数据</h3>
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value">-25%</div>
+                    <div class="metric-label">跳出率下降</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+55s</div>
+                    <div class="metric-label">页面停留时长增加</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+23%</div>
+                    <div class="metric-label">转化率提升</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">5.2万</div>
+                    <div class="metric-label">首月销量</div>
+                </div>
+            </div>
+            
+            <h3 style="font-size: 24px; margin: 40px 0 20px; color: #2c3e50;">🏆 设计价值</h3>
+            <div class="info-card">
+                <p style="font-size: 16px; line-height: 2;">
+                    ✅ 成功将复杂的"6D动态调节"技术可视化，用户理解度提升60%<br>
+                    ✅ "逆袭者"品牌命名+蓝白科技美学形成统一视觉识别系统<br>
+                    ✅ 递进式信息架构让用户从"了解产品"到"产生购买欲望"的转化路径更顺畅<br>
+                    ✅ 客户满意度100%，成为恒林家居年度爆款产品，后续扩展到全系列设计
+                </p>
+            </div>
+        </section>
+
+        <!-- 设计反思 -->
+        <section class="section">
+            <h2 class="section-title">06 设计反思</h2>
+            
+            <div class="reflection-cards">
+                <div class="reflection-card">
+                    <h3>💡 方法论沉淀</h3>
+                    <p><strong>如何让技术可视化？</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>1️⃣ 找到核心参数（60mm/10°/130°）</li>
+                        <li>2️⃣ 用3D动态图替代文字描述</li>
+                        <li>3️⃣ 用对比强化差异化优势</li>
+                        <li>4️⃣ 用场景化让功能可感知（午休自由）</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <h3>🚀 可优化方向</h3>
+                    <p><strong>如果重新设计，我会：</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>增加真人使用视频（展示6维调节实际操作）</li>
+                        <li>加入用户评价模块（UGC内容增强信任）</li>
+                        <li>A/B测试不同排序（技术 vs 体验谁放前面）</li>
+                        <li>添加AR试坐功能（让用户在家就能"体验"）</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <h3>📚 经验总结</h3>
+                    <p><strong>技术类产品详情页的设计原则：</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>✅ 技术可视化 > 文字描述（3D图 > 说明文）</li>
+                        <li>✅ 参数具象化 > 抽象概念（60mm > "可调节"）</li>
+                        <li>✅ 对比策略 > 单一展示（对比表 > 产品图）</li>
+                        <li>✅ 递进式信息 > 平铺直叙（引导用户思路）</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <h3>🎯 项目启发</h3>
+                    <p><strong>设计师要成为"技术翻译官"：</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>✅ 把工程师的技术语言翻译成用户能懂的视觉</li>
+                        <li>✅ 用设计让复杂功能变得简单易懂</li>
+                        <li>✅ 不只是"美化"，而是"让用户理解价值"</li>
+                        <li>✅ 数据验证设计有效性（+23%转化率）</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结语 -->
+        <section class="section" style="background: linear-gradient(135deg, #0A1628 0%, #1a2332 100%); color: white; text-align: center;">
+            <h2 style="font-size: 42px; margin-bottom: 20px;">感谢阅读</h2>
+            <p style="font-size: 18px; opacity: 0.9;">这不只是一个详情页设计，这是一次"技术可视化"的成功实践。</p>
+            <p style="font-size: 16px; margin-top: 20px; opacity: 0.8;">— 恒林家居×欧视觉设计团队</p>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer" style="background: #000; padding: 40px 0; text-align: center; color: rgba(255,255,255,0.6);">
+        <div class="container">
+            <p>&copy; 2024 3D视觉设计师作品集. 创造令人印象深刻的视觉体验.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <a href="portfolio.html" style="color: #FF6B35; text-decoration: none;">← 返回作品集</a> | 
+                <a href="index.html" style="color: #FF6B35; text-decoration: none;">返回首页</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // 返回顶部按钮显示/隐藏
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // 图片懒加载
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src;
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        });
+    </script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GD5超薄轨道插座 - 电商详情页设计案例 | 陈群超作品集</title>
+    <style>
+        /* 返回按钮 */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 10000;
+            background: rgba(102,126,234,0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-button:hover {
+            background: #667eea;
+            transform: translateX(-5px);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; line-height: 1.8; padding: 0; }
+        .header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: #fff; padding: 100px 40px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .header h1 { font-size: 72px; font-weight: 900; margin-bottom: 20px; text-shadow: 3px 3px 10px rgba(0,0,0,0.5); letter-spacing: -2px; }
+        .header .subtitle { font-size: 28px; color: #e0e7ff; margin-bottom: 50px; font-weight: 300; }
+        .meta-info { display: flex; justify-content: center; gap: 80px; flex-wrap: wrap; margin-top: 60px; }
+        .meta-item { text-align: center; }
+        .meta-item .label { font-size: 14px; color: #a0aec0; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 3px; }
+        .meta-item .value { font-size: 32px; color: #fbbf24; font-weight: 800; }
+        .container { max-width: 1800px; margin: 0 auto; padding: 80px 40px; }
+        .section { background: #fff; border-radius: 40px; padding: 80px; margin-bottom: 60px; box-shadow: 0 25px 70px rgba(0,0,0,0.2); }
+        .section-title { font-size: 56px; font-weight: 900; color: #1e3c72; margin-bottom: 30px; position: relative; padding-left: 35px; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 12px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 6px; }
+        .section-subtitle { font-size: 22px; color: #718096; margin-bottom: 70px; line-height: 2; }
+        .design-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 60px; }
+        .design-item { background: #f7fafc; border-radius: 30px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .design-item:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 70px rgba(102,126,234,0.4); }
+        .design-item img { width: 100%; display: block; transition: transform 0.5s ease; }
+        .design-item:hover img { transform: scale(1.08); }
+        .design-overlay { position: absolute; top: 0; left: 0; right: 0; padding: 35px; background: linear-gradient(to bottom, rgba(30,60,114,0.9) 0%, transparent 100%); z-index: 2; }
+        .design-number { display: inline-block; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1e3c72; padding: 12px 30px; border-radius: 30px; font-size: 22px; font-weight: 900; box-shadow: 0 8px 25px rgba(251,191,36,0.5); }
+        .design-caption { padding: 40px; background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%); }
+        .design-caption h3 { font-size: 28px; color: #1e3c72; margin-bottom: 18px; font-weight: 800; }
+        .design-caption p { font-size: 18px; color: #4a5568; line-height: 1.9; }
+        .tech-summary { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: #fff; padding: 100px 80px; border-radius: 40px; margin-top: 80px; position: relative; overflow: hidden; }
+        .tech-summary::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(251,191,36,0.3), transparent); border-radius: 50%; top: -250px; right: -250px; animation: pulse 5s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 0.7; } }
+        .tech-summary h2 { font-size: 56px; margin-bottom: 80px; text-align: center; position: relative; z-index: 1; font-weight: 900; }
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 50px; position: relative; z-index: 1; }
+        .tech-card { background: rgba(255,255,255,0.1); padding: 50px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.2); transition: all 0.4s ease; backdrop-filter: blur(20px); }
+        .tech-card:hover { transform: translateY(-10px); background: rgba(251,191,36,0.2); border-color: rgba(251,191,36,0.5); box-shadow: 0 15px 50px rgba(251,191,36,0.4); }
+        .tech-card h3 { font-size: 30px; margin-bottom: 30px; color: #fbbf24; font-weight: 800; }
+        .tech-card ul { list-style: none; }
+        .tech-card li { padding: 15px 0; color: #e0e7ff; font-size: 19px; padding-left: 40px; position: relative; }
+        .tech-card li::before { content: '▸'; position: absolute; left: 0; color: #fbbf24; font-size: 26px; }
+        @media (max-width: 768px) { .design-grid { grid-template-columns: 1fr; } .header h1 { font-size: 48px; } .section { padding: 50px 30px; } }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="index.html" class="back-button">
+        <span>←</span> 返回作品集
+    </a>
+    <div class="header">
+        <h1>GD5超薄轨道插座</h1>
+        <p class="subtitle">13mm超薄设计 × 模块化配置 × 智能家居集成</p>
+        <div class="meta-info">
+            <div class="meta-item"><div class="label">项目类型</div><div class="value">电商详情页</div></div>
+            <div class="meta-item"><div class="label">设计周期</div><div class="value">2-3周</div></div>
+            <div class="meta-item"><div class="label">页面数量</div><div class="value">21屏设计</div></div>
+            <div class="meta-item"><div class="label">设计风格</div><div class="value">现代极简</div></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section">
+            <h2 class="section-title">初稿系列（12屏）</h2>
+            <p class="section-subtitle">展示GD5超薄轨道插座的核心功能、场景应用和技术参数，强调13mm超薄设计和智能家居集成能力</p>
+            <div class="design-grid">
+                <div class="design-item"><div class="design-overlay"><span class="design-number">01</span></div><img src="images/gd5-socket/image-01.webp" alt="工作场景应用"><div class="design-caption"><h3>工作场景应用</h3><p>展示GD5在现代办公环境中的应用，强调极简设计与空间美学的完美融合。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">02</span></div><img src="images/gd5-socket/image-02.webp" alt="产品选型指南"><div class="design-caption"><h3>产品选型指南</h3><p>GD5/GD3/GD2/GD1型号对比表，帮助用户快速选择适合的产品配置。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">03</span></div><img src="images/gd5-socket/image-03.webp" alt="安装服务说明"><div class="design-caption"><h3>安装服务说明</h3><p>明确安装服务费用和条件，建立透明的服务标准。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">04</span></div><img src="images/gd5-socket/image-04.webp" alt="厨房场景应用"><div class="design-caption"><h3>厨房场景应用</h3><p>展示GD5在现代厨房中的完美融入，满足厨房多设备供电需求。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">05</span></div><img src="images/gd5-socket/image-05.webp" alt="13mm超薄技术"><div class="design-caption"><h3>13mm超薄技术</h3><p>技术剖面图展示GD5的内部结构和13mm超薄设计。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">06</span></div><img src="images/gd5-socket/image-06.webp" alt="模块化设计"><div class="design-caption"><h3>模块化灵活配置</h3><p>展示GD5的模块化插座设计，支持多场景灵活配置。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">07</span></div><img src="images/gd5-socket/image-07.webp" alt="产品细节"><div class="design-caption"><h3>产品细节展示</h3><p>近距离展示GD5的材质、工艺和细节设计。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">08</span></div><img src="images/gd5-socket/image-08.webp" alt="使用场景"><div class="design-caption"><h3>多场景使用展示</h3><p>展示GD5在不同环境下的使用效果和适配性。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">09</span></div><img src="images/gd5-socket/image-09.webp" alt="技术参数"><div class="design-caption"><h3>技术参数说明</h3><p>详细展示GD5的技术规格和性能指标。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">10</span></div><img src="images/gd5-socket/image-10.webp" alt="安全认证"><div class="design-caption"><h3>安全认证展示</h3><p>展示GD5获得的各项安全认证和质量保障。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">11</span></div><img src="images/gd5-socket/image-11.webp" alt="售后服务"><div class="design-caption"><h3>售后服务保障</h3><p>说明GD5的售后服务政策和质保承诺。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">12</span></div><img src="images/gd5-socket/image-12.webp" alt="用户评价"><div class="design-caption"><h3>用户评价展示</h3><p>展示真实用户的使用反馈和产品评价。</p></div></div>
+            </div>
+        </div>
+        <div class="section">
+            <h2 class="section-title">优化版设计（9屏）</h2>
+            <p class="section-subtitle">基于初稿优化后的设计方案，强化产品卖点和用户体验说明</p>
+            <div class="design-grid">
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-01</span></div><img src="images/gd5-socket/image-13.webp" alt="优化版01"><div class="design-caption"><h3>优化版设计 - 产品主视觉</h3><p>基于用户反馈优化的视觉呈现。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-02</span></div><img src="images/gd5-socket/image-14.webp" alt="优化版02"><div class="design-caption"><h3>优化版设计 - 核心卖点</h3><p>突出13mm超薄核心竞争力。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-03</span></div><img src="images/gd5-socket/image-15.webp" alt="优化版03"><div class="design-caption"><h3>优化版设计 - 场景应用</h3><p>提升代入感和购买意愿。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-04</span></div><img src="images/gd5-socket/image-16.webp" alt="优化版04"><div class="design-caption"><h3>优化版设计 - 技术详解</h3><p>建立专业可信的品牌形象。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-05</span></div><img src="images/gd5-socket/image-17.webp" alt="优化版05"><div class="design-caption"><h3>优化版设计 - 智能互联</h3><p>突出产品的未来感和科技属性。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-06</span></div><img src="images/gd5-socket/image-18.webp" alt="优化版06"><div class="design-caption"><h3>优化版设计 - 品质保障</h3><p>强调品牌承诺和服务体系。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-07</span></div><img src="images/gd5-socket/image-19.webp" alt="优化版07"><div class="design-caption"><h3>优化版设计 - 安装指南</h3><p>降低用户使用门槛和疑虑。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-08</span></div><img src="images/gd5-socket/image-20.webp" alt="优化版08"><div class="design-caption"><h3>优化版设计 - 客户服务</h3><p>建立完整的服务闭环。</p></div></div>
+                <div class="design-item"><div class="design-overlay"><span class="design-number">2-09</span></div><img src="images/gd5-socket/image-21.webp" alt="优化版09"><div class="design-caption"><h3>优化版设计 - 购买引导</h3><p>提升转化率和用户行动意愿。</p></div></div>
+            </div>
+        </div>
+        <div class="tech-summary">
+            <h2>设计技术总结</h2>
+            <div class="tech-grid">
+                <div class="tech-card"><h3>🎯 产品核心卖点</h3><ul><li>13mm超薄设计 - 业界领先</li><li>模块化灵活配置</li><li>智能家居无缝集成</li><li>多场景全覆盖适配</li><li>极简美学设计语言</li></ul></div>
+                <div class="tech-card"><h3>🎨 视觉设计风格</h3><ul><li>现代极简主义</li><li>科技感蓝色系配色</li><li>真实场景化展示</li><li>数据信息可视化</li><li>高品质产品摄影</li></ul></div>
+                <div class="tech-card"><h3>🎭 配色体系</h3><ul><li>主色调: 深蓝灰 #2c3e50</li><li>辅助色: 科技蓝 #3498db</li><li>强调色: 金黄色 #fbbf24</li><li>背景色: 中性暖灰</li><li>文字色: 高对比度黑</li></ul></div>
+                <div class="tech-card"><h3>📍 应用场景</h3><ul><li>现代化办公空间</li><li>智能厨房环境</li><li>高端居家场景</li><li>商业展示空间</li><li>定制化多功能需求</li></ul></div>
+                <div class="tech-card"><h3>🔧 技术可视化</h3><ul><li>产品剖面结构图</li><li>型号参数对比表</li><li>安装步骤示意图</li><li>模块化配置说明</li><li>工艺细节特写</li></ul></div>
+                <div class="tech-card"><h3>💡 用户体验设计</h3><ul><li>清晰的产品选型指南</li><li>透明的安装服务说明</li><li>多场景使用演示</li><li>详细的FAQ答疑</li><li>完善的售后保障体系</li></ul></div>
+            </div>
+        </div>
+    </div>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

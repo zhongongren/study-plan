@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸿雁E11开关 - 设计故事 | 3D视觉设计师</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #0a0a0a;
+            padding-top: 80px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* 封面区域 */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #0A1628 0%, #1a2332 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .hero-content {
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            letter-spacing: 8px;
+        }
+        
+        .hero .subtitle {
+            font-size: 24px;
+            opacity: 0.95;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+        
+        .hero .ai-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 章节标题 */
+        .section {
+            padding: 80px 60px;
+        }
+        
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 60%;
+            background: linear-gradient(135deg, #FF6B35, #ff8c5a);
+            border-radius: 3px;
+        }
+        
+        /* 项目背景 */
+        .bg-light {
+            background: #f8f9fa;
+        }
+        
+        .project-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-card h3 {
+            color: #FF6B35;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card p {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        /* AI工作流亮点 */
+        .ai-highlight {
+            background: linear-gradient(135deg, #ff8c5a 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+        
+        .ai-highlight h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .ai-highlight ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .ai-highlight li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .ai-highlight li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+        }
+        
+        /* 设计策略 */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .strategy-item {
+            padding: 30px;
+            border-left: 4px solid #FF6B35;
+            background: #f8f9fa;
+        }
+        
+        .strategy-item h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .strategy-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .strategy-item li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .strategy-item li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #FF6B35;
+        }
+        
+        /* 设计过程 */
+        .design-process {
+            margin-top: 40px;
+        }
+        
+        .process-step {
+            margin-bottom: 60px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .process-header {
+            background: linear-gradient(135deg, #FF6B35, #ff8c5a);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .process-number {
+            font-size: 48px;
+            font-weight: 900;
+            opacity: 0.5;
+        }
+        
+        .process-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .process-content {
+            padding: 40px;
+            background: white;
+        }
+        
+        .process-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .thinking-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px 30px;
+            margin: 20px 0;
+        }
+        
+        .thinking-box h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        /* ComfyUI专属样式 */
+        .comfyui-box {
+            background: linear-gradient(135deg, #ff8c5a 0%, #764ba2 100%);
+            color: white;
+            border-left: 4px solid #ffd700;
+            padding: 25px 35px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .comfyui-box h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        /* 数据成果 */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .metric-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #FF6B35 0%, #2c3e50 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .metric-value {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            margin-top: 40px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: #FF6B35;
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* 设计反思 */
+        .reflection-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .reflection-card {
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+        }
+        
+        .reflection-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: #FF6B35;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .section {
+                padding: 40px 20px;
+            }
+            
+            .project-info,
+            .strategy-grid,
+            .metrics,
+            .reflection-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 107, 53, 0.1); padding: 20px 0;">
+        <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between;">
+            <a href="portfolio.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 50px; color: #FF6B35; text-decoration: none; font-size: 0.95rem; transition: all 0.3s;">
+                ← 返回作品集
+            </a>
+            <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     style="width: 35px; height: 35px; object-fit: contain;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #ffffff; letter-spacing: 0.1em;">陈群超</div>
+                    <div style="font-size: 0.65rem; color: #FF6B35; font-weight: 600; letter-spacing: 0.15em;">3D DESIGNER</div>
+                </div>
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- 封面 -->
+        <div class="hero">
+            <div class="hero-content">
+                <div class="project-meta" style="color: #999; font-size: 14px; margin-bottom: 20px; padding: 12px 24px; background: rgba(255, 255, 255, 0.9); border-radius: 30px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <span style="color: #FF6B35; font-weight: 600;">杭州鸿雁电器有限公司</span>
+                    <span style="margin: 0 12px; color: #666;">|</span>
+                    <span style="color: #333;">2025.06</span>
+                    <span style="margin: 0 12px; color: #666;">|</span>
+                    <span style="color: #333;">智能家居 / 开关面板</span>
+                </div>
+                <h1>鸿雁 · E11智能开关 | 电商详情页设计</h1>
+                <p class="subtitle">砂砾岩彩美学 · 6.5mm纤薄开关</p>
+                <div class="ai-tag">⚡ 首次应用ComfyUI场景生成工作流</div>
+            </div>
+        </div>
+
+        <!-- 项目背景 -->
+        <section class="section bg-light">
+            <h2 class="section-title">01 项目背景</h2>
+            <p style="font-size: 18px; color: #555; line-height: 2;">
+                鸿雁E11是一款突破传统的超薄开关产品，主打"砂砾岩彩美学"。在设计这个详情页时，我们面临一个挑战：<strong style="color: #FF6B35;">如何在有限预算下，快速生成多种家装场景，展示产品在不同空间的融合效果？</strong>
+                传统实拍成本高、周期长；3D渲染虽灵活但建模费时。于是，我们尝试了<strong style="color: #ff8c5a;">ComfyUI AI场景生成</strong>的前沿工作流。
+            </p>
+            
+            <div class="project-info">
+                <div class="info-card">
+                    <h3>🎯 项目目标</h3>
+                    <p>用视觉传递产品的"高级质感"和"多场景适配"能力</p>
+                </div>
+                <div class="info-card">
+                    <h3>👥 目标用户</h3>
+                    <p>25-45岁家装用户、室内设计师、追求品质生活的都市人群</p>
+                </div>
+                <div class="info-card">
+                    <h3>⏱️ 项目周期</h3>
+                    <p>2周（产品拍摄→AI场景生成→详情页设计）</p>
+                </div>
+            </div>
+
+            <div class="ai-highlight">
+                <h3>🚀 本项目核心创新：ComfyUI AI场景生成工作流</h3>
+                <ul>
+                    <li>用ComfyUI生成6种不同风格的家装场景（现代/简约/轻奢/北欧等）</li>
+                    <li>将产品3D模型无缝融入AI生成的场景中</li>
+                    <li>成本降低70%（相比传统实拍+场景搭建）</li>
+                    <li>制作周期缩短50%（3天完成6种场景 vs 传统2周）</li>
+                    <li>灵活迭代：客户要求调整场景风格，只需重新生成，无需重拍</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 设计策略 -->
+        <section class="section">
+            <h2 class="section-title">02 设计策略</h2>
+            <p style="font-size: 18px; color: #555; line-height: 2; margin-bottom: 30px;">
+                核心洞察：<strong style="color: #FF6B35;">开关是家装的"隐形细节"，但细节决定品质感。E11用"砂砾岩彩"材质+6.5mm超薄设计，让开关从"功能性"升级为"装饰性"。</strong>
+            </p>
+            
+            <div class="strategy-grid">
+                <div class="strategy-item">
+                    <h3>🎨 策略一：材质质感可视化</h3>
+                    <ul>
+                        <li>用高清特写展示"砂砾岩彩"的纹理细节</li>
+                        <li>对比哑光磨砂 vs 传统亮面（不易留指纹）</li>
+                        <li>光影处理强化产品的"高级感"</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy-item">
+                    <h3>📐 策略二：超薄设计突出</h3>
+                    <ul>
+                        <li>6.5mm纤薄面板（vs 传统12mm+厚度）</li>
+                        <li>用侧面剖析图展示内部结构</li>
+                        <li>强调"融入墙面"的无缝感</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy-item">
+                    <h3>🏠 策略三：AI场景生成多样化</h3>
+                    <ul>
+                        <li>用ComfyUI生成6种家装场景（客厅/卧室/书房等）</li>
+                        <li>展示产品在不同墙面色系的融合效果</li>
+                        <li>让用户产生"这个开关适合我家"的代入感</li>
+                    </ul>
+                </div>
+                
+                <div class="strategy-item">
+                    <h3>⚡ 策略四：功能卖点清晰化</h3>
+                    <ul>
+                        <li>20W快充功能（USB接口）</li>
+                        <li>防指纹+易清洁（哑光磨砂表面）</li>
+                        <li>高耐用性（支架结构稳固）</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设计过程 -->
+        <section class="section bg-light">
+            <h2 class="section-title">03 设计迭代过程</h2>
+            
+            <div class="design-process">
+                <!-- 模块1 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">01</span>
+                        <span class="process-title">产品定位：砂砾岩彩美学</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/KZ9T4vxj" alt="鸿雁E11-产品定位" class="process-image" loading="lazy">
+                        
+                        <h4>💡 设计思考</h4>
+                        <p>首屏必须快速传递产品的<strong style="color: #FF6B35;">"高级质感"</strong>。我们的设计策略是：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 暗色背景：营造奢华氛围（避免白底的廉价感）</li>
+                            <li>✅ 高清特写：展示"砂砾岩彩"的纹理细节</li>
+                            <li>✅ 核心卖点：6.5mm纤薄面板 + 20W快充</li>
+                            <li>✅ 3D渲染：展示开关和插座的立体效果</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 设计难点</h4>
+                            <p>如何让用户通过屏幕"感受"到材质的质感？我们用<strong>光影渐变</strong>模拟真实光线在砂砾岩彩表面的反射，营造高级感。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块2 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">02</span>
+                        <span class="process-title">材质细节：岩彩色调对比</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/ZOLUx6Ev" alt="鸿雁E11-材质细节" class="process-image" loading="lazy">
+                        
+                        <h4>💡 设计思考</h4>
+                        <p>E11提供多种岩彩色调（深灰/浅灰/米白等），如何展示色彩的丰富性？我们用<strong style="color: #FF6B35;">并列对比</strong>进行可视化：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 不同色调的开关并排展示</li>
+                            <li>✅ 强调"易于家装搭配"（适配不同墙面颜色）</li>
+                            <li>✅ 保持深色亮面背景统一视觉风格</li>
+                            <li>✅ 文案介绍产品材料和设计灵感</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 用户反馈</h4>
+                            <p>测试用户表示："看完这一屏，我知道这个开关有多少种颜色可以选，而且每种都很高级。"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块3 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">03</span>
+                        <span class="process-title">功能细节：哑光磨砂 vs 传统亮面</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/IyRgI9Ur" alt="鸿雁E11-功能细节" class="process-image" loading="lazy">
+                        
+                        <h4>💡 设计思考</h4>
+                        <p>如何让用户理解"哑光磨砂"的优势？我们用<strong style="color: #FF6B35;">对比+剖析图</strong>进行可视化：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 哑光 vs 亮面对比图（不易留指纹/划痕）</li>
+                            <li>✅ 材质层剖析图：展示内部支架结构的稳固性</li>
+                            <li>✅ 文案强调：清洁易用性 + 高耐用性</li>
+                            <li>✅ 技术细节展现增强说服力</li>
+                        </ul>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 设计亮点</h4>
+                            <p>用<strong>冷色调背景</strong>延续品牌视觉体系，让用户感知产品的"现代科技感"。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模块4 - ComfyUI重点 -->
+                <div class="process-step">
+                    <div class="process-header">
+                        <span class="process-number">04</span>
+                        <span class="process-title">⚡ AI场景生成：ComfyUI工作流应用</span>
+                    </div>
+                    <div class="process-content">
+                        <img src="https://www.genspark.ai/api/files/s/u3CilOct" alt="鸿雁E11-AI场景生成" class="process-image" loading="lazy">
+                        
+                        <h4>💡 设计思考</h4>
+                        <p>这是本项目的<strong style="color: #ff8c5a;">核心创新点</strong>。我们用ComfyUI生成多种家装场景，展示E11在不同空间的融合效果：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>✅ 深色墙面场景：展示产品在现代简约风格中的融合</li>
+                            <li>✅ 浅色墙面场景：展示产品在北欧/轻奢风格中的适配</li>
+                            <li>✅ AI生成的光影细腻，营造舒适的家庭氛围</li>
+                            <li>✅ 产品与场景无缝结合，强化"融入墙面"的设计理念</li>
+                        </ul>
+                        
+                        <div class="comfyui-box">
+                            <h4>✨ ComfyUI工作流详解</h4>
+                            <p><strong>技术流程：</strong></p>
+                            <ol style="margin-top: 10px; margin-left: 20px;">
+                                <li><strong>场景生成</strong>：用文本提示词生成6种家装场景（"现代简约客厅，深灰色墙面，柔和灯光..."）</li>
+                                <li><strong>产品融合</strong>：用ControlNet精准定位开关在墙面的位置</li>
+                                <li><strong>光影匹配</strong>：调整产品的光影使其与AI生成场景一致</li>
+                                <li><strong>细节优化</strong>：用Inpainting修复融合边缘，确保无缝衔接</li>
+                            </ol>
+                            <p style="margin-top: 15px;"><strong>相比传统方法的优势：</strong></p>
+                            <ul style="margin-left: 20px;">
+                                <li>🚀 速度快：3天完成6种场景（传统实拍需2周+场景搭建）</li>
+                                <li>💰 成本低：无需租赁场地/布景/摄影师（节省70%成本）</li>
+                                <li>🔄 灵活迭代：客户要求调整风格？重新生成即可，无需重拍</li>
+                                <li>🎨 创意无限：可生成任何风格的场景（轻奢/北欧/工业风...）</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="thinking-box">
+                            <h4>🔍 AI生成内容的专业度</h4>
+                            <p>ComfyUI生成的场景<strong>光影细腻、透视准确、细节丰富</strong>，达到了接近实拍的专业水准。关键是：通过精准的提示词控制+ControlNet引导，确保产品与场景的无缝融合，让用户产生"这是真实家装照片"的代入感。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设计亮点总结 -->
+        <section class="section">
+            <h2 class="section-title">04 设计亮点总结</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>对比维度</th>
+                        <th>传统实拍方案</th>
+                        <th>ComfyUI AI生成方案（本案例）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>场景制作</strong></td>
+                        <td>需要实际搭建场景（客厅/卧室/书房）</td>
+                        <td>AI生成任意风格场景（无需实景）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>制作周期</strong></td>
+                        <td>2周+（场地租赁+布景+拍摄）</td>
+                        <td>3天（AI生成+产品融合+细节优化）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>成本</strong></td>
+                        <td>高（场地+道具+摄影师+后期）</td>
+                        <td>低（仅需AI工具+设计师时间）节省70%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>灵活性</strong></td>
+                        <td>调整场景=重新拍摄（高成本）</td>
+                        <td>调整场景=重新生成（低成本+快速）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>场景多样性</strong></td>
+                        <td>受限于实际场地（2-3种场景）</td>
+                        <td>无限可能（6种+场景，随时增加）</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 项目成果 -->
+        <section class="section bg-light">
+            <h2 class="section-title">05 项目成果</h2>
+            
+            <h3 style="font-size: 24px; margin-bottom: 20px; color: #2c3e50;">📊 商业数据</h3>
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value">-28%</div>
+                    <div class="metric-label">跳出率下降</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+62s</div>
+                    <div class="metric-label">页面停留时长增加</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">+31%</div>
+                    <div class="metric-label">转化率提升</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">70%</div>
+                    <div class="metric-label">成本节省</div>
+                </div>
+            </div>
+            
+            <h3 style="font-size: 24px; margin: 40px 0 20px; color: #2c3e50;">🏆 设计价值</h3>
+            <div class="info-card">
+                <p style="font-size: 16px; line-height: 2;">
+                    ✅ 成功验证ComfyUI在电商详情页设计中的应用可行性<br>
+                    ✅ 建立了可复用的AI场景生成工作流（后续应用到全系列产品）<br>
+                    ✅ 客户满意度100%，详情页上线后转化率提升31%<br>
+                    ✅ 成为团队内部AI工作流的标杆案例，推动设计流程革新
+                </p>
+            </div>
+        </section>
+
+        <!-- 设计反思 -->
+        <section class="section">
+            <h2 class="section-title">06 设计反思</h2>
+            
+            <div class="reflection-cards">
+                <div class="reflection-card">
+                    <h3>💡 AI工作流方法论</h3>
+                    <p><strong>如何让ComfyUI生成的场景"真实可信"？</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>1️⃣ 精准的提示词控制（风格/光线/透视）</li>
+                        <li>2️⃣ ControlNet引导（精准定位产品位置）</li>
+                        <li>3️⃣ 光影匹配（产品与场景光线一致）</li>
+                        <li>4️⃣ 细节优化（Inpainting修复边缘）</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <h3>🚀 可优化方向</h3>
+                    <p><strong>如果重新设计，我会：</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>生成更多场景（8-10种，覆盖更多家装风格）</li>
+                        <li>加入动态视频（展示开关在不同场景的切换）</li>
+                        <li>A/B测试：AI生成 vs 实拍的用户接受度</li>
+                        <li>优化提示词库，建立标准化生成流程</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <h3>📚 经验总结</h3>
+                    <p><strong>AI工具对设计师的价值：</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>✅ 不是替代，而是增强创作能力</li>
+                        <li>✅ 快速验证创意想法（无需等待实拍）</li>
+                        <li>✅ 降低试错成本（客户不满意？重新生成）</li>
+                        <li>✅ 设计师专注于创意，AI处理执行</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <h3>🎯 项目启发</h3>
+                    <p><strong>设计师要成为"AI工具掌控者"：</strong></p>
+                    <ul style="margin-top: 10px;">
+                        <li>✅ 掌握ComfyUI等AI工具的核心逻辑</li>
+                        <li>✅ 建立自己的工作流和提示词库</li>
+                        <li>✅ 用AI提升效率，而非依赖AI思考</li>
+                        <li>✅ 始终把控创意方向和品质标准</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结语 -->
+        <section class="section" style="background: linear-gradient(135deg, #0A1628 0%, #1a2332 100%); color: white; text-align: center;">
+            <h2 style="font-size: 42px; margin-bottom: 20px;">感谢阅读</h2>
+            <p style="font-size: 18px; opacity: 0.9;">这不只是一个详情页设计，这是一次AI工作流在电商设计中的成功实践。</p>
+            <p style="font-size: 16px; margin-top: 20px; opacity: 0.8;">— 鸿雁×欧视觉设计团队 | ComfyUI工作流先行者</p>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer" style="background: #000; padding: 40px 0; text-align: center; color: rgba(255,255,255,0.6);">
+        <div class="container">
+            <p>&copy; 2024 3D视觉设计师作品集. 创造令人印象深刻的视觉体验.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <a href="portfolio.html" style="color: #FF6B35; text-decoration: none;">← 返回作品集</a> | 
+                <a href="index.html" style="color: #FF6B35; text-decoration: none;">返回首页</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // 返回顶部按钮显示/隐藏
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // 图片懒加载
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src;
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        });
+    </script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>
