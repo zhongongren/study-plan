@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸿雁E9开关插座 - 电商详情页设计案例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        /* 头部 */
+        header {
+            background: linear-gradient(135deg, #E32119 0%, #C41E3A 100%);
+            color: white;
+            padding: 100px 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        header .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        header .meta {
+            margin-top: 40px;
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+        
+        header .tech-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 精华展示区 */
+        .highlight-section {
+            background: white;
+            padding: 100px 40px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .section-desc {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+        
+        .highlight-grid img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .highlight-grid img:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+        }
+        
+        /* 设计策略区 */
+        .strategy-section {
+            background: #f5f7fa;
+            padding: 80px 40px;
+        }
+        
+        .strategy-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 80px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        
+        .strategy-content {
+            display: grid;
+            grid-template-columns: 55fr 45fr;
+            gap: 0;
+            align-items: center;
+        }
+        
+        .strategy-item:nth-child(even) .strategy-content {
+            grid-template-columns: 45fr 55fr;
+        }
+        
+        .strategy-item:nth-child(even) .strategy-image {
+            order: 2;
+        }
+        
+        .strategy-item:nth-child(even) .strategy-text {
+            order: 1;
+        }
+        
+        .strategy-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .strategy-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .strategy-item:hover .strategy-image img {
+            transform: scale(1.05);
+        }
+        
+        .strategy-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(227, 33, 25, 0.95);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(227, 33, 25, 0.4);
+        }
+        
+        .strategy-text {
+            padding: 60px;
+        }
+        
+        .strategy-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #E32119 0%, #C41E3A 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            background: #FF6B6B;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .strategy-text h3 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .strategy-text p {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .strategy-text ul {
+            list-style: none;
+            margin-top: 25px;
+        }
+        
+        .strategy-text li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .strategy-text li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #E32119;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .highlight-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-content,
+            .strategy-item:nth-child(even) .strategy-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-image,
+            .strategy-item:nth-child(even) .strategy-image {
+                order: 1;
+            }
+            
+            .strategy-text,
+            .strategy-item:nth-child(even) .strategy-text {
+                order: 2;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .strategy-text {
+                padding: 40px 30px;
+            }
+            
+            .strategy-text h3 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        footer h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        
+        /* 返回按钮 */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
+            background: white;
+            color: #E32119;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid #E32119;
+        }
+        
+        .back-button:hover {
+            background: #E32119;
+            color: white;
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(227,33,25,0.3);
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <a href="index.html" class="back-button">← 返回作品集</a>
+    
+    <!-- 头部 -->
+    <header>
+        <h1>鸿雁 E9 开关插座·电商详情页设计</h1>
+        <p class="subtitle">和谐美学 × 安全科技 × 智能家居</p>
+        <div style="margin-top: 30px;">
+            <span class="tech-badge">品牌形象设计</span>
+            <span class="tech-badge">电商视觉优化</span>
+            <span class="tech-badge">HONYAR 品质</span>
+        </div>
+        <p class="meta">Project Type: E-commerce Detail Page | Brand: HONYAR 鸿雁</p>
+    </header>
+
+    <!-- 精华展示区 -->
+    <section class="highlight-section">
+        <div class="container">
+            <h2 class="section-title">设计成果展示</h2>
+            <p class="section-desc">28屏电商详情页设计，展现品牌美学与产品技术的完美融合</p>
+            
+            <div class="highlight-grid">
+                <img src="images/hongyan-e9/image-01.webp" alt="鸿雁E9品牌形象">=Z0FBQUFBQnBlSDVpaFlHX1VTTENxZHZ0Z2h2MGZLeDhxdmpIcmd5M3lBMTVWRklyMmlvYTE0MG1GWkQwczF2TTlScXVzSzh1SjJRd09va283Z1lZM0M3d3RwZEM4NVVvMzJCNHY5S3VWeHlQdWpELTBaNHBjOXRhRk16N0xlaGF1MThFaUFBeXRlWjBNUVFtVzJ4OFZydldKUWhqMUZHNVNhRGcxZXJtdDlZLXVTTE9oODNQTWl5OUhKeXBiVE5wQkdFSXNaR3VqTHJNZTh6aUI2UnVVdG1HcG1xc2hGaWU4QkRXaWtfYnhtMzRSdXR3b0NhZWFiQlpvSWEtd2ZnTmxRT1M3aHZ1V21qcno2XzV0WnhNNDdLbTNkc1VkaTNUbHc9PQ" alt="鸿雁E9品牌形象">
+                <img src="images/hongyan-e9/image-02.webp" alt="鸿雁E9用户评价">=Z0FBQUFBQnBlSDV0V0p0cVVtMVJzQXBfTzh1ZFg2TUphX1VXbUhERGtRMGtFdFZHY0pyc0wxNkpQaFE5MHVoLVJnS2dCbnRyTXhadWhsNVhqOHFjT0hoT3EwNmF2SmE2UzJmQ2JtSGZ3Vm0yNXJIY2twNmFPUWNvTnBEM3B1ZE1TS0NFTS10OWhzZmEyTkZicDZKNk01ZExKOGpLMlcyZmllQlpaV3FVV183MHpSc3RjVVdfdTdjSEx6U1JZdURMV3duTjZGWTdPMlVjZXB1TldlMnZ5aTVrcnJhU1VWSzZ3MVBuWUtxMktvUFpMVW5zRFZDV3NhNVRZb1ZQWU4ybHF5aXd4QVFOWXhRdUwyRmsxRFgzaGtEcjlNckNESV9jYXc9PQ" alt="鸿雁E9用户评价">
+            </div>
+        </div>
+    </section>
+
+    <!-- 设计技术解析区 -->
+    <section class="strategy-section">
+        <div class="container">
+            <h2 class="section-title" style="margin-bottom: 80px;">设计要点解析</h2>
+            
+            <!-- 01 品牌形象与和谐美学 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-01.webp" alt="鸿雁E9品牌形象">=Z0FBQUFBQnBlSDVpaFlHX1VTTENxZHZ0Z2h2MGZLeDhxdmpIcmd5M3lBMTVWRklyMmlvYTE0MG1GWkQwczF2TTlScXVzSzh1SjJRd09va283Z1lZM0M3d3RwZEM4NVVvMzJCNHY5S3VWeHlQdWpELTBaNHBjOXRhRk16N0xlaGF1MThFaUFBeXRlWjBNUVFtVzJ4OFZydldKUWhqMUZHNVNhRGcxZXJtdDlZLXVTTE9oODNQTWl5OUhKeXBiVE5wQkdFSXNaR3VqTHJNZTh6aUI2UnVVdG1HcG1xc2hGaWU4QkRXaWtfYnhtMzRSdXR3b0NhZWFiQlpvSWEtd2ZnTmxRT1M3aHZ1V21qcno2XzV0WnhNNDdLbTNkc1VkaTNUbHc9PQ" alt="品牌形象">
+                        <div class="strategy-number">01</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">品牌形象</span>
+                        <span class="tech-tag">和谐美学</span>
+                        <h3>HONYAR品牌与色彩和谐</h3>
+                        <p>展示鸿雁品牌标识与开关插座产品的和谐设计理念。插座颜色能够匹配主流墙面涂色（米灰、菊花白、杏子灰等自然色系），实现产品与空间的完美融合。</p>
+                        <ul>
+                            <li>品牌主色#E32119贯穿设计</li>
+                            <li>自然色系配色方案</li>
+                            <li>产品与墙面色彩融合展示</li>
+                            <li>简约现代的视觉语言</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 产品系列展示 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-03.webp" alt="产品系列">=Z0FBQUFBQnBlSDVpWWc0SXVCN09iZVBYMTJacU9YUVhkOFliYV8wd2JRbXVEd0hoc3gyUm5tUllTbzNjcXNENlZSS0JxWmc5U1laTFlrakhrdjRLR2pXckdhRms2RmhQTmRFc2FGc0lXbmY3VDFDaHJMT0pCTHFyZGExaENVSlhiTUc2NEZlVFY5d0RvWWZKeklZY08zbnpXcDlFREMzRVU4ZHJrcndZWTRxVHdOU19HdTBCa3lHZFNsTWQ0eHpSSWNhV09RMWg2Q2JMQk5wQmU3enB2VTd3ZVdnMEx0Sm10a0d2emFYZTdpVmh2VkwxZU4wU3hUWWhyUk5oU3FFbkNGcFlROXI2VkhZZElCTWpjaHZ1Z3RtMWhzZFh2V1B5OVE9PQ" alt="产品系列">
+                        <div class="strategy-number">02</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">产品阵容</span>
+                        <h3>完整产品系列矩阵</h3>
+                        <p>展示1E91和1E92两大系列产品的完整阵容，涵盖不同规格和功能的开关插座组合。清晰的产品矩阵展示帮助用户快速了解产品线的丰富性和专业性。</p>
+                        <ul>
+                            <li>1E91系列15款产品</li>
+                            <li>1E92系列13款产品</li>
+                            <li>网格化布局清晰直观</li>
+                            <li>产品编号与规格标注</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 应用场景展示 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-04.webp" alt="应用场景">=Z0FBQUFBQnBlSDVpZGZWOXRzdFlJZ0xpb2ZFNkhheUg0UGVYb3JWRlZxNGtYS0tHeHVrdU1lUDJKM2diQ1VQc3M1V1RjM0U3OUFtVW1NWFozYUJYM21zdUY3LVh5eDlzWjdHTDZ4b09uUXV3Y3RDZ1N0a2ptV2lRWC1RZlJsRmRMcXlUYkp6YVM0cmVXYWxweVdPbXNVRWZzelVpRWNJcmYwUm51VGJEMjU2MU9iWkt3ZzM5b1lDMUlKYzhnSTRNenNtZ2lGWFpUa2hJTFpmZjJLY1FHUGdaaFUtQkFHNUtqRFpUTjlBMnF6UUk0eEhNZmUzYlR5Sm0tbWhCU1diXzFHRExnNzl0M1BydU5PcTNZY3Q5cGk4OTg2QzJKM1dsTXc9PQ" alt="应用场景">
+                        <div class="strategy-number">03</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">场景应用</span>
+                        <h3>真实空间应用效果</h3>
+                        <p>通过实际空间场景展示产品的安装效果，让用户直观感受开关插座在家居环境中的和谐融入。展示产品如何与不同装修风格完美搭配。</p>
+                        <ul>
+                            <li>家庭住宅场景应用</li>
+                            <li>商业空间展示</li>
+                            <li>不同墙面颜色搭配</li>
+                            <li>真实光线环境呈现</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04 产品细节特写 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-05.webp" alt="产品细节">=Z0FBQUFBQnBlSDVpTXpYd1ZwYTNpQlJHVWY4elUxNUMySXQ1VU1mbFotMG5lUmZOU2poOEtlY3ExckV6WUdRc3BXbnNRUzYxZ21zWkpiRmcyenpYM0xQeUEtUlhfSVJtMzByNkZIMFp1UVB2MkhSTnp2TUVHMjNwcm92dWNMWWxrZ2NJTHRJOUVueVFtbzV4ZTBuZk5ueFhpbUt3YW1LTFcxVnI5NzJJX09EdENmN1MzY1ZxdGlxODR0ajl4dHhyZGVTYkVQdWJMME9nRERZWGF3MXZNM1B4ZlllYlp2ZG85LWlGM25PZGRfRE9iN1l2UzF2d25ibXZEYk1paEFQcGRfUjdPbmhmUkQzMW1iTFViVTVQOWN4UUh3ekd3RFhXdEE9PQ" alt="产品细节">
+                        <div class="strategy-number">04</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">细节展示</span>
+                        <h3>精湛工艺细节呈现</h3>
+                        <p>通过高清特写镜头展示产品的精湛工艺和细节设计。展现开关插座的面板纹理、按键手感、接口设计等关键细节，传递产品的高品质感。</p>
+                        <ul>
+                            <li>面板纹理与质感</li>
+                            <li>按键触感设计</li>
+                            <li>接口精密布局</li>
+                            <li>边缘倒角处理</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05 内部结构展示 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-06.webp" alt="内部结构">=Z0FBQUFBQnBlSDVpNkNzWTJNRmZjOUwwUVB3dE93VTZqcjJRUDVobVlUdDNlQThaUUxhUEt3NHJWendQeHZwSGxSV1I2Y3ZKTVJ6eWxFUTZac3VhX1VwVkxSVk8yekphUW9KcUFoMGREX0dPa1d4OHQ3NGVkS1R0NTdFSkFkWlg2SFRfd0tEUi1wdkpCcVpfbTNFYkVTeC1OMWhIZ19WT0M1dExJZHR5allBRE9oeThYQUNEVE1waEt2R3hZOWVfQ29GRHdpQ1hEYzlhRWNsTnZBSld4OGphTkVVSzhzZ0NJX044RDNNWll6VmFCdTJLWVotdjlrUzI3RHNpclRqd05QOXRvZHlSWnBWSnBScUtsaTFXSGJfRXp6cWF0cl94N0E9PQ" alt="内部结构">
+                        <div class="strategy-number">05</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">技术解析</span>
+                        <span class="tech-tag">高密结构</span>
+                        <h3>高密度内部结构技术</h3>
+                        <p>展示产品的内部结构设计，凸显高密度布局、耐用材质和阻燃技术。天然无喷涂的白色材质确保长期使用不变色，高温阻燃材质保障安全性能。</p>
+                        <ul>
+                            <li>高密度内部结构布局</li>
+                            <li>天然无喷涂材质</li>
+                            <li>颜色长久不易变</li>
+                            <li>高温阻燃安全保护</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06 材质工艺 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-07.webp" alt="材质工艺">=Z0FBQUFBQnBlSDVpZ09yWUVoOEV6WjItUGxiMDg1V3c0N3lCb0NNV0J0ZVVmeDRQaTNydUZqNFN1ejZhazZnMnlCYnAxN0RUR2RpWXpyTU5yQ2JlNThtLTlmeF9CUDNVN3B0a1k2SnpoaGRZN3NEamltdHIzZFo2VDMtcXZzTFcxejd0bjB3UFBFeGtkcU1jWDNpR1FleTVDVEdJNk4wd0VHU0g5OVFKdWpRUmd1SlpmQ2I0MWJiY0M0RkpNZnhlTk55N25jaVBUNEhoaU5mY1J0UGVsd3NkQ0MydU1OZmNYX0N5YzZDd1p5LWx2NEc2STRMYzFEdld4cnpVc3ZQcHhaWlUtNDJDbUg3RF9LcG5aQTJLYlNBeDlUNkVNdHJpVVE9PQ" alt="材质工艺">
+                        <div class="strategy-number">06</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">材质工艺</span>
+                        <h3>优质材质与精湛工艺</h3>
+                        <p>采用优质PC材料和先进的制造工艺，确保产品的耐用性和安全性。精密的模具设计和严格的质量控制，保证每一件产品都达到高标准。</p>
+                        <ul>
+                            <li>进口PC阻燃材料</li>
+                            <li>精密注塑成型工艺</li>
+                            <li>750°C灼热丝测试</li>
+                            <li>10万次机械寿命测试</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07 16A大电流 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-08.webp" alt="16A大电流">=Z0FBQUFBQnBlSDV0Um1VSmFySHdrbkNHNHFrWXpWTTd2eWo1aDVRUXZKQVJuQ21ta1gyRjRwaTlZaE00TEtCRjB4Ul9ncnV2b054UWlnX3k1LWxORjRod1QyTThRTU9jNGRzTVdJS1NhNWlSR3dteWlLM0d3LWJnd01yWElpVE5leXlUYWVDTVBXMG1mdkZDaS1KbVJmWElLRjJzM244UndIaHJ6MmlHTldWb1pYdHFjWmIza0YtOGQ5SW1SMUdiZXN0c0tZZ1gxdXNZZDM4Q283MnhPNWQ4eVc2NHF0MFUzd3ZSZ01BUjhSbXJHRzhhN1RYSThLNzVGLWI2M2ROTk5KODlUdVlaYUtNTU4xODBRZjU3VG1lQVdYb2N2akJDRkE9PQ" alt="16A大电流">
+                        <div class="strategy-number">07</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">核心技术</span>
+                        <span class="tech-tag">16A/4000W</span>
+                        <h3>16A大电流专业设计</h3>
+                        <p>1E92系列支持16A大电流，可承载4000W功率，适合复杂的家居照明系统设计。专业级的电气设计确保大功率电器的安全稳定运行。</p>
+                        <ul>
+                            <li>16A大电流承载能力</li>
+                            <li>支持4000W大功率电器</li>
+                            <li>适配复杂照明系统</li>
+                            <li>智能过载保护功能</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08 新一代接线方式 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-09.webp" alt="接线方式">=Z0FBQUFBQnBlSDV0Q1ZLaXkwNmFvOUloenAySXpJXzdCU0RBYlh4Z0FsOVozRDBPZFVNV3dSZ0VvSjNEc0ZvRFAzUjlZb0FmQkdQYlh6REpxaDVXRjVKZ1lYQUJHT2dqclMydEFtdXlGeEdTMEpvNmM0RWg2dDl1UGJmNTdhYjFVNjBHTVV4NkFvSlFEOEtVZFJjUFpJNFJRWkVXbWlaaXBidFBfR2FCUzVmdVFWMzUtTzJ6VThOcFB4RjdTUDhCQ1pZVXVZQzdSc0YtYWwzd29hYzYycnVPenZUUDhkVXhndk9PWWM1V0s0eGlCcmNxcUhPMHhDT3M1MFBnZ04zbTI0SVlqS0tKWm1WYk01N0xFcW5fX3Y2M00xQmtXazNhb2c9PQ" alt="接线方式">
+                        <div class="strategy-number">08</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">安装优化</span>
+                        <span class="tech-tag">新一代接线</span>
+                        <h3>新一代接线技术</h3>
+                        <p>采用新一代接线方式，优化内部结构设计，大幅简化接线操作流程。工具可直接操作，无需繁琐的接线步骤，提升安装效率和可靠性。</p>
+                        <ul>
+                            <li>新一代快速接线技术</li>
+                            <li>优化内部结构布局</li>
+                            <li>简化安装操作流程</li>
+                            <li>提升接线安全可靠性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09 3C认证 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-10.webp" alt="认证证书">=Z0FBQUFBQnBlSDVpNzdNQjRxa2dBeVRzSjhrQ3FSVkhqbFRsOTJ6VlFITFlhLXRiS0hjQlJhY2h0R29UQV9DQkUxSUQ2VmJ0dWY4YTJGLUY1V280dzhzU0JxdEVjNDlUclZEZW8zdnhNRzFlbEtkbWItTG1CWU56VEszTmFVZXJfbExvRFpORE5KS1I5V2p1a0wzN0VYUVNwaHg0NWNvckNuNkU2M1RWdXVxaURhVkhEb180UU4xSFlLUW9QQm9yNDVyeGtfb1pkTDJLenhTLVJ2U2NwdG1WNGJldnZWQUNoQzlzREoxblhJbUhRcUt1Z1JnWVdQTmlrNG5JQl95UE1TaWJNWUM1dmFwS0YyVXZTdGVWSktBS3NzY0JBT3hBY2c9PQ" alt="认证证书">
+                        <div class="strategy-number">09</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">资质认证</span>
+                        <span class="tech-tag">3C认证</span>
+                        <h3>权威认证与质量保证</h3>
+                        <p>产品通过国家3C强制认证及多项国际质量标准认证，确保产品质量和安全性能符合国家标准。鸿雁品牌的品质承诺，让用户使用更放心。</p>
+                        <ul>
+                            <li>国家3C强制认证</li>
+                            <li>ISO9001质量体系认证</li>
+                            <li>CQC产品质量认证</li>
+                            <li>CE欧盟安全认证</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10 服务保障 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/hongyan-e9/image-11.webp" alt="服务保障">=Z0FBQUFBQnBlSDV0eUdrS1hubHN1a2xHcHhURnM0TzN5TWdNRERXWFRlVG40ajYyU3ZwZ19MbWpvSmxMVjUyUVUwRlVIQXZCUXoyb2ZyRlBkcDJFenNia09raFZmeVg1QWotSS1rYzUxaF93OUlCd29fS2hhdkYxYW5hUTZBS1kxZnU0VGZ6aVhMSmxhbDg2a1pORXdVeHExWHZ1MlJYT3JzNGdYZnNKMEtEclBBUFpSQXNrOUdlTXB4bGxzZ3VPNnVRNmh1MlJiejJVcTFWeW1iUjI3ZVZacFRlc1RZd054aWhYbDFjMm1vM1ZDcVhDai1PMHAyeTIwQ2gzSHpyWnhUbWFHZHU1RTlPU2ZEeHEzZFFrZTczZGFuLURHX2ItZEE9PQ" alt="服务保障">
+                        <div class="strategy-number">10</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">服务体系</span>
+                        <h3>完善的服务保障体系</h3>
+                        <p>提供全面的售前咨询、售中指导和售后服务。7×24小时客服支持，全国包邮配送，长期质量保证，让用户购买无忧、使用放心。</p>
+                        <ul>
+                            <li>7×24小时在线客服</li>
+                            <li>全国包邮快速配送</li>
+                            <li>长期质量保证承诺</li>
+                            <li>专业安装指导服务</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h3>鸿雁 E9 开关插座案例研究</h3>
+        <p>和谐美学 × 安全科技 × 智能家居 = HONYAR品质生活</p>
+        <p style="margin-top: 30px; opacity: 0.6; font-size: 0.9rem;">© 2024 Portfolio Case Study | HONYAR 鸿雁电器</p>
+    </footer>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

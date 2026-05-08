@@ -1,0 +1,20 @@
+/*
+ * 案例详情页公共模板基础
+ * 设计原则：深色沉浸背景、橙色高亮、章节化叙事、滚动流程展示。
+ * 用途：后续从玄星案例扩展其他作品详情页时，优先复用本文件中的结构命名。
+ */
+
+.case-process-section {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line, rgba(255,255,255,.12));
+}
+
+.case-process-section .steps-header {
+    border-top: none;
+}
+
+.case-template-note {
+    display: none;
+}

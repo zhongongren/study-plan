@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="陈群超｜AI视觉生产力设计师，搭建AI+3D电商视觉生产流程，覆盖主图/详情页/短动画全链路，服务恒林、鸿雁、云犀等品牌商业项目">
+    <meta name="keywords" content="陈群超,视觉设计师作品集,3D设计师,C4D产品渲染,电商详情页设计,AI工具流,杭州视觉设计师">
+    <meta name="author" content="陈群超">
+    <link rel="canonical" href="index.html">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:title" content="陈群超｜AI视觉生产力设计师 · 电商视觉全链路">
+    <meta property="og:description" content="管理AI生成流程 · 保证商业视觉落地质量 · 从需求到交付全链路把控">
+    <meta property="og:image" content="images/covers/cover-01.webp">
+    <meta property="og:site_name" content="陈群超作品集">
+    <title>陈群超｜AI视觉生产力设计师 · 电商视觉全链路</title>
+    
+    <!-- 预加载思源字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/buttons-unified.css">
+    <link rel="stylesheet" href="css/about-section-animations.css">
+    <link rel="stylesheet" href="css/detail-hero-style.css">
+    <!-- Hero完整内容轮播样式 -->
+    <link rel="stylesheet" href="css/hero-carousel.css">
+    <!-- 按钮增强样式 -->
+    <link rel="stylesheet" href="css/button-enhancements.css">
+    <!-- 固定联系我按钮 -->
+    <link rel="stylesheet" href="css/contact-fab.css">
+    <!-- 作品集加载动画 - 终极简约版（纯黑背景+渐显文字） -->
+    <link rel="stylesheet" href="css/portfolio-loader-clean.css">
+    <!-- Logo视觉风格系统 - 真实质感，不是假的CSS伪造 -->
+    <link rel="stylesheet" href="css/logo-inspired-design.css">
+    <!-- 全局滚动交互效果 -->
+    <link rel="stylesheet" href="css/scroll-animations.css">
+    <!-- 作品集Artlist风格优化 -->
+    <link rel="stylesheet" href="css/portfolio-artlist-style.css">
+    <!-- Hero区域 - Artlist风格完全重做版本（最后加载，覆盖所有其他样式） -->
+    <link rel="stylesheet" href="css/hero-artlist-complete.css">
+    <link rel="stylesheet" href="css/real-carousel-mobile-fix.css?v=20260428-real-carousel-3">
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+    <link rel="stylesheet" href="css/top-designer-home.css?v=20260429-final-visible-3">
+    
+    <style>
+        /* 图标浮动动画 */
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* 作品卡片简化 */
+        .portfolio-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+        }
+        
+        /* 数据卡片简化 */
+        .data-card-glow {
+            transition: all 0.3s ease;
+        }
+        
+        .data-card-glow:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 数字样式 */
+        .data-number {
+            /* 保持原有样式 */
+        }
+        
+        /* 工作经历卡片简化 */
+        .exp-card {
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .exp-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transform: translateY(-6px);
+        }
+        
+        /* 筛选按钮 - 统一风格 */
+        .filter-btn {
+            padding: 14px 32px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: linear-gradient(135deg, #FF6B35 0%, #ff8555 100%);
+            border-color: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(255,107,53,0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* 导航栏简化 */
+        .navbar {
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.85);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .nav-link:hover {
+            color: #FF6B35 !important;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+    </style>
+
+</head>
+<body class="loading">
+    <!-- 作品集加载动画 - 错层叠加版 -->
+    <div class="portfolio-loader">
+        <!-- 错层背景 - 16张作品分4层 -->
+        <div class="loader-product-bg">
+            
+            <!-- 第1层（底层最大）：4张代表作 2×2 -->
+            <div class="loader-layer loader-layer-1">
+                <div class="loader-grid-item"><img src="images/covers/cover-01.webp" alt="玄星X2人体工学椅"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-02.webp" alt="孤勇者人体工学椅"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-03.webp" alt="云犀智瞳Pro相机"></div>
+                <div class="loader-grid-item"><img src="images/covers/yunxi-homepage-cover.webp" alt="云犀直播设备电商首页"></div>
+            </div>
+            
+            <!-- 第2层：4张电商作品 4×1 -->
+            <div class="loader-layer loader-layer-2">
+                <div class="loader-grid-item"><img src="images/covers/cover-05.webp" alt="逆袭者人体工学椅"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-06.webp" alt="云犀京东自营"></div>
+<div class="loader-grid-item"><img src="images/covers/jd-618-cover.webp" alt="京东618大促"></div>
+<div class="loader-grid-item"><img src="images/covers/jd-618-store-cover-new.webp" alt="云犀京东618自营旗舰页"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-07.webp" alt="鸿雁E11智能开关"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-08.webp" alt="鸿雁E9智能开关"></div>
+            </div>
+            
+            <!-- 第3层：4张多样化作品 4×1 -->
+            <div class="loader-layer loader-layer-3">
+                <div class="loader-grid-item"><img src="images/covers/gd5-socket-cover.webp" alt="鸿雁GD5超薄轨道插座"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-09.webp" alt="萌宝智能保温杯"></div>
+                <div class="loader-grid-item"><img src="images/covers/yunxi-newyear-cover-new.webp" alt="云犀新年IP动画"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-11.webp" alt="恒林C2788办公椅动画"></div>
+                <div class="loader-grid-item"><img src="images/covers/laundry-rack-cover.webp" alt="鸿雁追光晾衣架"></div>
+            </div>
+            
+            <!-- 第4层（顶层最小）：4张AI工具流作品 4×1 -->
+            <div class="loader-layer loader-layer-4">
+                <div class="loader-grid-item"><img src="images/covers/cover-13.webp" alt="服装AI虚拟试衣"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-14.webp" alt="口红AI虚拟试色"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-15.webp" alt="袜子AI虚拟试穿"></div>
+                <div class="loader-grid-item"><img src="images/covers/cover-16.webp" alt="数码产品AI渲染"></div>
+            </div>
+            
+        </div>
+        
+        <!-- 径向渐变遮罩 -->
+        <div class="loader-overlay"></div>
+        
+        <!-- 内容区 -->
+        <div class="loader-content">
+            <!-- 标题 -->
+            <div class="loader-title" role="status" aria-live="polite">作品集加载中...</div>
+            
+            <!-- 副标题 -->
+            <p class="loader-subtitle">6年专业经验，用3D设计重塑产品价值</p>
+            
+            <!-- 进度条 -->
+            <div class="loader-progress-bar">
+                <div class="loader-progress-fill"></div>
+            </div>
+            <div class="loader-progress-text">0%</div>
+        </div>
+    </div>
+
+    <!-- 自定义光标 - 已禁用 -->
+    <!-- <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div> -->
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo区域 -->
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     class="logo-icon">
+                <div class="logo-text">
+                    <div class="logo-name">陈群超</div>
+                    <div class="logo-tag">3D Designer</div>
+                </div>
+            </a>
+            
+            <!-- 主导航（中间） -->
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">首页</a></li>
+                <li><a href="design-philosophy.html" class="nav-link">设计理念</a></li>
+                <li><a href="portfolio.html" class="nav-link">项目案例</a></li>
+                <li><a href="ai-solutions.html" class="nav-link">AI解决方案<span style="display:inline-block;margin-left:6px;padding:1px 6px;background:#FF6B35;color:#fff;font-size:0.65rem;font-weight:700;border-radius:4px;vertical-align:middle;line-height:1.6;">NEW</span></a></li>
+                <li><a href="index.html#contact" class="nav-link">联系方式</a></li>
+            </ul>
+            
+            <!-- 右侧操作区 -->
+            <div class="nav-actions">
+                <a href="index.html#contact" class="nav-contact">联系合作</a>
+                <a href="portfolio.html" class="nav-cta">查看作品</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero 完整内容轮播系统 -->
+    <div class="hero-carousel-wrapper">
+        
+        <!-- ==================== Slide 1: 个人展示 ==================== -->
+        <div class="hero-carousel-slide active">
+            <section id="home" class="hero hero-magazine">
+                <img src="images/hero/hero-personal.webp" alt="陈群超 - 视觉设计师" class="product-slide-bg">
+                <div class="product-slide-overlay"></div>
+                
+                <div class="product-slide-content">
+                    <!-- 顶部内容组 -->
+                    <div class="content-top">
+                        <span class="product-tag">AI视觉生产力设计师</span>
+                        <h1 class="product-title">陈群超｜<span style="color: #FF6B35;">3D</span><br><span class="headline-nowrap">电商视觉设计师</span></h1>
+                        <p class="product-desc">6年专业经验 · 杭州鸿雁电器（央企）设计师<br>管理AI生成流程 · 保证商业视觉落地质量 · 从需求到交付全链路把控</p>
+                    </div>
+                    
+                    <!-- 底部内容组 -->
+                    <div class="content-bottom">
+                        <div class="product-features">
+                            <div class="product-feature">
+                                <span class="feature-value" style="font-size:0.9rem;">流程可复用</span>
+                                <span class="feature-label">标准化交付</span>
+                            </div>
+                            <div class="product-feature">
+                                <span class="feature-value" style="font-size:0.9rem;">-60%</span>
+                                <span class="feature-label">降低拍摄成本</span>
+                            </div>
+                            <div class="product-feature">
+                                <span class="feature-value" style="font-size:0.75rem;">全链路</span>
+                                <span class="feature-label">主图/详情页/短动画</span>
+                            </div>
+                        </div>
+                        
+                        <a href="portfolio.html" class="product-cta">
+                            查看作品集
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== Slide 2: 玄星X2产品 ==================== -->
+        <div class="hero-carousel-slide">
+            <section class="hero hero-magazine">
+                <img src="images/hero/hero-xuanxing.webp" alt="玄星X2" class="product-slide-bg">
+                <div class="product-slide-overlay"></div>
+                
+                <div class="product-slide-content">
+                    <!-- 顶部内容组 -->
+                    <div class="content-top">
+                        <span class="product-tag">精选商业案例 · 3D产品渲染 / 电商详情页</span>
+                        <h2 class="product-title">恒林 · <span style="color: #FF6B35;">玄星X2</span><br>人体工学椅</h2>
+                        <p class="product-desc">从卖点提炼到3D视觉与详情页叙事，建立高质感商业视觉案例。</p>
+                    </div>
+                    
+                    <!-- 底部内容组 -->
+                    <div class="content-bottom">
+                        <div class="product-features">
+                        <div class="product-feature">
+                            <span class="feature-value">200kg</span>
+                            <span class="feature-label">最大承重</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">6维</span>
+                            <span class="feature-label">自由调节</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">16屏</span>
+                            <span class="feature-label">完整展示</span>
+                        </div>
+                        </div>
+                        
+                        <a href="xuanxing-x2-detail.html?v=20260429-xuanxing-long-v5" class="product-cta">
+                        查看完整详情页
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== Slide 3: 孤勇者产品 ==================== -->
+        <div class="hero-carousel-slide">
+            <section class="hero hero-magazine">
+                <img src="images/hero/hero-comfort-scene.webp" alt="孤勇者办公椅" class="product-slide-bg">
+                <div class="product-slide-overlay"></div>
+                
+                <div class="product-slide-content">
+                    <!-- 顶部内容组 -->
+                    <div class="content-top">
+                        <span class="product-tag">精选商业案例 · C4D 全流程渲染</span>
+                        <h2 class="product-title"><span style="color: #FF6B35;">孤勇者</span><br>人体工学椅</h2>
+                        <p class="product-desc">用完整建模、材质、灯光与详情页节奏，把办公椅产品转化为可感知的购买理由。</p>
+                    </div>
+                    
+                    <!-- 底部内容组 -->
+                    <div class="content-bottom">
+                        <div class="product-features">
+                        <div class="product-feature">
+                            <span class="feature-value">C4D</span>
+                            <span class="feature-label">全流程制作</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">16屏</span>
+                            <span class="feature-label">详情页设计</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">150°</span>
+                            <span class="feature-label">躺卧角度</span>
+                        </div>
+                    </div>
+                    
+                    <a href="lone-warrior-chair-detail.html?v=20260429-lone-template-v5-safe" class="product-cta">
+                        查看完整案例
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== Slide 4: 云犀智瞳Pro ==================== -->
+        <div class="hero-carousel-slide">
+            <section class="hero hero-magazine">
+                <img src="images/hero/hero-yunxi-pro.webp" alt="云犀智瞳Pro" class="product-slide-bg">
+                <div class="product-slide-overlay"></div>
+                
+                <div class="product-slide-content">
+                    <!-- 顶部内容组 -->
+                    <div class="content-top">
+                        <span class="product-tag">品牌视觉案例 · 智能硬件视觉</span>
+                        <h2 class="product-title"><span style="color: #FF6B35;">云犀智瞳Pro</span><br>4K AI直播相机</h2>
+                        <p class="product-desc">面向直播硬件的高质感品牌视觉，从产品渲染到电商转化建立统一表达。</p>
+                    </div>
+                    
+                    <!-- 底部内容组 -->
+                    <div class="content-bottom">
+                        <div class="product-features">
+                        <div class="product-feature">
+                            <span class="feature-value">4K60</span>
+                            <span class="feature-label">超清画质</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">AI</span>
+                            <span class="feature-label">智能算法</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">C4D</span>
+                            <span class="feature-label">渲染制作</span>
+                        </div>
+                    </div>
+                    
+                    <a href="yunxi-zhitong-pro-detail.html" class="product-cta">
+                        查看完整案例
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== Slide 5: 舒适体验 ==================== -->
+        <div class="hero-carousel-slide">
+            <section class="hero hero-magazine">
+                <img src="images/hero/hero-comfort.webp" alt="舒适体验" class="product-slide-bg">
+                <div class="product-slide-overlay"></div>
+                
+                <div class="product-slide-content">
+                    <!-- 顶部内容组 -->
+                    <div class="content-top">
+                        <span class="product-tag">能力展示 · 场景化产品表达</span>
+                        <h2 class="product-title">产品<br><span style="color: #FF6B35;">场景渲染</span></h2>
+                        <p class="product-desc">以场景渲染和信息组织展示产品价值，让复杂卖点更直观、更适合电商转化。</p>
+                    </div>
+                    
+                    <!-- 底部内容组 -->
+                    <div class="content-bottom">
+                        <div class="product-features">
+                        <div class="product-feature">
+                            <span class="feature-value">C4D</span>
+                            <span class="feature-label">场景渲染</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">产品</span>
+                            <span class="feature-label">视觉设计</span>
+                        </div>
+                        <div class="product-feature">
+                            <span class="feature-value">电商</span>
+                            <span class="feature-label">详情页</span>
+                        </div>
+                    </div>
+                    
+                    <a href="portfolio.html" class="product-cta">
+                        探索全部案例
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 轮播控制器 ==================== -->
+        
+        <!-- 左右箭头 -->
+        <button class="hero-carousel-control prev" aria-label="上一张">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+        <button class="hero-carousel-control next" aria-label="下一张">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+
+        <!-- 底部指示器 -->
+        <div class="hero-carousel-indicators">
+            <button class="hero-indicator active" aria-label="个人展示"></button>
+            <button class="hero-indicator" aria-label="玄星X2"></button>
+            <button class="hero-indicator" aria-label="孤勇者"></button>
+            <button class="hero-indicator" aria-label="功能展示"></button>
+            <button class="hero-indicator" aria-label="舒适体验"></button>
+        </div>
+
+        <!-- 暂停/播放按钮 -->
+        <button class="hero-carousel-pause" aria-label="暂停自动播放">
+            <svg class="pause-icon" viewBox="0 0 24 24">
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+            </svg>
+            <svg class="play-icon" viewBox="0 0 24 24" style="display: none;">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </button>
+
+     </div>
+
+    <section class="tdh-proof-bar" aria-label="招聘者快速判断">
+        <div class="tdh-proof-cell is-intro"><small>Hiring Snapshot</small><strong>AI驱动的电商视觉生产力设计师 · 从需求到交付全链路把控</strong><span>适合需要产品渲染、详情页设计与 AI 工具流落地的视觉岗位。</span></div>
+        <div class="tdh-proof-cell"><small>Experience</small><strong>6年</strong><span>商业视觉与电商项目经验</span></div>
+        <div class="tdh-proof-cell"><small>Specialty</small><strong>C4D / OC</strong><span>产品渲染与场景视觉</span></div>
+        <div class="tdh-proof-cell"><small>Cases</small><strong>90+</strong><span>产品渲染与详情页项目</span></div>
+        <div class="tdh-proof-cell"><small>Focus</small><strong>AI 工作流</strong><span>模特生成、场景生成、效率沉淀</span></div>
+    </section>
+
+
+    <!-- 首屏后强案例入口：让招聘方和客户更快看到能力证据 -->
+    <section class="priority-cases" aria-labelledby="priority-cases-title">
+        <div class="priority-cases__inner">
+            <div class="priority-cases__header">
+                <span class="priority-cases__eyebrow">Key Cases</span>
+                <h2 id="priority-cases-title">先看最能证明能力的 3 个案例</h2>
+                <p>从产品渲染、详情页叙事到 AI 工具流落地，把“会做图”转化为可判断的商业设计能力。</p>
+            </div>
+            <div class="priority-cases__grid">
+                <a class="priority-case priority-case--hero" href="xuanxing-x2-detail.html?v=20260429-xuanxing-long-v5" aria-label="查看玄星X2人体工学椅详情页设计案例">
+                    <img src="images/covers/xuanxing-x2-cover.webp" alt="玄星X2人体工学椅详情页设计封面" loading="eager">
+                    <div class="priority-case__shade"></div>
+                    <div class="priority-case__content">
+                        <span class="priority-case__tag">3D产品渲染 · 详情页叙事</span>
+                        <h3>玄星X2人体工学椅</h3>
+                        <p>围绕“六维软腰靠”建立主视觉与16屏详情页节奏，让产品卖点更直观、更有体感。</p>
+                        <span class="priority-case__meta">查看完整案例 →</span>
+                    </div>
+                </a>
+                <a class="priority-case" href="lone-warrior-chair-detail.html?v=20260429-lone-template-v5-safe" aria-label="查看孤勇者人体工学椅详情页设计案例">
+                    <img src="images/covers/lone-warrior-cover.webp" alt="孤勇者人体工学椅 C4D 渲染与详情页封面" loading="lazy">
+                    <div class="priority-case__shade"></div>
+                    <div class="priority-case__content">
+                        <span class="priority-case__tag">C4D全流程 · 情感化表达</span>
+                        <h3>孤勇者人体工学椅</h3>
+                        <p>用建模、材质、灯光与场景叙事，把办公椅功能点转译成可感知的购买理由。</p>
+                        <span class="priority-case__meta">查看案例 →</span>
+                    </div>
+                </a>
+                <a class="priority-case" href="clothing-virtual-tryon-detail.html" aria-label="查看服装AI虚拟试衣解决方案案例">
+                    <img src="images/covers/clothing-tryon-cover-new.webp" alt="服装AI虚拟试衣解决方案封面" loading="lazy">
+                    <div class="priority-case__shade"></div>
+                    <div class="priority-case__content">
+                        <span class="priority-case__tag">AI工具流 · 电商降本</span>
+                        <h3>服装 AI 虚拟试衣</h3>
+                        <p>把模特、场景和风格迭代变成可复用流程，适合多SKU、多渠道的电商内容生产。</p>
+                        <span class="priority-case__meta">查看方案 →</span>
+                    </div>
+                </a>
+            </div>
+            <div class="priority-cases__actions">
+                <a href="portfolio.html" class="priority-cases__primary">查看全部作品</a>
+                <a href="index.html#contact" class="priority-cases__secondary">联系合作 / 面试沟通</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我区块 -->
+    <section id="about" class="about" style="background: #0a0a0a; padding: 100px 0 50px 0; position: relative; overflow: hidden;">
+        <!-- 动态背景光晕 -->
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%); filter: blur(120px); pointer-events: none;"></div>
+        
+        <div class="container" style="position: relative; z-index: 2; max-width: 1200px;">
+            <!-- 标题区域 -->
+            <div style="text-align: center; margin-bottom: 100px; position: relative;">
+                <!-- 小字 -->
+                <div style="font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.2em; margin-bottom: 30px;">
+                    关于我
+                </div>
+                <!-- 主标题 -->
+                <h2 style="font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 900; line-height: 1; margin: 0 0 30px 0;">
+                    <span style="color: #fff;">6年</span><span style="background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">视觉设计师</span>
+                </h2>
+                <p style="font-size: 1.3rem; color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto; line-height: 1.8;">
+                    专注 3D渲染 × 电商视觉 × AI工具落地
+                </p>
+            </div>
+            
+            <!-- 核心成就卡片 - 规整版 -->
+            <div class="animate-on-scroll" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 80px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+                
+                <!-- 成就卡1：工作经验 -->
+                <div class="achievement-card" style="background: linear-gradient(135deg, rgba(255,107,53,0.06) 0%, rgba(255,140,90,0.02) 100%); border: 1px solid rgba(255,107,53,0.25); border-radius: 16px; padding: 32px 24px; position: relative; overflow: hidden; text-align: center;">
+                    <!-- 背景装饰 -->
+                    <div style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,107,53,0.12), transparent); border-radius: 50%; filter: blur(50px);"></div>
+                    
+                    <!-- 内容区 -->
+                    <div style="position: relative;">
+                        <!-- 数字 -->
+                        <div style="margin-bottom: 12px;">
+                            <span class="data-number" style="font-size: 3.5rem; font-weight: 900; color: #FF6B35; line-height: 1;" data-target="6">6</span>
+                            <span style="font-size: 2rem; color: #FF6B35; font-weight: 700;">年</span>
+                        </div>
+                        
+                        <!-- 标题 -->
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 12px; letter-spacing: 0.5px;">专业设计经验</div>
+                        
+                        <!-- 分割线 -->
+                        <div style="width: 40px; height: 2px; background: linear-gradient(90deg, transparent, rgba(255,107,53,0.5), transparent); margin: 16px auto;"></div>
+                        
+                        <!-- 描述 -->
+                        <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6;">杭州鸿雁电器（央企）<br>资深视觉设计师</div>
+                    </div>
+                </div>
+                
+                <!-- 成就卡2：服务品牌 -->
+                <div class="achievement-card" style="background: linear-gradient(135deg, rgba(255,107,53,0.06) 0%, rgba(255,140,90,0.02) 100%); border: 1px solid rgba(255,107,53,0.25); border-radius: 16px; padding: 32px 24px; position: relative; overflow: hidden; text-align: center;">
+                    <!-- 背景装饰 -->
+                    <div style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,107,53,0.12), transparent); border-radius: 50%; filter: blur(50px);"></div>
+                    
+                    <!-- 内容区 -->
+                    <div style="position: relative;">
+                        <!-- 数字 -->
+                        <div style="margin-bottom: 12px;">
+                            <span class="data-number" style="font-size: 3.5rem; font-weight: 900; color: #FF6B35; line-height: 1;" data-target="90">90</span>
+                            <span style="font-size: 2rem; color: #FF6B35; font-weight: 700;">+</span>
+                        </div>
+                        
+                        <!-- 标题 -->
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 12px; letter-spacing: 0.5px;">商业项目交付</div>
+                        
+                        <!-- 分割线 -->
+                        <div style="width: 40px; height: 2px; background: linear-gradient(90deg, transparent, rgba(255,107,53,0.5), transparent); margin: 16px auto;"></div>
+                        
+                        <!-- 描述 -->
+                        <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6;">90+产品渲染与详情页项目<br>覆盖京东 · 天猫 · 抖音 · 亚马逊</div>
+                    </div>
+                </div>
+                
+                <!-- 成就卡3：技术栈 -->
+                <div class="achievement-card" style="background: linear-gradient(135deg, rgba(255,107,53,0.06) 0%, rgba(255,140,90,0.02) 100%); border: 1px solid rgba(255,107,53,0.25); border-radius: 16px; padding: 32px 24px; position: relative; overflow: hidden; text-align: center;">
+                    <!-- 背景装饰 -->
+                    <div style="position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,107,53,0.12), transparent); border-radius: 50%; filter: blur(50px);"></div>
+                    
+                    <!-- 内容区 -->
+                    <div style="position: relative;">
+                        <!-- 数字 -->
+                        <div style="margin-bottom: 12px;">
+                            <span style="font-size: 3.5rem; font-weight: 900; color: #FF6B35; line-height: 1;">3D</span>
+                        </div>
+                        
+                        <!-- 标题 -->
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.95); font-weight: 600; margin-bottom: 12px; letter-spacing: 0.5px;">渲染 × AI × 视觉</div>
+                        
+                        <!-- 分割线 -->
+                        <div style="width: 40px; height: 2px; background: linear-gradient(90deg, transparent, rgba(255,107,53,0.5), transparent); margin: 16px auto;"></div>
+                        
+                        <!-- 描述 -->
+                        <div style="font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6;">C4D · Blender · AI工具流<br>电商详情页 · 产品渲染</div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- 定位宣言 -->
+            <div style="margin: 0 0 60px; padding: 36px 40px; background: rgba(255,107,53,0.05); border: 1px solid rgba(255,107,53,0.2); border-left: 4px solid #FF6B35; border-radius: 16px;">
+                <p style="font-size: 1.05rem; line-height: 2.0; color: rgba(255,255,255,0.85); margin: 0;">
+                    我不只是会做图的设计师。<br>
+                    我搭建了一套用 AI + 3D 完成电商视觉生产的完整流程——<br>
+                    从需求拆解、Prompt 设计、质量把控到多平台适配——<br>
+                    让一个人能完成过去需要 3-5 人团队的视觉交付量。<br>
+                    <span style="color: rgba(255,255,255,0.5); font-size: 0.95rem;">这套流程已经在恒林、鸿雁、云犀等品牌的商业项目中验证。</span>
+                </p>
+            </div>
+            <!-- 双栏内容 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+                
+                <!-- 左栏：核心能力 -->
+                <div class="about-info animate-on-scroll">
+                    <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 4px; height: 24px; background: linear-gradient(180deg, #FF6B35, #ff8c5a); border-radius: 2px;"></div>
+                        <span style="background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">核心能力</span>
+                    </h3>
+                    <div style="display: grid; gap: 20px;">
+                        <div style="padding: 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; transition: all 0.3s ease;">
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #FF6B35; margin-bottom: 12px;">C4D 产品渲染</div>
+                            <p style="font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.7); margin: 0;">
+                                6年C4D经验，完成90+产品渲染项目，擅长人体工学椅、智能硬件等品类
+                            </p>
+                        </div>
+                        <div style="padding: 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; transition: all 0.3s ease;">
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #FF6B35; margin-bottom: 12px;">AI 工具流落地</div>
+                            <p style="font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.7); margin: 0;">
+                                实战应用：服装虚拟试穿、场景搭建、产品效果图AI生成
+                            </p>
+                        </div>
+                        <div style="padding: 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; transition: all 0.3s ease;">
+                            <div style="font-size: 1.1rem; font-weight: 600; color: #FF6B35; margin-bottom: 12px;">电商平台经验</div>
+                            <p style="font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.7); margin: 0;">
+                                京东自营店 · 天猫旗舰店 · 拼多多 · 抖音 · 亚马逊海外店
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右栏：求职信息 -->
+                <div class="about-info animate-on-scroll">
+                    <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 4px; height: 24px; background: linear-gradient(180deg, #FF6B35, #ff8c5a); border-radius: 2px;"></div>
+                        <span style="background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">求职意向</span>
+                    </h3>
+                    
+                    <!-- 简化的信息展示 -->
+                    <div style="padding: 32px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; margin-bottom: 24px;">
+                        <div style="margin-bottom: 28px;">
+                            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; letter-spacing: 0.05em;">目标岗位</div>
+                            <div style="font-size: 1.05rem; color: rgba(255,255,255,0.9); line-height: 1.8;">
+                                AI视觉生产力设计师 · 电商视觉增长顾问 · 生成式AI工具流设计师
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);">
+                            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; letter-spacing: 0.05em;">工作状态</div>
+                            <div style="font-size: 1.05rem; color: rgba(255,255,255,0.9);">
+                                杭州鸿雁电器（央企）· 电商视觉设计师
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);">
+                            <div>
+                                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 8px; letter-spacing: 0.05em;">地点</div>
+                                <div style="font-size: 1.05rem; color: #fff;">杭州</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设计理念引导 + 分隔条 -->
+            <div style="margin: 100px 0 80px; padding: 40px 20px; position: relative;">
+                <!-- 渐变分隔线 -->
+                <div style="position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 15%, rgba(255,255,255,0.25) 85%, transparent 100%);"></div>
+                
+                <!-- 中心内容 -->
+                <div style="max-width: 760px; margin: 0 auto; text-align: center; background: #0a0a0a; padding: 0 50px; position: relative;">
+                    <p style="font-size: 1.05rem; line-height: 2.1; color: rgba(255,255,255,0.5);">
+                        从传统设计到AI工具流，从单点执行到全栈把控。我关注的不只是视觉完成度，而是<strong style="color: rgba(255,107,53,0.8);">目标拆解、路径选择、效率沉淀</strong>。
+                        <a href="design-philosophy.html" style="color: rgba(255,255,255,0.45); text-decoration: underline; margin-left: 8px; transition: all 0.3s ease;">详细了解我的设计理念 →</a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 响应式适配：小屏幕改为垂直布局 -->
+            <style>
+                @media (max-width: 768px) {
+                    /* 三栏改为单列 */
+                    div[style*="grid-template-columns: repeat(3, 1fr)"] {
+                        grid-template-columns: 1fr !important;
+                    }
+                }
+            </style>
+
+            <!-- 技能卡片悬停效果样式 -->
+            <style>
+                /* 技能卡片悬停效果 */
+                .skill-card:hover {
+                    transform: translateY(-12px) scale(1.03);
+                    box-shadow: 0 20px 60px rgba(255,107,53,0.35);
+                }
+                
+                .skill-card:hover span {
+                    transform: scale(1.05);
+                        box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+                    }
+                    
+                    @media (max-width: 768px) {
+                        #floatingKeywords {
+                            height: 380px !important;
+                        }
+                        .floating-keyword {
+                            font-size: 1.2rem !important;
+                        }
+                        .philosophy-cta-btn {
+                            padding: 16px 32px !important;
+                            font-size: 1rem !important;
+                        }
+                    }
+                </style>
+
+                <!-- 响应式适配 -->
+                <style>
+                    @media (max-width: 968px) {
+                        div[style*="grid-template-columns: repeat(3, 1fr)"] {
+                            grid-template-columns: 1fr !important;
+                        }
+                    }
+                </style>
+            </div>
+        </div>
+        
+        <style>
+            @media (max-width: 968px) {
+                #about .container > div:nth-child(2) {
+                    grid-template-columns: 1fr !important;
+                    gap: 40px !important;
+                }
+            }
+        </style>
+    </section>
+
+    <!-- 工作经历区块 -->
+    <section class="experience-skills" style="padding: 50px 0 120px 0; background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%); position: relative; overflow: hidden;">
+        <!-- 背景装饰 -->
+        <div style="position: absolute; top: 20%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255, 107, 53, 0.05) 0%, transparent 70%); filter: blur(100px); pointer-events: none;"></div>
+        
+        <div class="container" style="max-width: 1200px;">
+            <!-- 标题 -->
+            <div style="text-align: center; margin-bottom: 80px;">
+                <!-- 小字 -->
+                <div style="font-size: 0.9rem; font-weight: 700; color: #FF6B35; letter-spacing: 0.2em; margin-bottom: 30px;">
+                    Work Experience
+                </div>
+                <!-- 主标题 -->
+                <h2 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin: 0;">
+                    <span style="color: #fff;">工作</span><span style="color: #FF6B35;">经历</span>
+                </h2>
+            </div>
+            
+            <!-- 工作经历时间线 -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-bottom: 80px;">
+                <!-- 卡片1：鸿雁电器 -->
+                <div class="exp-card animate-on-scroll" style="padding: 35px; background: rgba(255,255,255,0.04); border: 2px solid rgba(255, 107, 53, 0.2); border-radius: 20px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <!-- 装饰线 -->
+                    <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                    
+                    <!-- 状态标签 -->
+                    <div style="position: absolute; top: 20px; right: 20px; padding: 6px 14px; background: rgba(0, 255, 0, 0.15); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 20px; display: flex; align-items: center; gap: 6px;">
+                        <div style="width: 6px; height: 6px; background: #0f0; border-radius: 50%; box-shadow: 0 0 10px #0f0; animation: pulse 2s ease-in-out infinite;"></div>
+                        <span style="font-size: 0.75rem; color: #0f0; font-weight: 600;">在职</span>
+                    </div>
+                    
+                    <div style="padding-left: 16px;">
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px;">杭州鸿雁电器有限公司<span style="font-size: 0.75rem; color: #FF6B35; font-weight: 600; margin-left: 10px; padding: 4px 10px; background: rgba(255, 107, 53, 0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 12px;">央企</span></h4>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 1rem; color: #FF6B35; font-weight: 600;">电商视觉设计师</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.4);">|</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">2025.06 - 至今</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.8; margin: 0;">
+                            E11/E9开关 · 追光晾衣架 · 玄星X2人体工学椅
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 卡片2：恒林家居 -->
+                <div class="exp-card animate-on-scroll" style="padding: 35px; background: rgba(255,255,255,0.04); border: 2px solid rgba(255, 107, 53, 0.2); border-radius: 20px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <!-- 装饰线 -->
+                    <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                    
+                    <div style="padding-left: 16px;">
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px;">恒林家居股份<span style="font-size: 0.85rem; color: rgba(255,255,255,0.5); font-weight: 500; margin-left: 8px;">(上市)</span></h4>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 1rem; color: #FF6B35; font-weight: 600;">C4D视觉设计师</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.4);">|</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">2024.09 - 2025.06</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.8; margin: 0;">
+                            孤勇者 · 逆袭者 · C2788办公椅动画
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 卡片3：星犀科技 -->
+                <div class="exp-card animate-on-scroll" style="padding: 35px; background: rgba(255,255,255,0.04); border: 2px solid rgba(255, 107, 53, 0.2); border-radius: 20px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <!-- 装饰线 -->
+                    <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                    
+                    <div style="padding-left: 16px;">
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px;">杭州星犀科技<span style="font-size: 0.85rem; color: rgba(255,255,255,0.5); font-weight: 500; margin-left: 8px;">(独角兽)</span></h4>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 1rem; color: #FF6B35; font-weight: 600;">视觉设计师</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.4);">|</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">2023.11 - 2024.08</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.8; margin: 0;">
+                            云犀直播设备 · 智瞳Pro · 月均30万销售额
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 卡片4：泰美时光 -->
+                <div class="exp-card animate-on-scroll" style="padding: 35px; background: rgba(255,255,255,0.04); border: 2px solid rgba(255, 107, 53, 0.2); border-radius: 20px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <!-- 装饰线 -->
+                    <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                    
+                    <div style="padding-left: 16px;">
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px;">杭州泰美时光</h4>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                <span style="font-size: 1rem; color: #FF6B35; font-weight: 600;">3D设计师</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.4);">|</span>
+                                <span style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">2022.06 - 2023.10</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.8; margin: 0;">
+                            泰美系列水杯 · 萌宝保温杯
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <style>
+            /* 工作经历卡片悬停 */
+            .exp-card:hover {
+                background: rgba(255,255,255,0.06) !important;
+                transform: translateY(-6px);
+                box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            }
+            
+            /* 技能标签悬停 */
+            .experience-skills span:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            }
+            
+            /* 响应式 */
+            @media (max-width: 968px) {
+                .experience-skills .container > div {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+        </style>
+    </section>
+
+    <!-- 作品集区块 -->
+    <!-- 精选作品区块 -->
+    <section id="works" class="works" style="padding: 120px 0; background: #0a0a0a; position: relative; overflow: hidden;">
+        <!-- 背景装饰 -->
+        <div style="position: absolute; top: 20%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255, 107, 53, 0.06) 0%, transparent 70%); filter: blur(100px); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: 20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255, 107, 53, 0.06) 0%, transparent 70%); filter: blur(100px); pointer-events: none;"></div>
+        
+        <div class="container" style="max-width: 1400px;">
+            <!-- 标题区（配3D作品集图标） -->
+            <div style="text-align: center; margin-bottom: 80px;">
+                <!-- 小字 -->
+                <div style="font-size: 0.9rem; font-weight: 700; color: #FF6B35; letter-spacing: 0.2em; margin-bottom: 30px;">
+                    精选作品
+                </div>
+                <!-- 主标题 -->
+                <h2 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; color: #fff; margin: 0 0 30px 0; line-height: 1;">
+                    精选<span style="background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">作品</span>
+                </h2>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto; line-height: 1.8;">
+                    代表性商业项目 · 点击查看完整案例
+                </p>
+            </div>
+
+            <!-- 作品分类标签 -->
+            <div class="works-filter animate-on-scroll" style="display: flex; justify-content: center; gap: 16px; margin-bottom: 60px; flex-wrap: wrap;">
+                <button class="filter-btn active" data-filter="all" style="padding: 14px 32px; background: rgba(255, 107, 53, 0.15); color: #FF6B35; border: 2px solid rgba(255, 107, 53, 0.3); border-radius: 30px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">全部</button>
+                <button class="filter-btn" data-filter="rendering" style="padding: 14px 32px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 30px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">电商视觉</button>
+                <button class="filter-btn" data-filter="animation" style="padding: 14px 32px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 30px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">三维动画</button>
+                <button class="filter-btn" data-filter="ai" style="padding: 14px 32px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.6); border: 2px solid rgba(255,255,255,0.1); border-radius: 30px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">AI工具流</button>
+            </div>
+
+            <!-- AI工具流 - 电商类目展示 -->
+            <div class="ai-portrait-matrix animate-on-scroll" data-category="ai">
+                <!-- 顶部标题区 -->
+                <div class="matrix-header">
+                    <div class="matrix-badge-group">
+                        <span class="badge-ai">AI工具流</span>
+                        <span class="badge-tech">电商类目解决方案</span>
+                    </div>
+                    <h3 class="matrix-title">
+                        <span class="title-gradient">AI电商类目案例</span>
+                        <span class="title-sub">女装 · 地毯 · 首饰 · 宠物 · 男鞋 · 多类目覆盖</span>
+                    </h3>
+                    <p class="matrix-desc">AI模特生成 · 产品一致性保持 · 节省拍摄成本</p>
+                </div>
+
+                <!-- 首饰类目 - 重点案例展示 -->
+                <div style="background: linear-gradient(135deg, rgba(167,139,250,0.08) 0%, rgba(167,139,250,0.02) 100%); border: 2px solid rgba(167,139,250,0.25); border-radius: 24px; padding: 36px; margin: 40px 0; position: relative; overflow: hidden;">
+                    <!-- 背景装饰光晕 -->
+                    <div style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%); pointer-events: none; filter: blur(80px);"></div>
+                    
+                    <!-- 标题区 -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; position: relative;">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <!-- SVG图标 -->
+                            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(167,139,250,0.25) 0%, rgba(167,139,250,0.08) 100%); border-radius: 16px; border: 2.5px solid rgba(167,139,250,0.4); display: flex; align-items: center; justify-content: center;">
+                                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.35rem; font-weight: 800; color: #a78bfa; margin: 0 0 6px 0; letter-spacing: 0.5px;">AI珠宝首饰模特生成</h4>
+                                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); margin: 0;">Midjourney + ComfyUI 产品一致性工作流</p>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 2rem; font-weight: 800; color: #a78bfa; line-height: 1; margin-bottom: 4px;">95%</div>
+                            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 600;">成本节省</div>
+                        </div>
+                    </div>
+
+                    <!-- 核心优势 - 4个特性卡片 -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; position: relative;">
+                        <div style="background: rgba(20,20,20,0.5); backdrop-filter: blur(10px); border: 1.5px solid rgba(167,139,250,0.2); border-radius: 14px; padding: 18px; text-align: center;">
+                            <div style="font-size: 1.8rem; margin-bottom: 8px; color: #a78bfa;">●</div>
+                            <h5 style="font-size: 0.95rem; font-weight: 700; color: #a78bfa; margin: 0 0 6px 0;">产品完美还原</h5>
+                            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.4;">材质、光泽、细节100%一致</p>
+                        </div>
+                        <div style="background: rgba(20,20,20,0.5); backdrop-filter: blur(10px); border: 1.5px solid rgba(167,139,250,0.2); border-radius: 14px; padding: 18px; text-align: center;">
+                            <div style="font-size: 1.8rem; margin-bottom: 8px; color: #a78bfa;">●</div>
+                            <h5 style="font-size: 0.95rem; font-weight: 700; color: #a78bfa; margin: 0 0 6px 0;">多风格模特</h5>
+                            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.4;">20+种风格可选</p>
+                        </div>
+                        <div style="background: rgba(20,20,20,0.5); backdrop-filter: blur(10px); border: 1.5px solid rgba(167,139,250,0.2); border-radius: 14px; padding: 18px; text-align: center;">
+                            <div style="font-size: 1.8rem; margin-bottom: 8px; color: #a78bfa;">●</div>
+                            <h5 style="font-size: 0.95rem; font-weight: 700; color: #a78bfa; margin: 0 0 6px 0;">多角度展示</h5>
+                            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.4;">正面、侧面、特写灵活组合</p>
+                        </div>
+                        <div style="background: rgba(20,20,20,0.5); backdrop-filter: blur(10px); border: 1.5px solid rgba(167,139,250,0.2); border-radius: 14px; padding: 18px; text-align: center;">
+                            <div style="font-size: 1.8rem; margin-bottom: 8px; color: #a78bfa;">●</div>
+                            <h5 style="font-size: 0.95rem; font-weight: 700; color: #a78bfa; margin: 0 0 6px 0;">快速交付</h5>
+                            <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin: 0; line-height: 1.4;">初稿24h / 成片72h</p>
+                        </div>
+                    </div>
+
+                    <!-- 示例图片展示区 - 限制高度 -->
+                    <div style="position: relative; border-radius: 16px; overflow: hidden; border: 2px solid rgba(255, 107, 53, 0.3); max-height: 500px;">
+                        <img src="images/ai-cases/jewelry-ai-models.webp" alt="AI珠宝首饰真实案例" style="width: 100%; height: 500px; object-fit: cover; object-position: center; display: block;">
+                    </div>
+
+                    <!-- 适用产品分类 -->
+                    <div style="margin-top: 20px; position: relative;">
+                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; font-weight: 600;">适用产品：</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="padding: 7px 14px; background: rgba(167,139,250,0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 18px; font-size: 0.8rem; color: #a78bfa; font-weight: 600;">项链</span>
+                            <span style="padding: 7px 14px; background: rgba(167,139,250,0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 18px; font-size: 0.8rem; color: #a78bfa; font-weight: 600;">耳环</span>
+                            <span style="padding: 7px 14px; background: rgba(167,139,250,0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 18px; font-size: 0.8rem; color: #a78bfa; font-weight: 600;">戒指</span>
+                            <span style="padding: 7px 14px; background: rgba(167,139,250,0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 18px; font-size: 0.8rem; color: #a78bfa; font-weight: 600;">发饰</span>
+                            <span style="padding: 7px 14px; background: rgba(167,139,250,0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 18px; font-size: 0.8rem; color: #a78bfa; font-weight: 600;">手链</span>
+                            <span style="padding: 7px 14px; background: rgba(167,139,250,0.15); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 18px; font-size: 0.8rem; color: #a78bfa; font-weight: 600;">胸针</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速预览：五个类目缩略展示 -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin: 50px 0;">
+                    <!-- 女装类目 -->
+                    <div class="category-card" style="position: relative; background: linear-gradient(135deg, rgba(30,25,22,0.9) 0%, rgba(20,18,16,0.95) 100%); backdrop-filter: blur(10px); border: 2px solid rgba(255,107,53,0.4); border-radius: 18px; padding: 28px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden;" onmouseenter="this.style.transform='translateY(-6px)'; this.style.borderColor='rgba(255,107,53,0.7)'; this.style.boxShadow='0 16px 35px rgba(255,107,53,0.3)';" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,107,53,0.4)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)';">
+                        <!-- 背景光晕效果 -->
+                        <div style="position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 130%; height: 130%; background: radial-gradient(circle, rgba(255,107,53,0.12) 0%, transparent 65%); pointer-events: none;"></div>
+                        
+                        <!-- SVG图标：女装 -->
+                        <div style="position: relative; width: 56px; height: 56px; margin: 0 auto 16px; background: rgba(255,107,53,0.15); border-radius: 12px; border: 2px solid rgba(255,107,53,0.35); display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF6B35" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 7h-1V5c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v2H8c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM11 5h2v2h-2V5zm5 15H8V9h8v11z"/>
+                            </svg>
+                        </div>
+                        
+                        <h4 style="position: relative; font-size: 1.1rem; font-weight: 700; color: #FF6B35; margin-bottom: 8px; letter-spacing: 0.3px;">女装类目</h4>
+                        <p style="position: relative; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 16px; line-height: 1.4;">AI模特换装</p>
+                        <div style="position: relative; display: flex; align-items: baseline; justify-content: center; gap: 4px; margin-bottom: 2px;">
+                            <div style="font-size: 2.2rem; font-weight: 800; color: #FF6B35; line-height: 1;">90</div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: #FF6B35; opacity: 0.9;">%</div>
+                        </div>
+                        <div style="position: relative; font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500;">成本节省</div>
+                    </div>
+                    
+                    <!-- 地毯类目 -->
+                    <div class="category-card" style="position: relative; background: linear-gradient(135deg, rgba(20,23,32,0.9) 0%, rgba(15,18,26,0.95) 100%); backdrop-filter: blur(10px); border: 2px solid rgba(255, 107, 53, 0.4); border-radius: 18px; padding: 28px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden;" onmouseenter="this.style.transform='translateY(-6px)'; this.style.borderColor='rgba(255, 107, 53, 0.7)'; this.style.boxShadow='0 16px 35px rgba(102,126,234,0.3)';" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255, 107, 53, 0.4)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)';">
+                        <!-- 背景光晕效果 -->
+                        <div style="position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 130%; height: 130%; background: radial-gradient(circle, rgba(255, 107, 53, 0.12) 0%, transparent 65%); pointer-events: none;"></div>
+                        
+                        <!-- SVG图标：地毯 -->
+                        <div style="position: relative; width: 56px; height: 56px; margin: 0 auto 16px; background: rgba(255, 107, 53, 0.15); border-radius: 12px; border: 2px solid rgba(255, 107, 53, 0.35); display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF6B35" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 9h16c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-9c0-1.1.9-2 2-2zm0 2v9h16v-9H4zm2-6h12v2H6V5z"/>
+                            </svg>
+                        </div>
+                        
+                        <h4 style="position: relative; font-size: 1.1rem; font-weight: 700; color: #FF6B35; margin-bottom: 8px; letter-spacing: 0.3px;">地毯类目</h4>
+                        <p style="position: relative; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 16px; line-height: 1.4;">场景智能融合</p>
+                        <div style="position: relative; display: flex; align-items: baseline; justify-content: center; gap: 4px; margin-bottom: 2px;">
+                            <div style="font-size: 2.2rem; font-weight: 800; color: #FF6B35; line-height: 1;">24</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: #FF6B35; opacity: 0.9;">h</div>
+                        </div>
+                        <div style="position: relative; font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500;">快速交付</div>
+                    </div>
+                    
+                    <!-- 首饰类目 -->
+                    <div class="category-card" style="position: relative; background: linear-gradient(135deg, rgba(25,20,32,0.9) 0%, rgba(18,15,24,0.95) 100%); backdrop-filter: blur(10px); border: 2px solid rgba(167,139,250,0.4); border-radius: 18px; padding: 28px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden;" onmouseenter="this.style.transform='translateY(-6px)'; this.style.borderColor='rgba(167,139,250,0.7)'; this.style.boxShadow='0 16px 35px rgba(255, 107, 53, 0.3)';" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(167,139,250,0.4)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)';">
+                        <!-- 背景光晕效果 -->
+                        <div style="position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 130%; height: 130%; background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 65%); pointer-events: none;"></div>
+                        
+                        <!-- SVG图标：首饰 -->
+                        <div style="position: relative; width: 56px; height: 56px; margin: 0 auto 16px; background: rgba(167,139,250,0.15); border-radius: 12px; border: 2px solid rgba(167,139,250,0.35); display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#a78bfa" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zm0 2.18L17.83 7 12 9.82 6.17 7 12 4.18zM2 17l10 5 10-5v-3l-10 5-10-5v3zm0-5l10 5 10-5v-3l-10 5L2 9v3z"/>
+                            </svg>
+                        </div>
+                        
+                        <h4 style="position: relative; font-size: 1.1rem; font-weight: 700; color: #a78bfa; margin-bottom: 8px; letter-spacing: 0.3px;">首饰类目</h4>
+                        <p style="position: relative; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 16px; line-height: 1.4;">产品100%一致</p>
+                        <div style="position: relative; display: flex; align-items: baseline; justify-content: center; gap: 4px; margin-bottom: 2px;">
+                            <div style="font-size: 2.2rem; font-weight: 800; color: #a78bfa; line-height: 1;">20</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #a78bfa; opacity: 0.9;">+</div>
+                        </div>
+                        <div style="position: relative; font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500;">模特风格</div>
+                    </div>
+
+                    <!-- 宠物类目 -->
+                    <div class="category-card" style="position: relative; background: linear-gradient(135deg, rgba(32,28,18,0.9) 0%, rgba(22,19,12,0.95) 100%); backdrop-filter: blur(10px); border: 2px solid rgba(255,193,7,0.4); border-radius: 18px; padding: 28px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden;" onmouseenter="this.style.transform='translateY(-6px)'; this.style.borderColor='rgba(255,193,7,0.7)'; this.style.boxShadow='0 16px 35px rgba(255,193,7,0.3)';" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(255,193,7,0.4)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)';">
+                        <!-- 背景光晕效果 -->
+                        <div style="position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 130%; height: 130%; background: radial-gradient(circle, rgba(255,193,7,0.12) 0%, transparent 65%); pointer-events: none;"></div>
+                        
+                        <!-- SVG图标：宠物 -->
+                        <div style="position: relative; width: 56px; height: 56px; margin: 0 auto 16px; background: rgba(255,193,7,0.15); border-radius: 12px; border: 2px solid rgba(255,193,7,0.35); display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFC107" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.5 12c.83 0 1.5-.67 1.5-1.5S5.33 9 4.5 9 3 9.67 3 10.5 3.67 12 4.5 12zm15 0c.83 0 1.5-.67 1.5-1.5S20.33 9 19.5 9 18 9.67 18 10.5s.67 1.5 1.5 1.5zM9 11.5c0-.83-.67-1.5-1.5-1.5S6 10.67 6 11.5 6.67 13 7.5 13 9 12.33 9 11.5zm7.5-1.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zM12 14c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5z"/>
+                            </svg>
+                        </div>
+                        
+                        <h4 style="position: relative; font-size: 1.1rem; font-weight: 700; color: #FFC107; margin-bottom: 8px; letter-spacing: 0.3px;">宠物类目</h4>
+                        <p style="position: relative; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 16px; line-height: 1.4;">萌宠场景生成</p>
+                        <div style="position: relative; display: flex; align-items: baseline; justify-content: center; gap: 4px; margin-bottom: 2px;">
+                            <div style="font-size: 2.2rem; font-weight: 800; color: #FFC107; line-height: 1;">80</div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: #FFC107; opacity: 0.9;">%</div>
+                        </div>
+                        <div style="position: relative; font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500;">成本降低</div>
+                    </div>
+
+                    <!-- 男鞋类目 -->
+                    <div class="category-card" style="position: relative; background: linear-gradient(135deg, rgba(18,28,26,0.9) 0%, rgba(12,20,18,0.95) 100%); backdrop-filter: blur(10px); border: 2px solid rgba(0,200,150,0.4); border-radius: 18px; padding: 28px 20px; text-align: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; overflow: hidden;" onmouseenter="this.style.transform='translateY(-6px)'; this.style.borderColor='rgba(0,200,150,0.7)'; this.style.boxShadow='0 16px 35px rgba(0,200,150,0.3)';" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(0,200,150,0.4)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)';">
+                        <!-- 背景光晕效果 -->
+                        <div style="position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 130%; height: 130%; background: radial-gradient(circle, rgba(0,200,150,0.12) 0%, transparent 65%); pointer-events: none;"></div>
+                        
+                        <!-- SVG图标：男鞋 -->
+                        <div style="position: relative; width: 56px; height: 56px; margin: 0 auto 16px; background: rgba(0,200,150,0.15); border-radius: 12px; border: 2px solid rgba(0,200,150,0.35); display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00C896" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 18h18v-2H3v2zm0-3h18v-2H3v2zm0-7v4h18V8l-2-6H5L3 8zm4-.5c0-.28.22-.5.5-.5h9c.28 0 .5.22.5.5V9H7V7.5z"/>
+                            </svg>
+                        </div>
+                        
+                        <h4 style="position: relative; font-size: 1.1rem; font-weight: 700; color: #00C896; margin-bottom: 8px; letter-spacing: 0.3px;">男鞋类目</h4>
+                        <p style="position: relative; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 16px; line-height: 1.4;">场景多样化</p>
+                        <div style="position: relative; display: flex; align-items: baseline; justify-content: center; gap: 4px; margin-bottom: 2px;">
+                            <div style="font-size: 2.2rem; font-weight: 800; color: #00C896; line-height: 1;">10</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #00C896; opacity: 0.9;">+</div>
+                        </div>
+                        <div style="position: relative; font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500;">场景类型</div>
+                    </div>
+                </div>
+
+                <!-- 查看详细案例按钮 -->
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="portfolio.html?filter=ai#works" style="display: inline-flex; align-items: center; gap: 10px; padding: 16px 40px; background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%); color: #fff; text-decoration: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);">
+                        <span>查看AI工具流作品集</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10h12m0 0l-4 4m4-4l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 作品集网格布局 -->
+            <div class="portfolio-grid">
+                
+                <!-- 作品1: 孤勇者 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="lone-warrior-chair-detail.html?v=20260429-lone-template-v5-safe" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/lone-warrior-cover.webp" alt="孤勇者办公椅" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">电商详情页</span>
+                            </div>
+                            <h3 class="portfolio-title">恒林 · 孤勇者人体工学椅 | C4D全流程渲染 + 16屏详情页</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">恒林家居科技有限公司 | 2024.10 | 办公家具</p>
+                            <p class="portfolio-subtitle">电商详情页 · 产品渲染</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">C4D</span>
+                                    <span class="stat-label">全流程制作</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">16屏</span>
+                                    <span class="stat-label">详情页设计</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品2: 逆袭者 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="renegade-chair-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/renegade-cover.webp" alt="逆袭者人体工学椅" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">电商详情页</span>
+                            </div>
+                            <h3 class="portfolio-title">恒林 · 逆袭者人体工学椅 | C4D产品渲染 + 详情页设计</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">恒林家居科技有限公司 | 2024.11 | 办公家具</p>
+                            <p class="portfolio-subtitle">技术可视化 · 三轮迭代优化</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">+65%</span>
+                                    <span class="stat-label">转化率</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">+23%</span>
+                                    <span class="stat-label">设计效果</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品3: 鸿雁E11 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="hongyan-switch-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/hongyan-e11-cover-new.webp" alt="鸿雁E11开关" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">鸿雁 · E11智能开关</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州鸿雁电器有限公司（央企）| 2025.06 | 智能家居</p>
+                            <p class="portfolio-subtitle">ComfyUI场景生成工作流</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-70%</span>
+                                    <span class="stat-label">成本节省</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-50%</span>
+                                    <span class="stat-label">周期缩短</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品4: 追光晾衣架 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="laundry-rack-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/laundry-rack-cover.webp" alt="鸿雁追光晾衣架" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">鸿雁 · 追光电动晾衣架</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州鸿雁电器有限公司（央企）| 2025.07 | 智能家居</p>
+                            <p class="portfolio-subtitle">Nano Banana Pro + 豆包智能体</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">+78%</span>
+                                    <span class="stat-label">效率提升</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-70%</span>
+                                    <span class="stat-label">成本降低</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品5: 鸿雁E9开关 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="hongyan-e9-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/hongyan-e9-cover.webp" alt="鸿雁E9智能开关" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">鸿雁 · E9智能开关</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州鸿雁电器有限公司（央企）| 2025.08 | 智能家居</p>
+                            <p class="portfolio-subtitle">Genspark AI场景 + 即梦KV动画</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-80%</span>
+                                    <span class="stat-label">成本节省</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">双技术</span>
+                                    <span class="stat-label">创新突破</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品6: 鸿雁GD5轨道插座 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="gd5-socket-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/gd5-socket-cover.webp" alt="鸿雁GD5超薄轨道插座" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-commercial"></span>
+                                <h3 class="portfolio-title">鸿雁 · GD5超薄轨道插座</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州鸿雁电器有限公司（央企）| 2025.09 | 智能家居</p>
+                            <p class="portfolio-subtitle">13mm超薄设计 · 模块化系统</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">13mm</span>
+                                    <span class="stat-label">超薄设计</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">10屏</span>
+                                    <span class="stat-label">详情页</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品7: 萌宝保温杯 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="mengbao-thermos-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/mengbao-cover.webp" alt="萌宝智能保温杯" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">泰美 · 萌宝保温杯</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州泰美时光 | 2020.06 | 儿童用品</p>
+                            <p class="portfolio-subtitle">AI卡通IP设计 + 儿童产品创新</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-84%</span>
+                                    <span class="stat-label">成本降低</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-80%</span>
+                                    <span class="stat-label">周期缩短</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品7: AI装修行业痛点解决方案 -->
+                <article class="portfolio-card animate-on-scroll" data-category="ai">
+                    <a href="portfolio.html?filter=ai#works" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/ai-decoration-cover-new.webp" alt="装修行业痛点解决方案" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看更多案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">装修行业痛点解决方案 | AI场景预览</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">装修行业 | 2025 | AI工具流</p>
+                            <p class="portfolio-subtitle">小样品看不出效果？AI 10秒生成真实铺装场景 · 5个产品类目</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-99%</span>
+                                    <span class="stat-label">成本降低</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">+80%</span>
+                                    <span class="stat-label">转化提升</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品8: 服装AI虚拟试衣 -->
+                <article class="portfolio-card animate-on-scroll" data-category="ai">
+                    <a href="clothing-virtual-tryon-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/clothing-tryon-cover-new.webp" alt="服装AI虚拟试衣案例" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">服装类目 | AI虚拟试衣解决方案</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">服装行业 | 2024-2025 | AI工具流</p>
+                            <p class="portfolio-subtitle">告别传统模特拍摄 · AI 10秒生成 · 无限场景展示</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-99%</span>
+                                    <span class="stat-label">成本节省</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-70%</span>
+                                    <span class="stat-label">退货率降低</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品9: 袜子AI虚拟试穿 -->
+                <article class="portfolio-card animate-on-scroll" data-category="ai">
+                    <a href="socks-virtual-tryon-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/socks-tryon-cover-new.webp" alt="袜子AI虚拟试穿案例" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-ai"></span>
+                                <h3 class="portfolio-title">袜子类目 | AI虚拟试穿解决方案</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">袜子行业 | 2024-2025 | AI工具流</p>
+                            <p class="portfolio-subtitle">真实场景试穿效果 · AI 10秒生成 · 提升购买信心</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-95%</span>
+                                    <span class="stat-label">成本节省</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-60%</span>
+                                    <span class="stat-label">退货率降低</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品10: 眼镜AI虚拟试戴 -->
+                <article class="portfolio-card animate-on-scroll" data-category="ai">
+                    <a href="glasses-virtual-tryon-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/glasses-tryon-cover-new.webp" alt="眼镜虚拟试戴" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-ai">AI工具流</span>
+                                <span class="tag tag-orange">商业落地</span>
+                            </div>
+                            <h3 class="portfolio-title">眼镜类目 | AI虚拟试戴解决方案</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">眼镜行业 | 2024-2025 | AI工具流</p>
+                            <p class="portfolio-subtitle">AI虚拟试戴 · 多场景展示 · 商业落地</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-95%</span>
+                                    <span class="stat-label">成本节省</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-65%</span>
+                                    <span class="stat-label">退货率降低</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品10: 泳镜AI虚拟试戴 -->
+                <article class="portfolio-card animate-on-scroll" data-category="ai">
+                    <a href="swimming-goggles-tryon-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/goggles-tryon-cover-new.webp" alt="泳镜虚拟试戴" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-ai">AI工具流</span>
+                                <span class="tag tag-orange">商业落地</span>
+                            </div>
+                            <h3 class="portfolio-title">泳镜类目 | AI虚拟试戴解决方案</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">运动装备行业 | 2024-2025 | AI工具流</p>
+                            <p class="portfolio-subtitle">AI虚拟试戴 · 真实场景 · 商业落地</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">-95%</span>
+                                    <span class="stat-label">成本节省</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-60%</span>
+                                    <span class="stat-label">退货率降低</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品12: 日用品水杯 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="daily-cup-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/daily-cup-cover-new.webp" alt="日用品水杯三维渲染" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">C4D渲染</span>
+                            </div>
+                            <h3 class="portfolio-title">泰美 · 日用品水杯 | C4D+OC照片级质感，产品线展示</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州泰美时光 | 2020.08 | 日用品</p>
+                            <p class="portfolio-subtitle">C4D+OC三维渲染质感</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">7.55分</span>
+                                    <span class="stat-label">商业级质量</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">-80%</span>
+                                    <span class="stat-label">成本节约</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品8: 云犀新年IP动画 -->
+                <article class="portfolio-card animate-on-scroll" data-category="animation">
+                    <a href="yunxi-newyear-animation-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/yunxi-newyear-cover-new.webp" alt="云犀新年IP动画 - 新年场景氛围设计" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看动画详情 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">IP动画</span>
+                            </div>
+                            <h3 class="portfolio-title">云犀 · 新年IP动画 | 品牌IP形象 × 新年祝福传播</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2024.01 | 智能硬件</p>
+                            <p class="portfolio-subtitle">品牌IP形象 × 新年祝福传播</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">🎬</span>
+                                    <span class="stat-label">IP动画</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">完成</span>
+                                    <span class="stat-label">节日营销</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品9: 云犀直播设备电商首页 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="yunxi-homepage-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/yunxi-homepage-cover.webp" alt="云犀直播设备电商首页" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整设计 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-blue">AI+3D渲染</span>
+                            </div>
+                            <h3 class="portfolio-title">云犀 · 直播设备电商首页 | AI场景生成 × 3D产品渲染</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2024.01 | 智能硬件</p>
+                            <p class="portfolio-subtitle">ComfyUI场景生成 × C4D产品渲染 × 完整视觉设计</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">7+</span>
+                                    <span class="stat-label">产品线</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">天猫</span>
+                                    <span class="stat-label">旗舰店</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品11: 云犀京东自营首页 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="yunxi-jd-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/cover-06.webp" alt="云犀京东自营首页" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看技术研究 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">C4D+AI</span>
+                            </div>
+                            <h3 class="portfolio-title">云犀 · 京东自营 | C4D+OC × AI场景合成，照片级质感</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2024.03 | 智能硬件</p>
+                            <p class="portfolio-subtitle">C4D+OC渲染质感+AI场景</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">照片级</span>
+                                    <span class="stat-label">渲染质感</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">7模块</span>
+                                    <span class="stat-label">深度解析</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品12: 云犀京东618自营首页 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="yunxi-jd-618-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/jd-618-cover.webp" alt="云犀京东618自营首页" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整设计 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-blue">电商设计</span>
+                            </div>
+                            <h3 class="portfolio-title">云犀 · 京东618自营首页 | PC端618大促活动设计</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2024.06 | 智能硬件</p>
+                            <p class="portfolio-subtitle">10个核心模块 × 实景拍摄 × C4D渲染</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">10模块</span>
+                                    <span class="stat-label">完整展示</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">618</span>
+                                    <span class="stat-label">大促活动</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品13: 云犀京东618自营旗舰页 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="yunxi-jd-618-store-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/jd-618-store-cover-new.webp" alt="云犀京东618自营旗舰页" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整设计 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-blue">电商设计</span>
+                            </div>
+                            <h3 class="portfolio-title">云犀 · 京东618自营旗舰页 | 电商首页设计</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2024.06 | 智能硬件</p>
+                            <p class="portfolio-subtitle">C4D产品渲染 × 实景拍摄 × 9屏完整设计</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">9屏</span>
+                                    <span class="stat-label">完整设计</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">+27%</span>
+                                    <span class="stat-label">转化提升</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品14: 恒林C2788办公椅动画 -->
+                <article class="portfolio-card animate-on-scroll" data-category="animation">
+                    <a href="henglin-chair-animation-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/henglin-c2788-cover-new.webp" alt="恒林C2788办公椅动画" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看动画案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">C4D动画</span>
+                            </div>
+                            <h3 class="portfolio-title">恒林 · C2788办公椅 | 3:4竖版格式，移动优先设计</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">恒林家居科技有限公司 | 2024.08 | 办公家具</p>
+                            <p class="portfolio-subtitle">3:4竖版社交媒体动画</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">+163%</span>
+                                    <span class="stat-label">屏幕占比</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">+107%</span>
+                                    <span class="stat-label">转化提升</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品15: 云犀智瞳Pro产品发布会视频 -->
+                <article class="portfolio-card animate-on-scroll" data-category="animation">
+                    <a href="yunxi-zhitong-pro-launch-video-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/video-broadcast-cover-new.webp" alt="云犀智瞳Pro产品发布会视频" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">观看完整视频 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">产品视频</span>
+                            </div>
+                            <h3 class="portfolio-title">云犀 · 智瞳Pro发布会 | C4D渲染 + AE特效 + PR剪辑</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2023年 | 智能硬件</p>
+                            <p class="portfolio-subtitle">C4D渲染 × AE特效 × PR剪辑</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">C4D动画</span>
+                                    <span class="stat-label">产品视频</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">30fps</span>
+                                    <span class="stat-label">专业制作</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品13: 云犀智瞳Pro详情页 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="yunxi-zhitong-pro-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/cover-03.webp" alt="云犀智瞳Pro详情页" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看完整案例 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="work-header">
+                                <span class="work-dot work-dot-render"></span>
+                                <h3 class="portfolio-title">云犀 · 智瞳Pro</h3>
+                            </div>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">杭州星犀科技有限公司 | 2023.11 | 智能硬件</p>
+                            <p class="portfolio-subtitle">简约渲染品牌感设计</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">极简主义</span>
+                                    <span class="stat-label">设计理念</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">7板块</span>
+                                    <span class="stat-label">完整解析</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品16: Project_3789办公椅横版动画 -->
+                <article class="portfolio-card animate-on-scroll" data-category="animation">
+                    <a href="project-3789-chair-animation-detail.html" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/office-chair-cover-new.webp" alt="恒林·3789办公椅C4D横版动画" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看动画深度研究 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-purple">C4D横版</span>
+                            </div>
+                            <h3 class="portfolio-title">恒林 · 3789办公椅 | C4D横版动画</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">恒林家居科技有限公司 | 2024.09 | 办公家具</p>
+                            <p class="portfolio-subtitle">16:9专业横版 · C4D+OC高端渲染 · 品牌叙事动画</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">1920×1080</span>
+                                    <span class="stat-label">高清分辨率</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">26.28秒</span>
+                                    <span class="stat-label">完整时长</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- 作品17: 玄星X2人体工学椅详情页 -->
+                <article class="portfolio-card animate-on-scroll" data-category="rendering">
+                    <a href="xuanxing-x2-detail.html?v=20260429-xuanxing-long-v5" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="images/covers/xuanxing-x2-cover.webp" alt="玄星X2人体工学椅" loading="lazy" style="object-fit: cover; object-position: center; width: 100%; height: 100%;">
+                            <div class="portfolio-overlay">
+                                <span class="view-project">查看设计详情 →</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags">
+                                <span class="tag tag-orange">商业项目</span>
+                                <span class="tag tag-blue">电商详情页</span>
+                            </div>
+                            <h3 class="portfolio-title">恒林 · 玄星X2人体工学椅 | 如坐云端自由支撑，16屏完整设计</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0;">恒林家居科技有限公司 | 2025.01 | 办公家具</p>
+                            <p class="portfolio-subtitle">如坐云端的自由支撑 · 六维调节系统</p>
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">16屏</span>
+                                    <span class="stat-label">完整详情页</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">六维调节</span>
+                                    <span class="stat-label">核心卖点</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+
+            </div>
+
+            <!-- 查看更多按钮 -->
+            <div class="works-more animate-on-scroll" style="text-align: center; margin-top: 80px;">
+                <a href="portfolio.html" style="display: inline-flex; align-items: center; gap: 12px; padding: 16px 36px; background: linear-gradient(135deg, #FF6B35, #ff8c5a); color: white; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s ease;">
+                    <span style="position: relative; z-index: 2;">查看完整作品集</span>
+                    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" style="position: relative; z-index: 2;">
+                        <path d="M4 10h12m0 0l-4 4m4-4l-4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                </a>
+                <p style="margin-top: 20px; color: rgba(255,255,255,0.5); font-size: 1rem;">
+                    包含 18+ 静态作品 · 10 个动画视频 · 完整项目详情
+                </p>
+            </div>
+        </div>
+        
+        <style>
+            /* 筛选按钮交互 */
+            .filter-btn {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .filter-btn:hover {
+                transform: translateY(-2px);
+                background: rgba(255,255,255,0.08) !important;
+                border-color: rgba(255,255,255,0.2) !important;
+                color: rgba(255,255,255,0.9) !important;
+            }
+            
+            .filter-btn.active {
+                background: rgba(102, 126, 234, 0.15) !important;
+                border-color: rgba(102, 126, 234, 0.5) !important;
+                color: #667eea !important;
+                box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+            }
+            
+            /* 查看更多按钮悬停 */
+            .works-more a:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+            }
+            
+            .works-more a:hover > div {
+                opacity: 1;
+            }
+            
+            /* 作品卡片优化 */
+            .portfolio-card {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .portfolio-card:hover {
+                transform: translateY(-8px);
+            }
+        </style>
+    </section>
+
+    <!-- 联系区块 - 现代化设计 -->
+    <section id="contact" class="contact" style="padding: 120px 0; background: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%); position: relative; overflow: hidden;">
+        <!-- 背景装饰 -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%); filter: blur(120px); pointer-events: none;"></div>
+        
+        <div class="container" style="max-width: 1200px; position: relative; z-index: 2;">
+            <!-- 标题 -->
+            <div style="text-align: center; margin-bottom: 80px;">
+                <div style="font-size: 0.9rem; font-weight: 700; color: #FF6B35; letter-spacing: 0.3em; margin-bottom: 20px; text-transform: uppercase;">
+                    GET IN TOUCH
+                </div>
+                <h2 style="font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; color: #fff; margin: 0 0 30px 0; line-height: 1.1;">
+                    开始<span style="background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">合作</span>
+                </h2>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto 20px auto; line-height: 1.8;">
+                    让我们一起创造令人惊叹的视觉作品
+                </p>
+                <p style="font-size: 1rem; color: rgba(255,255,255,0.5); max-width: 700px; margin: 0 auto;">
+                    适合：电商详情页设计、3D产品渲染、AI模特生成、产品动画等需要可量化结果的项目
+                </p>
+            </div>
+            
+            <!-- PDF下载卡片 -->
+            <div class="animate-on-scroll" style="text-align: center; margin-bottom: 80px;">
+                <a href="index.html#" onclick="alert('请联系我获取完整简历：19857422704（微信同号）'); return false;" style="display: inline-flex; align-items: center; gap: 12px; padding: 20px 40px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); border: 2px solid rgba(255, 107, 53, 0.3); border-radius: 50px; color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: 600; transition: all 0.4s ease; position: relative; overflow: hidden;">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%); opacity: 0; transition: opacity 0.4s ease;"></div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: relative; z-index: 2;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span style="position: relative; z-index: 2;">下载完整简历 (PDF)</span>
+                </a>
+                <p style="margin-top: 16px; font-size: 0.95rem; color: rgba(255,255,255,0.5);">
+                    包含完整工作经历、技能清单、代表作品
+                </p>
+            </div>
+
+            <!-- 主要内容 -->
+            <div style="display: grid; grid-template-columns: 400px 1fr; gap: 60px; align-items: start;">
+                
+                <!-- 左侧：联系方式 -->
+                <div class="animate-on-scroll" style="display: flex; flex-direction: column; gap: 24px;">
+                    
+                    <!-- 联系卡片1：手机 - 3D金属图标 + 橙色主题 -->
+                    <div style="padding: 28px; background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 140, 90, 0.05)); border: 1px solid rgba(255, 107, 53, 0.2); border-radius: 20px; transition: all 0.4s ease; position: relative; overflow: hidden;">
+                        <!-- 橙色发光装饰 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <img src="images/icons/icon-phone-3d.webp" 
+                                     alt="手机图标" 
+                                     style="width: 52px; height: 52px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255,107,53,0.25));">
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.95rem; font-weight: 600; color: rgba(255,255,255,0.5); margin: 0 0 8px 0; letter-spacing: 0.05em;">手机 / 微信</h3>
+                                <p style="font-size: 1.4rem; font-weight: 700; color: rgba(255,255,255,0.95); margin: 0; letter-spacing: 0.05em;">19857422704</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 联系卡片2：邮箱 - 3D金属图标 + 橙色主题 -->
+                    <div style="padding: 28px; background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 140, 90, 0.05)); border: 1px solid rgba(255, 107, 53, 0.2); border-radius: 20px; transition: all 0.4s ease; position: relative; overflow: hidden;">
+                        <!-- 橙色发光装饰 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <img src="images/icons/icon-email-3d.webp" 
+                                     alt="邮箱图标" 
+                                     style="width: 52px; height: 52px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255,107,53,0.25));">
+                            </div>
+                            <div style="flex: 1;">
+                                <h3 style="font-size: 0.95rem; font-weight: 600; color: rgba(255,255,255,0.5); margin: 0 0 8px 0; letter-spacing: 0.05em;">邮箱</h3>
+                                <p style="font-size: 1.2rem; font-weight: 600; color: rgba(255,255,255,0.95); margin: 0; word-break: break-all;">985025700@qq.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 联系卡片3：位置 - 3D金属图标 + 橙色主题 -->
+                    <div style="padding: 28px; background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 140, 90, 0.05)); border: 1px solid rgba(255, 107, 53, 0.2); border-radius: 20px; transition: all 0.4s ease; position: relative; overflow: hidden;">
+                        <!-- 橙色发光装饰 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #FF6B35, #ff8c5a);"></div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <img src="images/icons/icon-location-3d.webp" 
+                                     alt="位置图标" 
+                                     style="width: 52px; height: 52px; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255,107,53,0.25));">
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.95rem; font-weight: 600; color: rgba(255,255,255,0.5); margin: 0 0 8px 0; letter-spacing: 0.05em;">位置</h3>
+                                <p style="font-size: 1.4rem; font-weight: 700; color: rgba(255,255,255,0.95); margin: 0;">浙江 · 杭州</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 右侧：联系表单 -->
+                <form class="contact-form animate-on-scroll" style="padding: 45px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.08); border-radius: 24px; backdrop-filter: blur(10px);">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 4px; height: 22px; background: linear-gradient(180deg, #FF6B35, #ff8c5a); border-radius: 2px;"></div>
+                        留言咨询
+                    </h3>
+                    
+                    <div style="display: grid; gap: 20px;">
+                        <div>
+                            <input type="text" id="name" placeholder="您的姓名" required style="width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1rem; transition: all 0.3s ease;">
+                        </div>
+                        <div>
+                            <input type="email" id="email" placeholder="邮箱地址" required style="width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1rem; transition: all 0.3s ease;">
+                        </div>
+                        <div>
+                            <input type="tel" id="phone" placeholder="联系电话" style="width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1rem; transition: all 0.3s ease;">
+                        </div>
+                        <div>
+                            <textarea id="message" rows="6" placeholder="项目需求描述" required style="width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1rem; resize: vertical; transition: all 0.3s ease; font-family: inherit;"></textarea>
+                        </div>
+                        <button type="submit" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%); border: none; border-radius: 12px; color: #fff; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);">
+                            发送消息
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <style>
+            /* 联系卡片悬停 */
+            #contact > div > div:nth-child(2) > div > div {
+                transition: all 0.3s ease;
+            }
+            
+            #contact > div > div:nth-child(2) > div > div:hover {
+                transform: translateX(8px);
+                background: rgba(255,255,255,0.06) !important;
+                border-color: rgba(255,255,255,0.2) !important;
+            }
+            
+            /* PDF下载按钮悬停 */
+            #contact a[href="#"]:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            }
+            
+            #contact a[href="#"]:hover > div {
+                opacity: 1;
+            }
+            
+            /* 表单输入框聚焦 */
+            #contact input:focus,
+            #contact textarea:focus {
+                outline: none;
+                border-color: rgba(255, 107, 53, 0.5) !important;
+                background: rgba(255,255,255,0.08) !important;
+                box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+            }
+            
+            /* 表单输入框悬停 */
+            #contact input:hover,
+            #contact textarea:hover {
+                border-color: rgba(255,255,255,0.2) !important;
+            }
+            
+            /* 发送按钮悬停 */
+            #contact button[type="submit"]:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+            }
+            
+            /* 响应式 */
+            @media (max-width: 968px) {
+                #contact > div > div:nth-child(2) {
+                    grid-template-columns: 1fr !important;
+                    gap: 40px !important;
+                }
+            }
+        </style>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 陈群超 - 三维渲染 & 电商视觉设计师 | 杭州鸿雁电器有限公司（央企）</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6;">
+                <a href="index.html#contact" style="color: #FF6B35; text-decoration: none;">联系合作</a> | 
+                <a href="portfolio.html" style="color: #FF6B35; text-decoration: none;">查看作品集</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- 项目详情弹窗 -->
+    <div class="modal" id="projectModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <!-- 内容将由JavaScript动态填充 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 固定联系我按钮 -->
+    <div class="contact-fab">
+        <!-- 主浮动按钮 -->
+        <button class="fab-button" aria-label="联系我">
+            <!-- 超简洁的"+"图标 - Dribbble常用 -->
+            <svg class="fab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span class="fab-text">联系我</span>
+        </button>
+        
+        <!-- 联系方式卡片 -->
+        <div class="contact-card">
+            <button class="contact-card-close" aria-label="关闭">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            
+            <h3 class="contact-card-title">
+                联系方式
+            </h3>
+            <p class="contact-card-subtitle">点击即可复制</p>
+            
+            <div class="contact-list">
+                <!-- 邮箱 -->
+                <div class="contact-item" data-type="email">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <path d="M22 6l-10 7L2 6"/>
+                    </svg>
+                    <div class="contact-info">
+                        <div class="contact-label">邮箱</div>
+                        <div class="contact-value">chenqunchao@example.com</div>
+                    </div>
+                    <svg class="contact-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </div>
+                
+                <!-- 微信 -->
+                <div class="contact-item" data-type="wechat">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1 .265-.694c1.516-1.044 2.5-2.73 2.5-4.635 0-3.526-3.302-6.448-7.378-6.956a8.195 8.195 0 0 0-.769-.012zm-.368 2.179c.513 0 .93.421.93.939a.935.935 0 0 1-.93.938.935.935 0 0 1-.93-.938c0-.518.417-.939.93-.939zm4.499 0c.513 0 .93.421.93.939a.935.935 0 0 1-.93.938.935.935 0 0 1-.93-.938c0-.518.417-.939.93-.939z"/>
+                    </svg>
+                    <div class="contact-info">
+                        <div class="contact-label">微信</div>
+                        <div class="contact-value">chenqunchao_design</div>
+                    </div>
+                    <svg class="contact-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </div>
+                
+                <!-- 电话 -->
+                <div class="contact-item" data-type="phone">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <div class="contact-info">
+                        <div class="contact-label">电话</div>
+                        <div class="contact-value">138-0000-0000</div>
+                    </div>
+                    <svg class="contact-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 复制成功提示 -->
+        <div class="copy-toast">已复制！</div>
+    </div>
+
+    <!-- 作品集加载动画脚本 V3.0 -->
+    <script src="js/portfolio-loader-product.js"></script>
+    <script src="js/main.js"></script>
+    <!-- Hero完整内容轮播脚本 -->
+    <script src="js/hero-carousel.js"></script>
+    <script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+    <!-- 固定联系我按钮脚本 -->
+    <script src="js/contact-fab.js"></script>
+    <!-- 全局滚动交互效果脚本 -->
+    <script src="js/scroll-animations.js"></script>
+</body>
+</html>

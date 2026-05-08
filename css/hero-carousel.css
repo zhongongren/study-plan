@@ -1,0 +1,553 @@
+/* ============================================
+   Hero 区块完整内容轮播系统
+   支持每个 Slide 完全独立的内容和交互
+   ============================================ */
+
+/* 轮播容器 */
+.hero-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #0a0a0a;
+}
+
+/* 单个 Slide - 绝对定位叠加，优化淡入淡出效果 */
+.hero-carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out,
+                visibility 0.8s ease-in-out;
+    z-index: 1;
+}
+
+/* 激活状态 */
+.hero-carousel-slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+/* Slide 内容容器 - 确保内容完全独立 */
+.hero-carousel-slide .hero-magazine {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 0 0 0;  /* 添加顶部padding，避免被导航栏遮挡 */
+    background: #1a1a1a;  /* 添加深灰色背景，避免留白 */
+}
+
+/* ============================================
+   轮播控制器样式
+   ============================================ */
+
+/* 左右箭头 - 固定在轮播容器内 */
+.hero-carousel-control {
+    position: absolute;  /* 从 fixed 改为 absolute */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;  /* 低于加载遮罩(z-index:10000)，加载期间不会穿透显示 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+.hero-carousel-control:hover {
+    background: rgba(255, 107, 53, 0.2);
+    border-color: #FF6B35;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.hero-carousel-control.prev {
+    left: 40px;
+}
+
+.hero-carousel-control.next {
+    right: 40px;
+}
+
+/* 增大点击区域 */
+.hero-carousel-control::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    z-index: -1;
+}
+
+.hero-carousel-control svg {
+    width: 24px;
+    height: 24px;
+    stroke: #fff;
+    stroke-width: 2.5;
+    transition: stroke 0.3s ease;
+}
+
+.hero-carousel-control:hover svg {
+    stroke: #FF6B35;
+}
+
+/* 底部指示器 - 固定在轮播容器内 */
+.hero-carousel-indicators {
+    position: absolute;  /* 从 fixed 改为 absolute */
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    z-index: 100;  /* 降低z-index，避免显示在加载动画上 */
+    padding: 16px 24px;
+    background: rgba(10, 10, 10, 0.4);
+    border-radius: 50px;
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    pointer-events: auto;
+}
+
+.hero-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.hero-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.hero-indicator:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
+}
+
+.hero-indicator.active {
+    background: #FF6B35;
+    width: 40px;
+    border-radius: 10px;
+}
+
+.hero-indicator.active::before {
+    border-color: rgba(255, 107, 53, 0.3);
+}
+
+/* 加载期间隐藏轮播控制器 */
+.page-loader:not(.fade-out) ~ * .hero-carousel-control,
+body.loading .hero-carousel-control,
+body.loading .hero-carousel-indicators,
+body.loading .hero-carousel-pause {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+/* 暂停/播放按钮 - 已隐藏 */
+.hero-carousel-pause {
+    display: none;  /* 隐藏播放/暂停按钮 */
+}
+
+.hero-carousel-pause:hover {
+    background: rgba(255, 107, 53, 0.2);
+    border-color: #FF6B35;
+    transform: scale(1.1);
+}
+
+.hero-carousel-pause svg {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+    transition: fill 0.3s ease;
+}
+
+.hero-carousel-pause:hover svg {
+    fill: #FF6B35;
+}
+
+/* ============================================
+   产品Slide专用样式
+   ============================================ */
+
+/* 产品背景图 - 全屏显示，人像/产品完整显示在右侧 */
+.product-slide-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* 使用cover填充整个容器，避免黑色留白 */
+    object-position: center center;  /* 居中对齐，确保主体内容可见 */
+    z-index: 1;
+}
+
+/* 第一张人像特殊处理 - 靠右显示 */
+.hero-carousel-slide:first-child .product-slide-bg {
+    object-fit: cover;  /* 改为cover，与其他图片一致 */
+    object-position: right center;  /* 靠右对齐，确保人像在右侧 */
+}
+
+/* 左侧渐变遮罩 - 确保文字可读性 */
+.hero-carousel-slide .hero-magazine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;  /* 扩大到60%，确保文字区域有背景 */
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(10, 10, 10, 1) 0%,      /* 左侧完全不透明 */
+        rgba(10, 10, 10, 0.9) 40%,   /* 40%位置90%不透明 */
+        rgba(10, 10, 10, 0.5) 70%,   /* 70%位置50%不透明 */
+        rgba(10, 10, 10, 0) 100%     /* 右侧完全透明 */
+    );
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* 移除额外的遮罩层 */
+.product-slide-overlay {
+    display: none;
+}
+
+/* 产品内容区 - 左侧固定，宽松布局 */
+.product-slide-content {
+    position: absolute;
+    left: 100px;  /* 增加到100px */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    width: 45%;  /* 固定宽度45%，确保内容完整显示 */
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+    margin: 0;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.product-tag {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #FF6B35;
+    letter-spacing: 0.2em;
+    margin: 0 0 24px 0;
+    padding: 0;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+    animation-delay: 0.2s;
+    text-shadow: none;  /* 移除投影 */
+    background: none !important;
+    text-align: left;
+    width: 100%;
+}
+
+.product-title {
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 0 30px 0;
+    padding: 0;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+    animation-delay: 0.4s;
+    text-shadow: none;  /* 移除投影 */
+    background: none !important;
+    text-align: left;
+    width: 100%;
+}
+
+.product-desc {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 0 50px 0;
+    padding: 0;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+    animation-delay: 0.6s;
+    text-shadow: none;  /* 移除投影 */
+    background: none !important;
+    text-align: left;
+    width: 100%;
+}
+
+.product-features {
+    display: flex;
+    gap: 60px;
+    margin: 0 0 50px 0;  /* 严格控制边距 */
+    padding: 0;
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+    animation-delay: 0.8s;
+    background: none !important;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.product-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    background: none !important;
+}
+
+.feature-value {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    line-height: 1;
+    filter: none;  /* 移除投影 */
+}
+
+.feature-label {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    text-shadow: none;  /* 移除投影 */
+}
+
+.product-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #FF6B35 0%, #ff8c5a 100%);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    animation: slideInLeft 0.8s ease forwards;
+    animation-delay: 1s;
+    box-shadow: 0 10px 40px rgba(255, 107, 53, 0.4);
+    width: fit-content;
+}
+
+.product-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 50px rgba(255, 107, 53, 0.6);
+}
+
+.product-cta svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 2.5;
+}
+
+/* ============================================
+   动画定义
+   ============================================ */
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 当 Slide 激活时，重新触发动画 */
+.hero-carousel-slide.active .product-tag,
+.hero-carousel-slide.active .product-title,
+.hero-carousel-slide.active .product-desc,
+.hero-carousel-slide.active .product-features,
+.hero-carousel-slide.active .product-cta {
+    animation: slideInLeft 0.8s ease forwards;
+}
+
+/* ============================================
+   响应式设计
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .hero-carousel-control {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .hero-carousel-control.prev {
+        left: 20px;
+    }
+    
+    .hero-carousel-control.next {
+        right: 20px;
+    }
+    
+    .product-slide-content {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+    
+    .product-features {
+        gap: 40px;
+    }
+    
+    .product-title {
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+    }
+    
+    .product-desc {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 移动端调整顶部padding */
+    .hero-carousel-slide .hero-magazine {
+        padding-top: 80px;  /* 移动端导航栏更小 */
+    }
+    
+    .hero-carousel-control {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hero-carousel-control svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .hero-carousel-indicators {
+        bottom: 30px;
+        gap: 12px;
+        padding: 15px 20px;
+    }
+    
+    .hero-indicator {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .hero-indicator.active {
+        width: 30px;
+    }
+    
+    .hero-carousel-pause {
+        bottom: 30px;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* 移动端改为上下布局 */
+    .hero-carousel-slide .hero-magazine::before {
+        width: 100%;
+        height: 50%;
+    }
+    
+    .product-slide-bg {
+        width: 100%;
+        height: 50%;
+        top: 0;
+        min-height: 400px;
+        object-fit: cover;
+        object-position: center center;
+    }
+    
+    .product-slide-overlay {
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(
+            to bottom,
+            rgba(10, 10, 10, 0) 0%,
+            rgba(10, 10, 10, 0.8) 100%
+        );
+    }
+    
+    .product-slide-content {
+        position: absolute;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        height: auto;
+        min-height: 50%;
+        max-width: 100%;
+        padding: 40px 30px 60px 30px;
+        justify-content: flex-start;
+    }
+    
+    .product-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+        margin-bottom: 20px;
+    }
+    
+    .product-desc {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .product-features {
+        flex-direction: row;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .feature-value {
+        font-size: 2.5rem;
+    }
+    
+    .feature-label {
+        font-size: 0.95rem;
+    }
+}
+
+/* ============================================
+   特殊布局优化（可选）
+   如需进一步调整特定幻灯片，可在此添加
+   ============================================ */
+

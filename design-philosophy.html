@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设计理念 | 陈群超</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/buttons-unified.css">
+    <!-- 作品集Artlist风格优化 -->
+    <link rel="stylesheet" href="css/portfolio-artlist-style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ==================== Hero - 全屏沉浸式 ==================== */
+        .manifesto-hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            padding: 0 8%;
+            cursor: none;
+            overflow: hidden;
+        }
+
+        /* 全屏视频式背景 */
+        .manifesto-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/philosophy-data.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 1;
+            z-index: 1;
+            animation: heroZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* 电影级渐变遮罩 */
+        .manifesto-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.7) 100%);
+            z-index: 2;
+        }
+
+        /* 确保内容在最上层 */
+        .manifesto-hero > * {
+            position: relative;
+            z-index: 3;
+        }
+
+        .manifesto-content {
+            max-width: 900px;
+            text-align: left;
+            z-index: 3;
+        }
+
+        .manifesto-title {
+            font-size: clamp(80px, 15vw, 220px);
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -0.06em;
+            margin-bottom: 60px;
+            cursor: pointer;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        .manifesto-title .line {
+            display: block;
+            opacity: 0;
+            transform: translateY(100px);
+            animation: slideUp 1s ease forwards;
+            transition: all 0.3s ease;
+        }
+
+        .manifesto-title .line:hover {
+            color: #FF6B35;
+            transform: translateX(40px);
+        }
+
+        .manifesto-title .line:nth-child(1) { 
+            animation-delay: 0.2s; 
+        }
+        .manifesto-title .line:nth-child(2) { 
+            animation-delay: 0.4s; 
+            color: #FF6B35;
+            position: relative;
+        }
+        .manifesto-title .line:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 200px;
+            height: 6px;
+            background: linear-gradient(90deg, #FF6B35, transparent);
+            border-radius: 3px;
+        }
+        .manifesto-title .line:nth-child(3) { 
+            animation-delay: 0.6s; 
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .manifesto-subtitle {
+            font-size: clamp(22px, 3.5vw, 38px);
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+            max-width: 800px;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeIn 1s ease 1s forwards;
+            padding: 30px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid #FF6B35;
+            margin-top: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* ==================== 个人信条 - 大型杂志风格 ==================== */
+        .beliefs-section {
+            min-height: auto;
+            padding: 0;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 每个信条占满屏幕 */
+        .belief-item {
+            min-height: 100vh;
+            padding: 120px 8%;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.6s ease;
+        }
+
+        /* 每个信条独立背景图 - 优化展示 */
+        .belief-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.75;
+            transition: all 0.8s ease;
+            z-index: 0;
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .belief-item:nth-child(1)::before {
+            background-image: url('images/belief-1-product-design.webp');
+        }
+
+        .belief-item:nth-child(2)::before {
+            background-image: url('images/belief-2-comfyui-workflow.webp');
+        }
+
+        .belief-item:nth-child(3)::before {
+            background-image: url('images/belief-3-data-metrics.webp');
+        }
+
+        .belief-item:hover::before {
+            opacity: 0.9;
+            width: 48%;
+            clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        /* 深色渐变遮罩 - 确保文字清晰 */
+        .belief-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(0,0,0,0.98) 0%, 
+                rgba(0,0,0,0.92) 50%,
+                rgba(0,0,0,0.3) 100%);
+            z-index: 1;
+        }
+
+        .belief-item > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .belief-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .belief-number {
+            position: absolute;
+            top: 80px;
+            right: 8%;
+            font-size: 200px;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 3px rgba(255,107,53,0.15);
+            line-height: 1;
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .belief-item:hover .belief-number {
+            -webkit-text-stroke-color: rgba(255,107,53,0.5);
+            transform: scale(1.1) translateY(-20px);
+        }
+
+        .belief-statement {
+            font-size: clamp(56px, 10vw, 140px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 50px;
+            transition: all 0.5s ease;
+            max-width: 1100px;
+        }
+
+        .belief-statement .highlight {
+            color: #FF6B35;
+            font-style: italic;
+            position: relative;
+            display: inline-block;
+        }
+
+        .belief-statement .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: #FF6B35;
+            transition: width 0.5s ease;
+        }
+
+        .belief-item:hover .belief-statement .highlight::after {
+            width: 100%;
+        }
+
+        .belief-description {
+            font-size: clamp(22px, 2.8vw, 32px);
+            color: rgba(255,255,255,0.7);
+            max-width: 900px;
+            line-height: 1.9;
+            font-weight: 400;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.8s ease;
+            padding-left: 30px;
+            border-left: 3px solid transparent;
+        }
+
+        .belief-item:hover .belief-description {
+            max-height: 800px;
+            margin-top: 50px;
+            border-left-color: #FF6B35;
+        }
+
+        .expand-hint {
+            font-size: 14px;
+            color: #FF6B35;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-top: 20px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .belief-item:hover .expand-hint {
+            opacity: 1;
+        }
+
+        .belief-item.expanded .expand-hint {
+            display: none;
+        }
+
+        /* ==================== 数据展示 - 数字滚动动画 ==================== */
+        .stats-section {
+            padding: 200px 40px;
+            background: #000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 数据展示背景图 - 居中大圆形展示 */
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 100%;
+            background-image: url('images/philosophy-compass.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+            clip-path: ellipse(50% 45% at 50% 50%);
+            transition: all 0.8s ease;
+        }
+
+        .stats-section:hover::before {
+            opacity: 0.25;
+            clip-path: ellipse(52% 47% at 50% 50%);
+        }
+
+        .stats-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.75) 50%,
+                rgba(0, 0, 0, 0.95) 100%
+            );
+            z-index: 1;
+        }
+
+        .stats-section > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+            z-index: 11;
+        }
+
+        .stat-item::before,
+        .stat-item::after,
+        .stat-number::before,
+        .stat-number::after,
+        .stat-value::before,
+        .stat-value::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        .stat-number {
+            font-size: clamp(60px, 8vw, 110px) !important;
+            font-weight: 900;
+            line-height: 1;
+            color: #FF6B35;
+            margin-bottom: 20px;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 30px rgba(255,107,53,0.6),
+                         0 0 50px rgba(255,107,53,0.4);
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            min-height: clamp(60px, 8vw, 110px);
+            position: relative;
+            z-index: 12;
+        }
+
+        .stat-value {
+            display: inline-block;
+            text-align: center;
+            font-size: inherit !important;
+            text-shadow: 0 0 40px rgba(255,107,53,0.5);
+            line-height: 1;
+            position: relative;
+            z-index: 13;
+        }
+
+        .stat-label {
+            font-size: clamp(18px, 2vw, 24px);
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .stat-desc {
+            font-size: clamp(14px, 1.5vw, 16px);
+            color: rgba(255,255,255,0.5);
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* ==================== 工具栈 - 全屏沉浸式 ==================== */
+        .tools-section {
+            min-height: 100vh;
+            padding: 120px 8%;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 左侧强烈背景 */
+        .tools-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url('images/philosophy-speed.webp');
+            background-size: cover;
+            background-position: right center;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            z-index: 0;
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+            transition: all 0.6s ease;
+        }
+
+        .tools-section:hover::before {
+            opacity: 0.95;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+        }
+
+        .tools-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                rgba(10, 10, 10, 0.3) 0%,
+                rgba(10, 10, 10, 0.88) 45%,
+                rgba(10, 10, 10, 1) 100%
+            );
+            z-index: 1;
+        }
+
+        .tools-section > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .tools-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tools-title {
+            font-size: clamp(56px, 10vw, 120px);
+            font-weight: 900;
+            margin-bottom: 100px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tool-category {
+            margin-bottom: 80px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            color: #FF6B35;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .tool-list {
+            list-style: none;
+        }
+
+        .tool-item {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 300;
+            color: rgba(255,255,255,0.3);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-item::before {
+            content: '→';
+            position: absolute;
+            left: -40px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #FF6B35;
+        }
+
+        .tool-item:hover {
+            color: #fff;
+            padding-left: 60px;
+            border-bottom-color: #FF6B35;
+        }
+
+        .tool-item:hover::before {
+            left: 20px;
+            opacity: 1;
+        }
+
+        .tool-detail {
+            font-size: 16px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 400;
+            margin-top: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover .tool-detail {
+            max-height: 100px;
+        }
+
+        /* ==================== 结尾宣言 - 电影级震撼 ==================== */
+        .closing-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 8%;
+            background: #000;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 全屏强烈背景 + 粒子动画 */
+        .closing-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/philosophy-closing.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            z-index: 0;
+            animation: closingPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes closingPulse {
+            0%, 100% { 
+                opacity: 0.7; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.85; 
+                transform: scale(1.05);
+            }
+        }
+
+        .closing-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center,
+                rgba(0, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.7) 60%,
+                rgba(0, 0, 0, 0.95) 100%
+            );
+            z-index: 1;
+        }
+
+        .closing-section > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .closing-content {
+            max-width: 1200px;
+        }
+
+        .closing-quote {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 80px;
+            text-shadow: 0 10px 60px rgba(0,0,0,0.8);
+        }
+
+        .closing-quote .highlight {
+            color: #FF6B35;
+            display: block;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .closing-quote .highlight::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            width: 4px;
+            height: 100%;
+            background: #FF6B35;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .closing-cta {
+            display: inline-block;
+            padding: 24px 60px;
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .closing-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #FF6B35;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .closing-cta:hover {
+            border-color: #FF6B35;
+            color: #fff;
+        }
+
+        .closing-cta:hover::before {
+            left: 0;
+        }
+
+        /* ==================== 进度指示器 ==================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B35, #ff8555);
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        /* ==================== 响应式 ==================== */
+        @media (max-width: 768px) {
+            .manifesto-hero {
+                padding: 0 24px;
+            }
+
+            .beliefs-section {
+                padding: 100px 24px;
+            }
+
+            .belief-item {
+                margin-bottom: 120px;
+            }
+
+            .belief-number {
+                font-size: 80px;
+            }
+
+            .stats-section {
+                padding: 120px 24px;
+            }
+
+            .stats-grid {
+                gap: 60px;
+            }
+
+            .tools-section {
+                padding: 120px 24px;
+            }
+
+            .tool-item:hover {
+                padding-left: 40px;
+            }
+
+            .tool-item:hover::before {
+                left: 10px;
+            }
+
+            .closing-section {
+                padding: 80px 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 进度条 -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo区域 -->
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     class="logo-icon">
+                <div class="logo-text">
+                    <div class="logo-name">陈群超</div>
+                    <div class="logo-tag">3D Designer</div>
+                </div>
+            </a>
+            
+            <!-- 主导航（中间） -->
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">首页</a></li>
+                <li><a href="design-philosophy.html" class="nav-link active">设计理念</a></li>
+                <li><a href="portfolio.html" class="nav-link">项目案例</a></li>
+                <li><a href="ai-solutions.html" class="nav-link">AI解决方案</a></li>
+                <li><a href="index.html#contact" class="nav-link">联系方式</a></li>
+            </ul>
+            
+            <!-- 右侧操作区 -->
+            <div class="nav-actions">
+                <a href="index.html#contact" class="nav-contact">联系合作</a>
+                <a href="portfolio.html" class="nav-cta">查看作品</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero - 设计宣言 -->
+    <section class="manifesto-hero">
+        <div class="manifesto-content">
+            <h1 class="manifesto-title">
+                <span class="line">设计</span>
+                <span class="line">创造</span>
+                <span class="line">商业价值</span>
+            </h1>
+            <p class="manifesto-subtitle">
+                6年经验 · 专注电商视觉与3D渲染<br>
+                用设计解决商业问题，用数据验证设计价值
+            </p>
+        </div>
+    </section>
+
+    <!-- 个人信条 -->
+    <section class="beliefs-section">
+        <div style="width: 100%;">
+            <!-- 信条1 -->
+            <div class="belief-item">
+                <div class="belief-number">01</div>
+                <h2 class="belief-statement">
+                    从<span class="highlight">产品</span>到<span class="highlight">场景</span><br>
+                    让用户3秒看懂核心价值
+                </h2>
+                <p class="belief-description">
+                    传统产品图只展示产品本身，但用户真正想看的是"我用这个产品会怎样"。我的设计策略是：用场景化展示替代产品平铺，用数据可视化替代文字堆砌，让用户在3秒内理解"这个产品为什么值得买"。
+                </p>
+            </div>
+
+            <!-- 信条2 -->
+            <div class="belief-item">
+                <div class="belief-number">02</div>
+                <h2 class="belief-statement">
+                    AI工具不是替代<br>
+                    是<span class="highlight">效率放大器</span>
+                </h2>
+                <p class="belief-description">
+                    ComfyUI + Nano Banana Pro让我的场景生成效率提升78%，从传统14天缩短到3天。但AI只负责生成背景场景，产品本身必须用C4D精确渲染——产品是"锚点"（100%准确），场景是"氛围"（可以AI生成）。这是我在真实商业项目中验证过的最佳工作流。
+                </p>
+            </div>
+
+            <!-- 信条3 -->
+            <div class="belief-item">
+                <div class="belief-number">03</div>
+                <h2 class="belief-statement">
+                    设计必须可量化<br>
+                    用<span class="highlight">数据</span>验证设计价值
+                </h2>
+                <p class="belief-description">
+                    "转化率+42%"、"用户停留时长+180%"、"退货率-60%"——这些不是随便写的数字，是真实项目的商业成果。我追求的不是"好看"，而是"有用"。每个设计决策都要回答：这能带来什么商业价值？如果答不上来，我会重新设计。
+                </p>
+            </div>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据说话 -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" style="font-size: clamp(60px, 8vw, 110px) !important;">
+                    <span class="stat-value">78%</span>
+                </div>
+                <div class="stat-label">AI工具流效率提升</div>
+                <div class="stat-desc">传统14天 → 3天完成</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" style="font-size: clamp(60px, 8vw, 110px) !important;">
+                    <span class="stat-value">+42%</span>
+                </div>
+                <div class="stat-label">转化率提升</div>
+                <div class="stat-desc">玄星X2详情页实测数据</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" style="font-size: clamp(60px, 8vw, 110px) !important;">
+                    <span class="stat-value">27+</span>
+                </div>
+                <div class="stat-label">商业项目案例</div>
+                <div class="stat-desc">6年累计完成数量</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工具栈 -->
+    <section class="tools-section">
+        <div class="tools-container">
+            <h2 class="tools-title">工具栈</h2>
+
+            <div class="tool-category">
+                <div class="category-name">3D / Rendering</div>
+                <ul class="tool-list">
+                    <li class="tool-item">
+                        Cinema 4D + Redshift
+                        <div class="tool-detail">专业级3D建模与GPU渲染</div>
+                    </li>
+                    <li class="tool-item">
+                        Blender
+                        <div class="tool-detail">开源全能3D创作套件</div>
+                    </li>
+                    <li class="tool-item">
+                        KeyShot
+                        <div class="tool-detail">极速产品渲染与可视化</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tool-category">
+                <div class="category-name">AI Workflow</div>
+                <ul class="tool-list">
+                    <li class="tool-item">
+                        ComfyUI
+                        <div class="tool-detail">节点式AI工作流编排</div>
+                    </li>
+                    <li class="tool-item">
+                        Stable Diffusion
+                        <div class="tool-detail">本地部署AI图像生成</div>
+                    </li>
+                    <li class="tool-item">
+                        Midjourney
+                        <div class="tool-detail">高端AI艺术创作</div>
+                    </li>
+                    <li class="tool-item">
+                        ControlNet + LoRA
+                        <div class="tool-detail">精准控制与定制化训练</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tool-category">
+                <div class="category-name">Creative Suite</div>
+                <ul class="tool-list">
+                    <li class="tool-item">
+                        Photoshop
+                        <div class="tool-detail">图像处理与合成</div>
+                    </li>
+                    <li class="tool-item">
+                        Premiere Pro
+                        <div class="tool-detail">视频剪辑与调色</div>
+                    </li>
+                    <li class="tool-item">
+                        After Effects
+                        <div class="tool-detail">动效设计与合成</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 结尾宣言 -->
+    <section class="closing-section">
+        <div class="closing-content">
+            <h2 class="closing-quote">
+                如果你在寻找一个<br>
+                只会用模板的设计师<br>
+                <span class="highlight">那不是我</span>
+            </h2>
+            <a href="index.html#contact" class="closing-cta">让我们聊聊</a>
+        </div>
+    </section>
+
+    <script>
+        // 1. 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. 进度条
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // 3. 数字滚动动画（已禁用，数字直接显示）
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('[data-target]');
+                    statNumbers.forEach(span => {
+                        const target = parseInt(span.getAttribute('data-target'));
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(timer);
+                            }
+                            span.textContent = Math.floor(current);
+                        }, 16);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

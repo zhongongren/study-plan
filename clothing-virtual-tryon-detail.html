@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例1：服装虚拟试衣 - AI多场景展示解决方案</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .header .subtitle {
+            font-size: 24px;
+            opacity: 0.95;
+        }
+        .value-prop {
+            background: #f8f9ff;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+        }
+        .value-prop h2 {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .stat-item {
+            text-align: center;
+            margin: 20px;
+        }
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+        .stat-label {
+            font-size: 18px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .section {
+            padding: 60px 40px;
+        }
+        .section-title {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        .pain-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .pain-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        .pain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        .pain-card h3 {
+            font-size: 22px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .pain-card p {
+            color: #666;
+            font-size: 16px;
+        }
+        .case-item {
+            background: #f8f9ff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .case-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 5px solid #667eea;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .image-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .image-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .image-label {
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 20px;
+            text-align: left;
+        }
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 16px;
+        }
+        .comparison-table tr:hover {
+            background: #f8f9ff;
+        }
+        .traditional {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .ai-solution {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+        .footer p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 32px; }
+            .section { padding: 40px 20px; }
+            .image-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 30px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     style="width: 35px; height: 35px; object-fit: contain;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #ffffff; letter-spacing: 0.1em;">陈群超</div>
+                    <div style="font-size: 0.65rem; color: #FF6B35; font-weight: 600; letter-spacing: 0.15em;">3D DESIGNER</div>
+                </div>
+            </a>
+            <ul style="list-style: none; display: flex; gap: 40px; margin: 0; padding: 0;">
+                <li><a href="index.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s;">首页</a></li>
+                <li><a href="design-philosophy.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s;">设计理念</a></li>
+                <li><a href="portfolio.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s;">作品集</a></li>
+                <li><a href="ai-solutions.html" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s;">AI作品</a></li>
+                <li><a href="index.html#contact" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s;">联系</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div style="height: 80px;"></div> <!-- 导航栏占位 -->
+    
+    <div class="container">
+        <div class="header">
+            <h1>📱 案例1：服装虚拟试衣</h1>
+            <div class="subtitle">AI多场景展示解决方案</div>
+        </div>
+
+        <div class="value-prop">
+            <h2>🎯 核心价值主张</h2>
+            <p style="font-size: 20px; color: #666; margin-top: 20px;">
+                告别传统模特拍摄，AI虚拟试衣让每件服装展示在无限场景中
+            </p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">99%</span>
+                    <span class="stat-label">成本节省</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">10秒</span>
+                    <span class="stat-label">生成时间</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">70%</span>
+                    <span class="stat-label">退货率降低</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">无限</span>
+                    <span class="stat-label">场景数量</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">😰 服装行业痛点</h2>
+            <div class="pain-points">
+                <div class="pain-card">
+                    <h3>❌ 平铺图效果差</h3>
+                    <p>客户无法想象上身效果，只能看平铺照片，转化率极低。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>💸 模特成本高昂</h3>
+                    <p>真人模特拍摄费用：5000-20000元/天，每季新品都需重新拍摄。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>🔄 尺码展示不全</h3>
+                    <p>无法展示所有身材类型，客户难以找到参考。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>📦 退货率高达40-60%</h3>
+                    <p>因为无法预判上身效果，退货率居高不下。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>⏱️ 更新周期长</h3>
+                    <p>换模特、换场景需要重新安排拍摄，耗时数周。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>📍 场景单一</h3>
+                    <p>传统拍摄场景有限，无法展示多样化的穿搭风格。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="background: #f8f9ff;">
+            <h2 class="section-title">传统方式 vs AI方案</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>对比维度</th>
+                        <th>传统拍摄</th>
+                        <th>AI虚拟试衣</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>成本</strong></td>
+                        <td class="traditional">5000-20000元/天</td>
+                        <td class="ai-solution">≈0元（仅AI生成费）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>时间周期</strong></td>
+                        <td class="traditional">2-4周（约拍、拍摄、修图）</td>
+                        <td class="ai-solution">10秒/场景</td>
+                    </tr>
+                    <tr>
+                        <td><strong>场景数量</strong></td>
+                        <td class="traditional">1-3个场景</td>
+                        <td class="ai-solution">无限场景</td>
+                    </tr>
+                    <tr>
+                        <td><strong>退货率</strong></td>
+                        <td class="traditional">40-60%</td>
+                        <td class="ai-solution">降低70%（12-18%）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>身材展示</strong></td>
+                        <td class="traditional">1-2种身材</td>
+                        <td class="ai-solution">多种身材、肤色、风格</td>
+                    </tr>
+                    <tr>
+                        <td><strong>更新灵活性</strong></td>
+                        <td class="traditional">需重新拍摄</td>
+                        <td class="ai-solution">随时更新场景</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">✨ 真实案例展示</h2>
+
+            <!-- 案例1: 白色连衣裙 -->
+            <div class="case-item">
+                <h3 class="case-title">1️⃣ 白色连衣裙 - 多场景展示</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <div class="image-label">图1：职场/晚宴/婚礼/派对风</div>
+                        <img src="https://www.genspark.ai/api/files/s/7XkdOOuA" alt="白色连衣裙-图1">
+                    </div>
+                    <div class="image-card">
+                        <div class="image-label">图2：约会/度假/艺术/下午茶风</div>
+                        <img src="https://www.genspark.ai/api/files/s/R4Q6WN02" alt="白色连衣裙-图2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 案例2: 黑色皮夹克 -->
+            <div class="case-item">
+                <h3 class="case-title">2️⃣ 黑色皮夹克 - 多风格展示</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <div class="image-label">图1：摇滚/夜店/汽车展/时尚风</div>
+                        <img src="https://www.genspark.ai/api/files/s/wW9J1XIs" alt="黑色皮夹克-图1">
+                    </div>
+                    <div class="image-card">
+                        <div class="image-label">图2：机场/街拍/酒吧/音乐节风</div>
+                        <img src="https://www.genspark.ai/api/files/s/sxzFP3SV" alt="黑色皮夹克-图2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 案例3: 碎花连衣裙 -->
+            <div class="case-item">
+                <h3 class="case-title">3️⃣ 碎花连衣裙 - 清新田园风</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <div class="image-label">图1：野餐/市集/花店/音乐会风</div>
+                        <img src="https://www.genspark.ai/api/files/s/5owIaGNM" alt="碎花连衣裙-图1">
+                    </div>
+                    <div class="image-card">
+                        <div class="image-label">图2：民宿/植物园/甜品店/郊游风</div>
+                        <img src="https://www.genspark.ai/api/files/s/ERlNpKAJ" alt="碎花连衣裙-图2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 案例4: 牛仔外套 -->
+            <div class="case-item">
+                <h3 class="case-title">4️⃣ 牛仔外套 - 青春休闲风</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <div class="image-label">图1：校园/滑板/唱片/街头风</div>
+                        <img src="https://www.genspark.ai/api/files/s/We7ADZlK" alt="牛仔外套-图1">
+                    </div>
+                    <div class="image-card">
+                        <div class="image-label">图2：电影院/游乐园/书店/骑行风</div>
+                        <img src="https://www.genspark.ai/api/files/s/s2EKmZwe" alt="牛仔外套-图2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 案例5: 运动套装 -->
+            <div class="case-item">
+                <h3 class="case-title">5️⃣ 运动套装 - 活力运动风</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <div class="image-label">图1：拳击/篮球/游泳/攀岩风</div>
+                        <img src="https://www.genspark.ai/api/files/s/ptV8F7wZ" alt="运动套装-图1">
+                    </div>
+                    <div class="image-card">
+                        <div class="image-label">图2：舞蹈/徒步/网球/晨跑风</div>
+                        <img src="https://www.genspark.ai/api/files/s/9wNrXvep" alt="运动套装-图2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="background: #f8f9ff;">
+            <h2 class="section-title">💎 商业价值</h2>
+            <div class="pain-points">
+                <div class="pain-card">
+                    <h3>💰 降低拍摄成本</h3>
+                    <p>无需真人模特，节省99%拍摄费用。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>📉 显著减少退货</h3>
+                    <p>客户提前看到上身效果，退货率降低70%。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>🎨 无限场景展示</h3>
+                    <p>同一件衣服可以展示在办公室、派对、度假等无限场景。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>👥 多身材展示</h3>
+                    <p>可以展示不同身材、肤色、风格的穿搭效果。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>⚡ 快速上新</h3>
+                    <p>新品10秒生成展示图，抢占市场先机。</p>
+                </div>
+                <div class="pain-card">
+                    <h3>🌍 拓展市场</h3>
+                    <p>针对不同地区、文化定制化场景展示。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📊 总案例数：5件服装</p>
+            <p>📷 总图片数：10张（每件2张）</p>
+            <p>🎯 总场景数：40个场景</p>
+            <p>✅ 所有标签：100%中文</p>
+            <p style="margin-top: 30px; opacity: 0.8;">AI虚拟试衣解决方案 © 2026</p>
+        </div>
+    </div>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

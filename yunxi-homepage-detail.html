@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云犀直播设备 - 电商首页设计案例 | 陈群超作品集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        /* 返回按钮 */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        /* 头部 */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        header .meta {
+            margin-top: 40px;
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+        
+        header .tech-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 精华展示区 */
+        .highlight-section {
+            background: white;
+            padding: 100px 40px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .section-desc {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+        
+        .highlight-grid img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .highlight-grid img:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+        }
+        
+        /* 设计策略区 */
+        .strategy-section {
+            background: #f5f7fa;
+            padding: 80px 40px;
+        }
+        
+        .strategy-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 80px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        
+        .strategy-content {
+            display: grid;
+            grid-template-columns: 55fr 45fr;
+            gap: 0;
+            align-items: center;
+        }
+        
+        .strategy-item:nth-child(even) .strategy-content {
+            grid-template-columns: 45fr 55fr;
+        }
+        
+        .strategy-item:nth-child(even) .strategy-image {
+            order: 2;
+        }
+        
+        .strategy-item:nth-child(even) .strategy-text {
+            order: 1;
+        }
+        
+        .strategy-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .strategy-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .strategy-item:hover .strategy-image img {
+            transform: scale(1.05);
+        }
+        
+        .strategy-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(102, 126, 234, 0.95);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .strategy-text {
+            padding: 60px;
+        }
+        
+        .strategy-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            background: #FF6B6B;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .strategy-text h3 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .strategy-text p {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .strategy-text ul {
+            list-style: none;
+            margin-top: 25px;
+        }
+        
+        .strategy-text li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .strategy-text li:before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .highlight-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-content,
+            .strategy-item:nth-child(even) .strategy-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-image,
+            .strategy-item:nth-child(even) .strategy-image {
+                order: 1;
+            }
+            
+            .strategy-text,
+            .strategy-item:nth-child(even) .strategy-text {
+                order: 2;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .strategy-text {
+                padding: 40px 30px;
+            }
+            
+            .strategy-text h3 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        footer h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="index.html" class="back-button">
+        <span>←</span> 返回作品集
+    </a>
+
+    <!-- 头部 -->
+    <header>
+        <h1>云犀直播设备·电商首页设计</h1>
+        <p class="subtitle">AI生成技术 × 3D渲染 × 电商设计</p>
+        <div style="margin-top: 30px;">
+            <span class="tech-badge">ComfyUI 工作流</span>
+            <span class="tech-badge">Cinema 4D 渲染</span>
+            <span class="tech-badge">2024 AI前沿探索</span>
+        </div>
+        <p class="meta">Project Type: E-commerce Homepage Design | Client: 云犀直播设备</p>
+    </header>
+
+    <!-- 精华展示区 -->
+    <section class="highlight-section">
+        <div class="container">
+            <h2 class="section-title">设计成果展示</h2>
+            <p class="section-desc">结合AI生成技术与3D渲染,打造专业电商视觉体验</p>
+            
+            <div class="highlight-grid">
+                <img src="images/yunxi-homepage/carousel-1.webp" alt="云犀首页设计成果 1">
+                <img src="images/yunxi-homepage/carousel-2.webp" alt="云犀首页设计成果 2">
+            </div>
+        </div>
+    </section>
+
+    <!-- 设计技术解析区 -->
+    <section class="strategy-section">
+        <div class="container">
+            <h2 class="section-title" style="margin-bottom: 80px;">设计技术解析</h2>
+            
+            <!-- 01 Hero区设计 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-01.webp" alt="Hero区设计技术">
+                        <div class="strategy-number">01</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">Hero区设计</span>
+                        <span class="tech-tag">C4D渲染</span>
+                        <h3>3D产品渲染与渐变背景</h3>
+                        <p>使用Cinema 4D建模并渲染产品,配合深红色渐变背景（#8B0000 → #DC143C）营造高端质感。产品采用物理渲染器（Physical Renderer）输出4K分辨率,确保细节完整。</p>
+                        <ul>
+                            <li>C4D八角光源系统模拟摄影棚布光</li>
+                            <li>产品材质使用GGX反射模型</li>
+                            <li>渐变角度135°营造空间纵深</li>
+                            <li>抗锯齿采样16x保证边缘平滑</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 产品分类网格 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-02.webp" alt="网格系统设计">
+                        <div class="strategy-number">02</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">网格系统</span>
+                        <span class="tech-tag">C4D渲染</span>
+                        <h3>统一的3D图标渲染系统</h3>
+                        <p>所有产品图标均通过C4D建模渲染,保持统一的光照角度（45°侧光+15°顶光）和材质风格。采用等距视角渲染,确保6个产品图标视觉重量一致。</p>
+                        <ul>
+                            <li>统一渲染尺寸512x512px后缩放</li>
+                            <li>环境光遮蔽（AO）强度0.8</li>
+                            <li>PNG透明通道输出便于合成</li>
+                            <li>色彩空间统一sRGB确保一致性</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 场景化展示 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-03.webp" alt="AI生成场景">
+                        <div class="strategy-number">03</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">AI生成场景</span>
+                        <span class="tech-tag">ComfyUI</span>
+                        <h3>ComfyUI工作流场景生成</h3>
+                        <p>2024年AI刚兴起时,使用ComfyUI定制工作流生成真实直播场景。通过ControlNet控制布局,配合专业模特LoRA模型,生成四大行业场景（美妆/家具/食品/服装）。</p>
+                        <ul>
+                            <li>Stable Diffusion 1.5底模+专业LoRA</li>
+                            <li>ControlNet Depth控制空间结构</li>
+                            <li>CFG Scale 7.5平衡真实度与创意</li>
+                            <li>后期PS调色统一色温至5500K</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04 产品详情模块 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-04.webp" alt="混合渲染技术">
+                        <div class="strategy-number">04</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">混合技术</span>
+                        <span class="tech-tag">ComfyUI + C4D</span>
+                        <h3>AI场景 × 3D产品合成</h3>
+                        <p>上半部分使用ComfyUI生成绿幕直播场景（真人模特+环境）,下半部分使用C4D渲染的相机产品图。通过精准的透视匹配和光照一致性处理,实现无缝融合。</p>
+                        <ul>
+                            <li>AI生成场景分辨率1920x1080</li>
+                            <li>C4D产品渲染匹配场景光照方向</li>
+                            <li>Photoshop色彩分级统一色调</li>
+                            <li>分割线1px #E0E0E0增强层次</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05 MAX Pro一体机 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-05.webp" alt="多设备组合渲染">
+                        <div class="strategy-number">05</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">3D场景搭建</span>
+                        <span class="tech-tag">C4D渲染</span>
+                        <h3>多设备组合场景渲染</h3>
+                        <p>在C4D中搭建完整的直播设备场景,包含主屏、双摄像机、灯光架等。使用物理相机模拟真实景深效果（光圈F2.8）,前景主体清晰,背景适度虚化。</p>
+                        <ul>
+                            <li>全局光照（GI）模拟真实环境光</li>
+                            <li>景深效果光圈F2.8焦距50mm</li>
+                            <li>设备间距遵循1:1.2:1.5比例</li>
+                            <li>三层阴影叠加营造悬浮质感</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06 MIX Pro便携机 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-06.webp" alt="暖色调渲染">
+                        <div class="strategy-number">06</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">色彩渲染</span>
+                        <span class="tech-tag">ComfyUI + C4D</span>
+                        <h3>暖色调场景营造技术</h3>
+                        <p>前景产品通过C4D渲染,背景使用ComfyUI生成温馨场景（美妆/食品直播环境）。通过色温调节（3200K暖光）和背景虚化,突出产品便携性特点。</p>
+                        <ul>
+                            <li>AI生成背景色温3200K模拟室内灯</li>
+                            <li>C4D产品渲染匹配暖色光源</li>
+                            <li>背景高斯模糊32px增强景深</li>
+                            <li>产品边缘0.5px白色描边提亮</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07 智瞳II相机 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-07.webp" alt="产品精细渲染">
+                        <div class="strategy-number">07</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">产品特写</span>
+                        <span class="tech-tag">C4D渲染</span>
+                        <h3>高精度产品细节渲染</h3>
+                        <p>采用C4D物理渲染器输出,镜头、按键、接口等细节完整呈现。使用HDRI环境贴图模拟摄影棚光效,产品投影通过Shadow Catcher技术实现,确保阴影自然真实。</p>
+                        <ul>
+                            <li>渲染分辨率4K（3840x2160）</li>
+                            <li>HDRI贴图32bit高动态范围</li>
+                            <li>Shadow Catcher自然投影技术</li>
+                            <li>模糊半径24px营造悬浮感</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08 BOX5.0导播机 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-08.webp" alt="场景应用渲染">
+                        <div class="strategy-number">08</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">应用场景</span>
+                        <span class="tech-tag">ComfyUI + C4D</span>
+                        <h3>三大场景AI生成 × 产品合成</h3>
+                        <p>三个设备分别配合ComfyUI生成的户外/展会/汽车直播场景。通过工作流批量生成保持风格一致,产品使用C4D渲染后与场景合成,确保透视和光照匹配。</p>
+                        <ul>
+                            <li>ComfyUI批量模式生成3个场景</li>
+                            <li>统一Prompt确保风格一致性</li>
+                            <li>C4D产品按场景光源调整</li>
+                            <li>卡片圆角16px统一视觉</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09 服务保障模块 -->
+            <div class="strategy-item">
+                <div class="strategy-content">
+                    <div class="strategy-image">
+                        <img src="images/yunxi-homepage/design-09.webp" alt="图标系统设计">
+                        <div class="strategy-number">09</div>
+                    </div>
+                    <div class="strategy-text">
+                        <span class="strategy-tag">图标系统</span>
+                        <h3>矢量图标系统设计</h3>
+                        <p>使用Illustrator绘制统一的线性图标系统（2px线宽）,蓝色(#2196F3)配色传递信任感。图标采用48x48px栅格对齐,确保像素级精准显示。</p>
+                        <ul>
+                            <li>SVG矢量格式支持任意缩放</li>
+                            <li>图标库统一2px描边粗细</li>
+                            <li>48x48px网格对齐确保清晰</li>
+                            <li>色彩#2196F3传递专业信任感</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h3>云犀直播设备案例研究</h3>
+        <p>ComfyUI AI生成 × Cinema 4D渲染 = 2024年电商设计前沿探索</p>
+        <p style="margin-top: 30px; opacity: 0.6; font-size: 0.9rem;">© 2024 Portfolio Case Study | For Learning Purposes Only</p>
+    </footer>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

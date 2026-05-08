@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>追光系列智能晾衣架 - 电商详情页设计案例 | 陈群超作品集</title>
+    <style>
+        /* 返回按钮 */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 10000;
+            background: rgba(212,175,55,0.9);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button:hover {
+            background: #d4af37;
+            transform: translateX(-5px);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: #fff;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(212,175,55,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5c3 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 20px;
+            color: #d4af37;
+            margin-bottom: 30px;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-item .label {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .meta-item .value {
+            font-size: 18px;
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            background: #fff;
+            border-radius: 20px;
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5c3 100%);
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* GIF展示区 */
+        .gif-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .gif-item {
+            background: #f8f8f8;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gif-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(212,175,55,0.3);
+        }
+
+        .gif-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .gif-caption {
+            padding: 24px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+        }
+
+        .gif-caption h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #d4af37;
+        }
+
+        .gif-caption p {
+            font-size: 16px;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* 详情页设计模块 */
+        .design-module {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 80px;
+            align-items: flex-start;
+        }
+
+        .design-module:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .design-image {
+            flex: 1;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .design-image:hover {
+            transform: scale(1.02);
+        }
+
+        .design-image img {
+            width: 100%;
+            display: block;
+        }
+
+        .design-number {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5c3 100%);
+            color: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+        }
+
+        .design-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .design-content h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .design-content h3::before {
+            content: '';
+            width: 8px;
+            height: 28px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5c3 100%);
+            border-radius: 4px;
+        }
+
+        .design-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid #d4af37;
+        }
+
+        .design-description {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .design-highlights {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .design-highlights h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .design-highlights ul {
+            list-style: none;
+        }
+
+        .design-highlights li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: #555;
+        }
+
+        .design-highlights li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+
+        /* 技术总结 */
+        .tech-summary {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 60px;
+            border-radius: 20px;
+            margin-top: 60px;
+        }
+
+        .tech-summary h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #d4af37;
+            text-align: center;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .tech-card {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(212,175,55,0.3);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            background: rgba(212,175,55,0.1);
+        }
+
+        .tech-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #d4af37;
+        }
+
+        .tech-card ul {
+            list-style: none;
+        }
+
+        .tech-card li {
+            padding: 8px 0;
+            color: #ccc;
+            font-size: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tech-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .gif-showcase {
+                grid-template-columns: 1fr;
+            }
+
+            .design-module {
+                flex-direction: column !important;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="index.html" class="back-button">
+        <span>←</span> 返回作品集
+    </a>
+    <!-- 页面头部 -->
+    <div class="header">
+        <div class="header-content">
+            <h1>追光系列智能晾衣架</h1>
+            <p class="subtitle">黑金高级 × 智能科技 × 场景化设计</p>
+            
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="label">项目类型</div>
+                    <div class="value">电商详情页设计</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">设计周期</div>
+                    <div class="value">2-3周</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">设计模块</div>
+                    <div class="value">2 GIF + 15 屏</div>
+                </div>
+                <div class="meta-item">
+                    <div class="label">设计风格</div>
+                    <div class="value">黑金高级感</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- GIF展示区 -->
+        <div class="section">
+            <h2 class="section-title">GIF 动态展示区</h2>
+            <p class="section-subtitle">通过动态效果展示产品核心功能，提升用户体验</p>
+            
+            <div class="gif-showcase">
+                <div class="gif-item">
+                    <img src="images/laundry-rack/image-01.webp" alt="智能升降动态展示">
+                    <div class="gif-caption">
+                        <h3>01 - 智能升降动态展示</h3>
+                        <p>展示晾衣架自动升降功能，强调智能化操作体验。采用柔光照明系统，营造温馨家庭氛围。</p>
+                    </div>
+                </div>
+                
+                <div class="gif-item">
+                    <img src="images/laundry-rack/image-02.webp" alt="大容量承载展示">
+                    <div class="gif-caption">
+                        <h3>02 - 大容量承载展示</h3>
+                        <p>通过多角度旋转展示78+件衣物挂载能力，强调产品实用性和空间优化特点。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详情页设计模块 -->
+        <div class="section">
+            <h2 class="section-title">详情页设计反推（15屏）</h2>
+            <p class="section-subtitle">黑金配色 × 场景化设计 × 技术可视化</p>
+
+            <!-- 模块01 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">01</div>
+                    <img src="images/laundry-rack/image-03.webp" alt="用户痛点洞察">
+                </div>
+                <div class="design-content">
+                    <h3>用户痛点洞察</h3>
+                    <div class="design-tags">
+                        <span class="tag">场景化设计</span>
+                        <span class="tag">数据可视化</span>
+                        <span class="tag">家庭温馨感</span>
+                    </div>
+                    <p class="design-description">
+                        通过真实家庭场景展示用户晾衣痛点，运用百分比数据强化说服力。采用暖色调背景营造温馨家庭氛围，与产品高级感形成反差对比。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>家庭场景实拍 - 三代同堂营造温馨感</li>
+                            <li>数据可视化 - 百分比强化用户痛点</li>
+                            <li>暖色调背景 - 米色/白色为主</li>
+                            <li>文案策略 - 痛点前置，引发共鸣</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块02 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">02</div>
+                    <img src="images/laundry-rack/image-04.webp" alt="产品核心卖点">
+                </div>
+                <div class="design-content">
+                    <h3>产品核心卖点</h3>
+                    <div class="design-tags">
+                        <span class="tag">黑金配色</span>
+                        <span class="tag">极简设计</span>
+                        <span class="tag">三大卖点</span>
+                    </div>
+                    <p class="design-description">
+                        黑金配色正式登场！纯黑背景突出产品质感，金色文字强调高级感。采用极简排版，将智能升降、高效照明、坚固耐用三大核心卖点可视化呈现。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>黑金配色体系 - 背景纯黑#1a1a1a，文字金色#d4af37</li>
+                            <li>极简排版 - 产品居中，卖点三分布局</li>
+                            <li>摄影风格 - 专业产品摄影，突出金属质感</li>
+                            <li>视觉层次 - 从暖色到冷色的过渡</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块03 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">03</div>
+                    <img src="images/laundry-rack/image-05.webp" alt="功能详解">
+                </div>
+                <div class="design-content">
+                    <h3>功能详解模块</h3>
+                    <div class="design-tags">
+                        <span class="tag">分块设计</span>
+                        <span class="tag">图文结合</span>
+                        <span class="tag">智能科技</span>
+                    </div>
+                    <p class="design-description">
+                        采用分块设计，每个功能独立展示。黑色背景搭配金色图标，强调智能家居集成、外观设计、安全功能三大维度。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>模块化布局 - 3个独立功能模块</li>
+                            <li>图标设计 - 金色发光图标增强科技感</li>
+                            <li>细节展示 - 产品局部特写放大</li>
+                            <li>文案层次 - 标题+副标题双层结构</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块04 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">04</div>
+                    <img src="images/laundry-rack/image-06.webp" alt="对比分析">
+                </div>
+                <div class="design-content">
+                    <h3>对比分析 - 追光 vs 传统</h3>
+                    <div class="design-tags">
+                        <span class="tag">对比设计</span>
+                        <span class="tag">优劣分析</span>
+                        <span class="tag">米色背景</span>
+                    </div>
+                    <p class="design-description">
+                        通过左右对比设计，直观展示追光系列相比传统晾衣架的四大优势：自动调节、挂孔数量、长度调节、操作方式。采用米色/灰色背景降低视觉疲劳。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>对称式布局 - 左右对比一目了然</li>
+                            <li>4个维度对比 - 全方位展示优势</li>
+                            <li>配色转换 - 从黑金到米色的过渡</li>
+                            <li>图文并茂 - 实物图+文字说明</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块05 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">05</div>
+                    <img src="images/laundry-rack/image-07.webp" alt="大容量展示">
+                </div>
+                <div class="design-content">
+                    <h3>大容量场景展示</h3>
+                    <div class="design-tags">
+                        <span class="tag">场景化摄影</span>
+                        <span class="tag">数字强化</span>
+                        <span class="tag">78+件</span>
+                    </div>
+                    <p class="design-description">
+                        重点突出"78+件"超大容量卖点，通过真实挂满衣物的场景照片增强说服力。明亮的背景和自然光线营造舒适氛围，适合大家庭需求。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>数字视觉化 - 78+件大字号显示</li>
+                            <li>真实场景 - 挂满衣物的实拍照片</li>
+                            <li>明亮配色 - 米色/白色背景，温馨舒适</li>
+                            <li>空间感 - 宽敞明亮的室内环境</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块06 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">06</div>
+                    <img src="images/laundry-rack/image-08.webp" alt="承重能力">
+                </div>
+                <div class="design-content">
+                    <h3>超强承重能力展示</h3>
+                    <div class="design-tags">
+                        <span class="tag">真人演示</span>
+                        <span class="tag">180kg承重</span>
+                        <span class="tag">强度测试</span>
+                    </div>
+                    <p class="design-description">
+                        最具冲击力的一屏！真人悬挂演示180kg承重能力，直观展示产品坚固耐用特性。下方补充衣物承载数量，增强实用性说明。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>真人演示 - 人物悬挂增强视觉冲击</li>
+                            <li>数字突出 - 180kg大字号强调</li>
+                            <li>分块说明 - 衣服/袜子/毛巾/被子承载量</li>
+                            <li>黑白配色 - 黑色文字+白色背景</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块07 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">07</div>
+                    <img src="images/laundry-rack/image-09.webp" alt="薄款设计">
+                </div>
+                <div class="design-content">
+                    <h3>超薄设计 × 场景融合</h3>
+                    <div class="design-tags">
+                        <span class="tag">生活场景</span>
+                        <span class="tag">薄款设计</span>
+                        <span class="tag">隐藏式安装</span>
+                    </div>
+                    <p class="design-description">
+                        展示产品在现代家居中的融合效果。暗色背景搭配山景窗外，强调产品的薄款设计和隐藏式安装。适配多种家居场景，提升空间美感。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>场景渲染 - 真实家居环境植入</li>
+                            <li>暗色美学 - 深色背景突出产品</li>
+                            <li>安装尺寸 - 明确标注安装参数</li>
+                            <li>窗外山景 - 增加空间层次感</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块08 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">08</div>
+                    <img src="images/laundry-rack/image-10.webp" alt="天花板兼容性">
+                </div>
+                <div class="design-content">
+                    <h3>多种天花板兼容性</h3>
+                    <div class="design-tags">
+                        <span class="tag">兼容性展示</span>
+                        <span class="tag">木/石/玻璃</span>
+                        <span class="tag">厨房场景</span>
+                    </div>
+                    <p class="design-description">
+                        解决用户"能不能装"的顾虑。展示产品适配木质、石材、玻璃三种天花板类型，配以现代厨房场景，强调安装的广泛性和便利性。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>三类天花板 - 木/石/玻璃材质展示</li>
+                            <li>厨房场景 - 明亮现代的室内环境</li>
+                            <li>中性色调 - 米色为主，和谐统一</li>
+                            <li>图文结合 - 图片+简洁文字说明</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块09 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">09</div>
+                    <img src="images/laundry-rack/image-16.webp" alt="安全防护">
+                </div>
+                <div class="design-content">
+                    <h3>智能安全防护系统</h3>
+                    <div class="design-tags">
+                        <span class="tag">遇阻停止</span>
+                        <span class="tag">家庭安全</span>
+                        <span class="tag">高度调节</span>
+                    </div>
+                    <p class="design-description">
+                        强调产品的安全性，特别适合有儿童的家庭。展示"遇阻停止"功能和高度调节适配不同身高用户。蓝天白云背景营造安心氛围。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>家庭场景 - 儿童在旁强调安全性</li>
+                            <li>功能演示 - 遇阻停止可视化展示</li>
+                            <li>高度对比 - 不同身高人群适配</li>
+                            <li>清新配色 - 蓝天背景+中性色调</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块10 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">10</div>
+                    <img src="images/laundry-rack/image-17.webp" alt="柔光照明系统">
+                </div>
+                <div class="design-content">
+                    <h3>宽屏柔光照明系统</h3>
+                    <div class="design-tags">
+                        <span class="tag">柔光技术</span>
+                        <span class="tag">大空间照明</span>
+                        <span class="tag">高亮度</span>
+                    </div>
+                    <p class="design-description">
+                        突出照明系统的柔光特性和高亮度表现。上部展示照明设备特写，下部展示家庭应用场景，强调其适用于大空间照明的能力。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>产品特写 - 照明设备细节放大</li>
+                            <li>柔光效果 - 强调光线柔和不刺眼</li>
+                            <li>家庭场景 - 温馨客厅环境</li>
+                            <li>黑金配色 - 文字+背景对比</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块11 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">11</div>
+                    <img src="images/laundry-rack/image-14.webp" alt="智能互联">
+                </div>
+                <div class="design-content">
+                    <h3>智能互联 - APP / 语音控制</h3>
+                    <div class="design-tags">
+                        <span class="tag">智能家居</span>
+                        <span class="tag">APP控制</span>
+                        <span class="tag">语音交互</span>
+                    </div>
+                    <p class="design-description">
+                        突出智能科技卖点！展示通过手机APP或语音助手控制晾衣架的便利性。夜景背景搭配发光文字，强化科技感和未来感。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>智能设备 - 手机/音箱前景展示</li>
+                            <li>夜景氛围 - 暗色背景增强科技感</li>
+                            <li>发光字符 - 金色文字配合暗背景</li>
+                            <li>双控制方式 - APP + 语音双重便利</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块12 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">12</div>
+                    <img src="images/laundry-rack/image-15.webp" alt="九重安全">
+                </div>
+                <div class="design-content">
+                    <h3>九重安全防护体系</h3>
+                    <div class="design-tags">
+                        <span class="tag">安全防护</span>
+                        <span class="tag">静音电机</span>
+                        <span class="tag">防虫结构</span>
+                    </div>
+                    <p class="design-description">
+                        技术可视化展示！通过对称分块布局展示9大安全防护功能，包括防虫结构、静音电机、安全导轨等。机械部件与发光图层对比突出技术感。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>对称布局 - 9个安全功能分块展示</li>
+                            <li>技术可视化 - 电机/导轨细节放大</li>
+                            <li>发光图层 - 金色发光强调重点</li>
+                            <li>黑色背景 - 突出产品和文字</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块13 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">13</div>
+                    <img src="images/laundry-rack/image-11.webp" alt="产品参数">
+                </div>
+                <div class="design-content">
+                    <h3>详细产品参数</h3>
+                    <div class="design-tags">
+                        <span class="tag">规格尺寸</span>
+                        <span class="tag">材质说明</span>
+                        <span class="tag">功率参数</span>
+                    </div>
+                    <p class="design-description">
+                        理性信息展示区。采用白板图绘制搭配详细文字注解，清晰展示产品尺寸、材质、功率等技术参数。黑金配色用于标题强调信息层次。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>技术图纸 - 白板图+尺寸标注</li>
+                            <li>参数详尽 - 规格/材质/功率全覆盖</li>
+                            <li>黑金标题 - 突出信息重点</li>
+                            <li>简洁排版 - 便于快速查阅</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块14 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">14</div>
+                    <img src="images/laundry-rack/image-12.webp" alt="质检流程">
+                </div>
+                <div class="design-content">
+                    <h3>严格质检流程</h3>
+                    <div class="design-tags">
+                        <span class="tag">质量保证</span>
+                        <span class="tag">工厂实拍</span>
+                        <span class="tag">检测标准</span>
+                    </div>
+                    <p class="design-description">
+                        建立品牌信任！通过工厂实景照片展示严格的质检流程和检测标准。黑金配色信息框增加权威感，提升消费者对产品质量的信心。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>工厂实拍 - 真实质检场景照片</li>
+                            <li>流程可视化 - 检测工序展示</li>
+                            <li>权威感 - 黑金配色增强信任</li>
+                            <li>细节展示 - 检测设备特写</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块15 -->
+            <div class="design-module">
+                <div class="design-image">
+                    <div class="design-number">15</div>
+                    <img src="images/laundry-rack/image-13.webp" alt="品牌承诺">
+                </div>
+                <div class="design-content">
+                    <h3>品牌承诺与保障</h3>
+                    <div class="design-tags">
+                        <span class="tag">售后服务</span>
+                        <span class="tag">品质保证</span>
+                        <span class="tag">客户信任</span>
+                    </div>
+                    <p class="design-description">
+                        收尾模块，强化品牌承诺和售后保障。通过简洁的图文排版展示质保政策、退换货服务等信息，给用户最后的购买信心。
+                    </p>
+                    <div class="design-highlights">
+                        <h4>设计要点</h4>
+                        <ul>
+                            <li>服务承诺 - 售后/质保/退换货</li>
+                            <li>简洁排版 - 重点信息突出</li>
+                            <li>信任背书 - 品牌资质展示</li>
+                            <li>行动引导 - 购买按钮/客服联系</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设计技术总结 -->
+        <div class="tech-summary">
+            <h2>设计技术关键词总结</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>配色体系</h3>
+                    <ul>
+                        <li>黑金配色 #1a1a1a + #d4af37</li>
+                        <li>米色/灰色过渡色</li>
+                        <li>蓝天白云清新色</li>
+                        <li>暖色调家庭场景</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>摄影技术</h3>
+                    <ul>
+                        <li>产品专业摄影</li>
+                        <li>场景化实拍</li>
+                        <li>真人演示拍摄</li>
+                        <li>细节特写放大</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>设计风格</h3>
+                    <ul>
+                        <li>极简黑金高级感</li>
+                        <li>模块化分块设计</li>
+                        <li>对比式信息展示</li>
+                        <li>场景化生活美学</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>排版技术</h3>
+                    <ul>
+                        <li>左右交替布局</li>
+                        <li>对称式信息架构</li>
+                        <li>图文结合方式</li>
+                        <li>视觉层次构建</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>内容策略</h3>
+                    <ul>
+                        <li>痛点前置引发共鸣</li>
+                        <li>功能可视化展示</li>
+                        <li>对比凸显优势</li>
+                        <li>数据强化说服力</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>技术可视化</h3>
+                    <ul>
+                        <li>智能互联展示</li>
+                        <li>安全防护可视化</li>
+                        <li>承重能力演示</li>
+                        <li>质检流程透明化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

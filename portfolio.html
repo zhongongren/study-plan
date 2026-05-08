@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整作品集 | 3D视觉设计师</title>
+    <meta name="description" content="展示我的电商视觉、三维渲染、三维动画和AI工具流作品">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/buttons-unified.css">
+    <!-- 全局滚动交互效果 -->
+    <link rel="stylesheet" href="css/scroll-animations.css">
+    <!-- 作品集Artlist风格优化 -->
+    <link rel="stylesheet" href="css/portfolio-artlist-style.css">
+    <style>
+        /* 覆盖body背景色为深色 */
+        body {
+            background: #0a0a0a !important;
+        }
+        
+        /* 分类按钮悬停效果 */
+        .filter-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.12) !important;
+            border-color: rgba(255,107,53,0.4) !important;
+            color: rgba(255,255,255,0.95) !important;
+            transform: translateY(-2px);
+        }
+        
+        /* 分页样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 80px 0 60px;
+            flex-wrap: wrap;
+        }
+        
+        .pagination button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 48px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background: rgba(255,107,53,0.2);
+            border-color: #FF6B35;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        
+        .pagination button.active {
+            background: linear-gradient(135deg, #FF6B35, #ff8c5a);
+            border-color: #FF6B35;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .pagination .page-info {
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+        }
+        
+        /* 作品项淡入动画 */
+        .work-item {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .work-item:nth-child(1) { animation-delay: 0.1s; }
+        .work-item:nth-child(2) { animation-delay: 0.2s; }
+        .work-item:nth-child(3) { animation-delay: 0.3s; }
+        .work-item:nth-child(4) { animation-delay: 0.4s; }
+        .work-item:nth-child(5) { animation-delay: 0.5s; }
+        .work-item:nth-child(6) { animation-delay: 0.6s; }
+        .work-item:nth-child(7) { animation-delay: 0.7s; }
+        .work-item:nth-child(8) { animation-delay: 0.8s; }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo区域 -->
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     class="logo-icon">
+                <div class="logo-text">
+                    <div class="logo-name">陈群超</div>
+                    <div class="logo-tag">3D Designer</div>
+                </div>
+            </a>
+            
+            <!-- 主导航（中间） -->
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">首页</a></li>
+                <li><a href="design-philosophy.html" class="nav-link">设计理念</a></li>
+                <li><a href="portfolio.html" class="nav-link active">项目案例</a></li>
+                <li><a href="ai-solutions.html" class="nav-link">AI解决方案</a></li>
+                <li><a href="index.html#contact" class="nav-link">联系方式</a></li>
+            </ul>
+            
+            <!-- 右侧操作区 -->
+            <div class="nav-actions">
+                <a href="index.html#contact" class="nav-contact">联系合作</a>
+                <a href="portfolio.html" class="nav-cta">查看作品</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 作品集展示区 -->
+    <section id="works" class="works-section">
+        <!-- 标题区 - 全宽背景 -->
+        <div class="portfolio-header" style="padding: 180px 0 80px; text-align: center; border-bottom: 1px solid rgba(255, 107, 53, 0.2); position: relative; overflow: hidden;">
+            <!-- 背景图 -->
+            <img src="images/hero/hero-portfolio-bg.webp" alt="项目案例背景" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1;">
+            <!-- 渐变遮罩 -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(10,10,10,1) 0%, rgba(10,10,10,0.9) 40%, rgba(10,10,10,0.5) 70%, rgba(10,10,10,0) 100%); z-index: 2;"></div>
+            <!-- 背景装饰元素 -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.4; z-index: 3;">
+                <!-- 网格背景 -->
+                <div style="position: absolute; inset: 0; background-image: 
+                    linear-gradient(rgba(255,107,53,0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,107,53,0.05) 1px, transparent 1px);
+                    background-size: 50px 50px;"></div>
+                <!-- 径向光晕 -->
+                <div style="position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,107,53,0.15) 0%, transparent 70%); transform: translate(-50%, -50%);"></div>
+            </div>
+            
+            <div class="container" style="position: relative; z-index: 10;">
+                <!-- 主标题 - 优化版 -->
+                <h1 class="section-title" style="font-size: clamp(3.5rem, 8vw, 5.5rem); font-weight: 900; letter-spacing: -0.02em; margin-bottom: 28px; padding: 0 20px; line-height: 1.1; position: relative; display: inline-block;">
+                    <span style="color: #ffffff;">项目</span>
+                    <span style="color: #FF6B35; margin-left: 20px;">案例</span>
+                    <!-- 装饰线 -->
+                    <span style="position: absolute; bottom: -15px; left: 0; width: 60%; height: 4px; background: linear-gradient(90deg, #FF6B35 0%, transparent 100%); display: block;"></span>
+                </h1>
+                
+                <!-- 副标题 -->
+                <p class="section-subtitle" style="font-size: 1.4rem; color: rgba(255,255,255,0.75); font-weight: 400; letter-spacing: 0.03em; margin-bottom: 60px; padding: 0 20px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6; margin-top: 40px;">
+                    电商视觉 · 三维渲染 · 三维动画 · AI工具流
+                </p>
+                
+                <!-- 统计数据 -->
+                <div class="portfolio-stats" style="display: flex; justify-content: center; gap: 80px; flex-wrap: wrap; padding: 0 20px;">
+                    <div class="stat-item" style="text-align: center;">
+                        <div class="stat-number" style="font-size: 3.5rem; font-weight: 900; color: #FF6B35; line-height: 1; margin-bottom: 10px;">27+</div>
+                        <div class="stat-label" style="font-size: 1rem; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; font-weight: 500;">完成项目</div>
+                    </div>
+                    <div class="stat-item" style="text-align: center;">
+                        <div class="stat-number" style="font-size: 3.5rem; font-weight: 900; color: #FF6B35; line-height: 1; margin-bottom: 10px;">6年</div>
+                        <div class="stat-label" style="font-size: 1rem; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; font-weight: 500;">行业经验</div>
+                    </div>
+                    <div class="stat-item" style="text-align: center;">
+                        <div class="stat-number" style="font-size: 3.5rem; font-weight: 900; color: #FF6B35; line-height: 1; margin-bottom: 10px;">+42%</div>
+                        <div class="stat-label" style="font-size: 1rem; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; font-weight: 500;">转化提升</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+
+            <!-- 分类筛选 -->
+            <div class="works-filter" style="display: flex; justify-content: center; gap: 20px; margin: 60px 0 80px; flex-wrap: wrap;">
+                <button class="filter-btn active" data-filter="all" style="padding: 14px 36px; font-size: 1.1rem; font-weight: 700; border-radius: 50px; border: 2px solid #FF6B35; background: linear-gradient(135deg, #FF6B35, #ff8c5a); color: #ffffff; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);">全部作品</button>
+                <button class="filter-btn" data-filter="ecommerce" style="padding: 14px 36px; font-size: 1.1rem; font-weight: 600; border-radius: 50px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s;">电商设计</button>
+                <button class="filter-btn" data-filter="3d-visual" style="padding: 14px 36px; font-size: 1.1rem; font-weight: 600; border-radius: 50px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s;">3D视觉</button>
+                <button class="filter-btn" data-filter="ai" style="padding: 14px 36px; font-size: 1.1rem; font-weight: 600; border-radius: 50px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.3s;">AI工具流</button>
+            </div>
+
+            <!-- 作品网格 -->
+            <div class="works-grid" id="worksGrid">
+                <!-- 作品将由JavaScript动态加载 -->
+            </div>
+            
+            <!-- 分页控件 -->
+            <div class="pagination" id="pagination">
+                <button id="prevPage" class="prev-btn">← 上一页</button>
+                <div class="page-numbers" id="pageNumbers"></div>
+                <button id="nextPage" class="next-btn">下一页 →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 3D视觉设计师作品集. 创造令人印象深刻的视觉体验.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6;">
+                <a href="index.html" style="color: #FF6B35; text-decoration: none;">返回首页</a> | 
+                <a href="portfolio.html#works" style="color: #FF6B35; text-decoration: none;">作品集</a> | 
+                <a href="index.html#contact" style="color: #FF6B35; text-decoration: none;">联系我</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    
+    <script>
+        // 作品数据库
+        const allWorks = [
+            // ========== 电商视觉（有详情页） ==========
+            {
+                id: 1,
+                category: 'ecommerce',
+                title: '恒林 · 玄星X2人体工学椅 | 16屏详情页设计',
+                company: '恒林家居科技有限公司 | 2025.01 | 办公家具',
+                tags: '电商详情页 · 如坐云端自由支撑 · 六维调节系统 · 16屏完整设计 · 人体工学',
+                image: 'images/portfolio/xuanxing-x2-cover.webp',
+                link: 'xuanxing-x2-detail.html?v=20260429-xuanxing-long-v5',
+                alt: '玄星X2人体工学椅'
+            },
+            {
+                id: 2,
+                category: 'ecommerce',
+                title: '恒林 · 孤勇者人体工学椅 | 情感化详情页设计',
+                company: '恒林家居科技有限公司 | 2024.10 | 办公家具',
+                tags: '电商详情页设计 · 情感化叙事 · 品牌故事 · 完整案例',
+                image: 'images/covers/lone-warrior-cover.webp',
+                link: 'lone-warrior-chair-detail.html?v=20260429-lone-template-v3',
+                alt: '孤勇者办公椅 - 150度后仰舒适体验'
+            },
+            {
+                id: 3,
+                category: 'ecommerce',
+                title: '恒林 · 逆袭者人体工学椅 | 电商详情页设计',
+                company: '恒林家居科技有限公司 | 2024.11 | 办公家具',
+                tags: '电商详情页设计 · 场景化设计 · 迭代过程 · 完整案例',
+                image: 'images/covers/renegade-cover-new.webp',
+                link: 'renegade-chair-detail.html',
+                alt: '逆袭者人体工学椅 - 后仰系统场景'
+            },
+            {
+                id: 4,
+                category: 'ecommerce',
+                title: '云犀 · 智瞳Pro | 极简详情页设计',
+                company: '杭州星犀科技有限公司 | 2023.11 | 智能硬件',
+                tags: 'C4D简约渲染 · 极简主义 · 品牌感设计 · 7板块解析 · 完整案例',
+                image: 'images/covers/cover-04.webp',
+                link: 'yunxi-zhitong-pro-detail.html',
+                alt: '云犀智瞳Pro详情页'
+            },
+            {
+                id: 5,
+                category: '3d-visual',
+                title: '云犀 · 直播设备电商首页 | AI场景生成 × 3D产品渲染',
+                company: '杭州星犀科技有限公司 | 2024.01 | 智能硬件',
+                tags: 'ComfyUI场景生成 · C4D产品渲染 · 完整视觉设计 · AI+3D技术',
+                image: 'images/covers/yunxi-homepage-cover.webp',
+                link: 'yunxi-homepage-detail.html',
+                alt: '云犀直播设备电商首页'
+            },
+            {
+                id: 6,
+                category: '3d-visual',
+                title: '云犀 · 京东自营 | 首页视觉设计',
+                company: '杭州星犀科技有限公司 | 2024.03 | 智能硬件',
+                tags: 'C4D+OC · AI场景合成 · 照片级质感 · 7模块解析 · 技术研究',
+                image: 'images/covers/cover-06.webp',
+                link: 'yunxi-jd-detail.html',
+                alt: '云犀京东自营首页'
+            },
+            {
+                id: 7,
+                category: 'ecommerce',
+                title: '云犀 · 京东618自营首页 | PC端618大促活动设计',
+                company: '杭州星犀科技有限公司 | 2024.06 | 智能硬件',
+                tags: '618大促 · 10个核心模块 · 实景拍摄 · C4D渲染 · 京东红',
+                image: 'images/covers/jd-618-cover.webp',
+                link: 'yunxi-jd-618-detail.html',
+                alt: '云犀京东618自营首页'
+            },
+            {
+                id: 8,
+                category: 'ecommerce',
+                title: '云犀 · 京东618自营旗舰页 | 黄金陈列 × 场景化营销',
+                company: '杭州星犀科技有限公司 | 2024.06 | 智能硬件',
+                tags: '电商店铺装修 · C4D渲染 · 实景拍摄 · 9屏完整设计 · 转化率+27%',
+                image: 'images/covers/jd-618-store-cover-new.webp',
+                link: 'yunxi-jd-618-store-detail.html',
+                alt: '云犀京东618自营旗舰页'
+            },
+            {
+                id: 9,
+                category: 'ecommerce',
+                title: '鸿雁 · E11智能开关 | 电商详情页设计',
+                company: '杭州鸿雁电器有限公司 | 2025.06 | 智能家居',
+                tags: 'AI工具流 · ComfyUI场景生成 · 电商详情页',
+                image: 'images/covers/hongyan-e11-cover-new.webp',
+                link: 'hongyan-switch-detail.html',
+                alt: '鸿雁E11开关 - AI生成场景'
+            },
+            {
+                id: 10,
+                category: '3d-visual',
+                title: '鸿雁 · 追光电动晾衣架 | 电商详情页设计',
+                company: '杭州鸿雁电器有限公司 | 2025.07 | 智能家居',
+                tags: 'AI工具流 · Nano Banana Pro + 豆包智能体 · 电商详情页',
+                image: 'images/covers/laundry-rack-cover-new.webp',
+                link: 'laundry-rack-detail.html',
+                alt: '鸿雁追光晾衣架'
+            },
+            {
+                id: 10,
+                category: 'ecommerce',
+                title: '鸿雁 · E9智能开关 | 电商详情页设计',
+                company: '杭州鸿雁电器有限公司 | 2025.08 | 智能家居',
+                tags: 'AI工具流 · Genspark AI × 即梦视频 · 电商详情页 · 完整案例',
+                image: 'images/covers/hongyan-e9-cover.webp',
+                link: 'hongyan-e9-detail.html',
+                alt: '鸿雁E9开关'
+            },
+            {
+                id: 11,
+                category: 'ecommerce',
+                title: '鸿雁 · GD5超薄轨道插座 | 电商详情页设计',
+                company: '杭州鸿雁电器有限公司 | 2025.09 | 智能家居',
+                tags: 'AI工具流 · 13mm超薄设计 · 模块化配置 · 电商详情页 · 完整案例',
+                image: 'images/covers/gd5-socket-cover.webp',
+                link: 'gd5-socket-detail.html',
+                alt: '鸿雁GD5超薄轨道插座'
+            },
+            {
+                id: 12,
+                category: 'ecommerce',
+                title: '泰美 · 萌宝智能保温杯 | AI卡通IP设计',
+                company: '杭州泰美时光 | 2020.06 | 儿童用品',
+                tags: 'AI工具流 · AI卡通IP设计 · 儿童产品 · 电商详情页 · 完整案例',
+                image: 'images/covers/mengbao-cover.webp',
+                link: 'mengbao-thermos-detail.html',
+                alt: '萌宝智能保温杯'
+            },
+            {
+                id: 13,
+                category: '3d-visual',
+                title: '泰美 · 日用品水杯 | 产品详情页设计',
+                company: '杭州泰美时光 | 2020.08 | 日用品',
+                tags: 'C4D+OC · 三维渲染 · 照片级质感 · 产品线展示 · 完整案例',
+                image: 'images/covers/daily-cup-cover-new.webp',
+                link: 'daily-cup-detail.html',
+                alt: '日用品水杯三维渲染'
+            },
+            
+            // ========== 三维动画 ==========
+            {
+                id: 201,
+                category: '3d-visual',
+                title: '云犀 · 新年IP动画 | 节日营销视觉设计',
+                company: '杭州星犀科技有限公司 | 2024.01 | 智能硬件',
+                tags: 'IP动画制作 · 节日营销 · 品牌传播 · 情感化设计 · 完整案例',
+                image: 'images/covers/yunxi-newyear-cover-new.webp',
+                link: 'yunxi-newyear-animation-detail.html',
+                alt: '云犀新年IP动画 - 新年场景氛围设计'
+            },
+            {
+                id: 202,
+                category: '3d-visual',
+                title: '恒林 · C2788办公椅 | C4D竖版动画',
+                company: '恒林家居科技有限公司 | 2024.08 | 办公家具',
+                tags: 'C4D产品动画 · 3:4竖版格式 · 社交媒体优化 · 移动优先设计 · 三维 × 动画',
+                image: 'images/covers/henglin-c2788-cover-new.webp',
+                link: 'henglin-chair-animation-detail.html',
+                alt: '恒林C2788办公椅动画'
+            },
+            {
+                id: 203,
+                category: '3d-visual',
+                title: '云犀 · 智瞳Pro产品发布会视频 | 三维渲染剪辑',
+                company: '杭州星犀科技有限公司 | 2023年 | 智能硬件',
+                tags: 'C4D三维渲染 · AE特效合成 · PR视频剪辑 · 产品动画 · 发布会宣传',
+                image: 'images/covers/cover-14.webp',
+                link: 'yunxi-zhitong-pro-launch-video-detail.html',
+                alt: '云犀智瞳Pro产品发布会视频'
+            },
+            {
+                id: 204,
+                category: '3d-visual',
+                title: '恒林 · 3789办公椅 | C4D横版动画',
+                company: '恒林家居科技有限公司 | 2024.09 | 办公家具',
+                tags: 'C4D横版动画 · 16:9专业格式 · 品牌叙事 · 深度研究 · 三维 × 动画',
+                image: 'images/covers/cover-15.webp',
+                link: 'project-3789-chair-animation-detail.html',
+                alt: 'Project_3789办公椅横版动画'
+            },
+            
+            // ========== AI工具流 ==========
+            {
+                id: 301,
+                category: 'ai',
+                title: '云犀 · 直播设备 | 早期AI场景生成技术',
+                company: '杭州星犀科技有限公司 | 2024.01 | 智能硬件',
+                tags: '早期AI技术 · Stable Diffusion · 产品渲染 · 技术解析 · 完整案例',
+                image: 'images/covers/yunxi-live-cover-new.webp',
+                link: 'yunxi-live-detail.html',
+                alt: '云犀直播设备AI场景'
+            },
+            {
+                id: 302,
+                category: 'ai',
+                title: '服装类目 | AI虚拟试衣解决方案',
+                company: '服装行业 | 2024-2025 | AI工具流',
+                tags: 'AI虚拟试衣 · 无限场景展示 · 成本节省99% · 退货率降低70% · 商业落地',
+                image: 'images/covers/clothing-tryon-cover-new.webp',
+                link: 'clothing-virtual-tryon-detail.html',
+                alt: '服装AI虚拟试衣案例'
+            },
+            {
+                id: 303,
+                category: 'ai',
+                title: '珠宝首饰 | AI模特生成工作流',
+                company: '首饰行业 | 2024-2025 | AI工具流',
+                tags: 'Midjourney + ComfyUI · 产品一致性 · 多风格模特 · 成本节省95% · 商业落地',
+                image: 'images/ai-cases/jewelry-ai-models.webp',
+                link: '#jewelry-case',
+                alt: 'AI珠宝首饰模特生成案例'
+            },
+            {
+                id: 304,
+                category: 'ai',
+                title: '袜子类目 | AI虚拟试穿解决方案',
+                company: '袜子行业 | 2024-2025 | AI工具流',
+                tags: 'AI虚拟试穿 · 真实场景展示 · 成本节省95% · 退货率降低60% · 商业落地',
+                image: 'images/covers/socks-tryon-cover-new.webp',
+                link: 'socks-virtual-tryon-detail.html',
+                alt: '袜子AI虚拟试穿案例'
+            },
+            {
+                id: 305,
+                category: 'ai',
+                title: '装修行业痛点解决方案 | AI场景预览',
+                company: '装修行业 | 2025 | AI工具流',
+                tags: '小样品看不出效果？AI 10秒生成真实铺装场景 · 5个产品类目 · 成本降低99%',
+                image: 'images/covers/ai-decoration-cover-new.webp',
+                link: 'ai-scene-solution-document.html',
+                alt: '装修行业痛点解决方案'
+            },
+            // ========== 眼镜虚拟试戴 ==========
+            {
+                id: 306,
+                category: 'ai',
+                title: '眼镜类目 | AI虚拟试戴解决方案',
+                company: '眼镜行业 | 2024-2025 | AI工具流',
+                tags: 'AI虚拟试戴 · 多场景展示 · 成本节省95% · 退货率降低65% · 商业落地',
+                image: 'images/covers/glasses-tryon-cover-new.webp',
+                link: 'glasses-virtual-tryon-detail.html',
+                alt: '眼镜虚拟试戴'
+            },
+            // ========== 泳镜虚拟试戴 ==========
+            {
+                id: 307,
+                category: 'ai',
+                title: '泳镜类目 | AI虚拟试戴解决方案',
+                company: '运动装备行业 | 2024-2025 | AI工具流',
+                tags: 'AI虚拟试戴 · 真实场景 · 成本节省95% · 退货率降低60% · 商业落地',
+                image: 'images/covers/goggles-tryon-cover-new.webp',
+                link: 'swimming-goggles-tryon-detail.html',
+                alt: '泳镜虚拟试戴'
+            },
+            // ========== 口红虚拟试色 ==========
+            {
+                id: 308,
+                category: 'ai',
+                title: '口红类目 | AI虚拟试色解决方案',
+                company: '美妆行业 | 2024-2025 | AI工具流',
+                tags: 'AI虚拟试妆 · 多色号展示 · 成本节省98% · 退货率降低80% · 商业落地',
+                image: 'images/covers/lipstick-tryon-cover-new.webp',
+                link: 'lipstick-virtual-tryon-detail.html',
+                alt: '口红虚拟试色'
+            },
+            // ========== 数码产品电商渲染 ==========
+            {
+                id: 309,
+                category: 'ai',
+                title: '数码产品 | AI场景渲染解决方案',
+                company: '数码行业 | 2024-2025 | AI工具流',
+                tags: 'AI场景生成 · 3D产品渲染 · 成本节省90% · 制作周期缩短80% · 商业落地',
+                image: 'images/covers/digital-product-cover-new.webp',
+                link: 'digital-product-rendering-detail.html',
+                alt: '数码产品电商渲染'
+            }
+        ];
+        
+        // 分页配置
+        let currentPage = 1;
+        let currentFilter = 'all';
+        const itemsPerPage = 8;
+        
+        // 筛选作品 - 不重置页码
+        function getFilteredWorks(category) {
+            if (category === 'all') {
+                return allWorks;
+            }
+            return allWorks.filter(work => work.category === category);
+        }
+        
+        // 获取当前页作品
+        function getCurrentPageWorks(works) {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            return works.slice(start, end);
+        }
+        
+        // 渲染作品
+        function renderWorks() {
+            const filteredWorks = getFilteredWorks(currentFilter);
+            const pageWorks = getCurrentPageWorks(filteredWorks);
+            const grid = document.getElementById('worksGrid');
+            
+            grid.innerHTML = pageWorks.map(work => `
+                <article class="work-item" data-category="${work.category}">
+                    <a href="${work.link}" style="text-decoration: none; color: inherit;">
+                        <div class="work-image">
+                            <img src="${work.image}" alt="${work.alt}" loading="lazy" style="object-fit: cover;">
+                            <div class="work-overlay">
+                                <span class="work-view">查看详情 →</span>
+                            </div>
+                        </div>
+                        <div class="work-info">
+                            <h3 class="work-title">${work.title}</h3>
+                            <p class="portfolio-company" style="color: #999; font-size: 0.9rem; margin: 8px 0 12px;">${work.company}</p>
+                            <p class="work-category">${work.tags}</p>
+                        </div>
+                    </a>
+                </article>
+            `).join('');
+            
+            renderPagination(filteredWorks.length);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 渲染分页
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pageNumbers = document.getElementById('pageNumbers');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            // 生成页码 - 显示所有页码，不使用省略号
+            let pagesHtml = '';
+            for (let i = 1; i <= totalPages; i++) {
+                pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            
+            pageNumbers.innerHTML = pagesHtml;
+            
+            // 绑定页码点击事件
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentPage = parseInt(btn.dataset.page);
+                    renderWorks();
+                });
+            });
+        }
+        
+        // 筛选按钮事件
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.background = 'rgba(0,0,0,0.08)';
+                    b.style.borderColor = '#333333';
+                    b.style.color = '#1a1a1a';
+                    b.style.boxShadow = 'none';
+                });
+                btn.classList.add('active');
+                btn.style.background = 'linear-gradient(135deg, #FF6B35, #ff8c5a)';
+                btn.style.borderColor = '#FF6B35';
+                btn.style.color = '#ffffff';
+                btn.style.boxShadow = '0 4px 15px rgba(255, 107, 53, 0.4)';
+                
+                // 切换筛选类别时重置到第1页
+                currentFilter = btn.dataset.filter;
+                currentPage = 1;
+                renderWorks();
+            });
+        });
+        
+        // 上一页/下一页按钮
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderWorks();
+            }
+        });
+        
+        document.getElementById('nextPage').addEventListener('click', () => {
+            const filteredWorks = getFilteredWorks(currentFilter);
+            const totalPages = Math.ceil(filteredWorks.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderWorks();
+            }
+        });
+        
+        // URL参数检测 - 自动激活筛选
+        function checkURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const filterParam = urlParams.get('filter');
+            
+            if (filterParam) {
+                // 找到对应的筛选按钮
+                const targetBtn = document.querySelector(`.filter-btn[data-filter="${filterParam}"]`);
+                if (targetBtn) {
+                    // 移除所有按钮的active状态
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = 'rgba(0,0,0,0.08)';
+                        b.style.borderColor = '#333333';
+                        b.style.color = '#1a1a1a';
+                        b.style.boxShadow = 'none';
+                    });
+                    
+                    // 激活目标按钮
+                    targetBtn.classList.add('active');
+                    targetBtn.style.background = 'linear-gradient(135deg, #FF6B35, #ff8c5a)';
+                    targetBtn.style.borderColor = '#FF6B35';
+                    targetBtn.style.color = '#ffffff';
+                    targetBtn.style.boxShadow = '0 4px 15px rgba(255, 107, 53, 0.4)';
+                    
+                    // 设置当前筛选
+                    currentFilter = filterParam;
+                    currentPage = 1;
+                }
+            }
+        }
+        
+        // 初始化
+        checkURLParams();  // 先检查URL参数
+        renderWorks();     // 再渲染作品
+        
+        // 滚动到作品区域（如果URL有#works锚点）
+        if (window.location.hash === '#works') {
+            setTimeout(() => {
+                document.getElementById('worksGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    </script>
+    <!-- 全局滚动交互效果脚本 -->
+    <script src="js/scroll-animations.js"></script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

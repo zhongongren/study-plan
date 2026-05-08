@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI解决方案 | 陈群超</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/buttons-unified.css">
+    <!-- 全局滚动交互效果 -->
+    <link rel="stylesheet" href="css/scroll-animations.css">
+    <!-- 作品集Artlist风格优化 -->
+    <link rel="stylesheet" href="css/portfolio-artlist-style.css">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --bg: #000;
+            --text: #fff;
+            --text-dim: rgba(255,255,255,0.4);
+            --border: rgba(255,255,255,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ==================== Hero - 和首页风格一致 ==================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                rgba(10, 10, 10, 1) 0%,
+                rgba(10, 10, 10, 0.6) 50%,
+                rgba(10, 10, 10, 0.3) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 80px;
+        }
+
+        .hero-title {
+            font-size: clamp(56px, 8vw, 120px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 32px;
+        }
+
+        .hero-desc {
+            font-size: clamp(18px, 2.5vw, 28px);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            margin-top: 48px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 20px 56px;
+            background: var(--primary);
+            color: #000;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 24px rgba(255, 107, 53, 0.4);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 107, 53, 0.6);
+        }
+
+        /* ==================== 行业导航 - 艺术化筛选 ==================== */
+        .industries {
+            padding: 80px 60px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg);
+        }
+
+        .industries-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .industry-btn {
+            padding: 14px 32px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .industry-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .industry-btn.active {
+            background: linear-gradient(135deg, var(--primary), #FFB800);
+            border-color: var(--primary);
+            color: #000;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+        }
+
+        /* ==================== 案例网格 - 紧凑 ==================== */
+        .cases {
+            padding: 0 60px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 40px;
+        }
+
+        .case-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.4s ease;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .case-image {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            border-radius: 4px;
+            background: #0a0a0a;
+            margin-bottom: 20px;
+        }
+
+        .case-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.6s ease;
+        }
+
+        .case-card:hover .case-image img {
+            transform: scale(1.05);
+        }
+
+        .case-tag {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .case-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .case-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .case-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .case-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .case-stat-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* ==================== 响应式 ==================== */
+        @media (max-width: 1024px) {
+            .cases-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content,
+            .industries,
+            .cases {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .hero-stats {
+                gap: 30px;
+            }
+
+            .cases-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .industries-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ==================== 行业组切换 ==================== */
+        .case-group {
+            display: none;
+        }
+
+        .case-group.active {
+            display: contents;
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo区域 -->
+            <a href="index.html" class="nav-logo">
+                <img src="images/logo-icon-cq.webp" 
+                     alt="CQ Logo" 
+                     class="logo-icon">
+                <div class="logo-text">
+                    <div class="logo-name">陈群超</div>
+                    <div class="logo-tag">3D Designer</div>
+                </div>
+            </a>
+            
+            <!-- 主导航（中间） -->
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">首页</a></li>
+                <li><a href="design-philosophy.html" class="nav-link">设计理念</a></li>
+                <li><a href="portfolio.html" class="nav-link">项目案例</a></li>
+                <li><a href="ai-solutions.html" class="nav-link active">AI解决方案</a></li>
+                <li><a href="index.html#contact" class="nav-link">联系方式</a></li>
+            </ul>
+            
+            <!-- 右侧操作区 -->
+            <div class="nav-actions">
+                <a href="index.html#contact" class="nav-contact">联系合作</a>
+                <a href="portfolio.html" class="nav-cta">查看作品</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero - 带你提供的大图 -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="images/hero/hero-ai-solutions-bg.webp" alt="AI工具流设计师">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">1张产品图<br>生成100种场景</h1>
+            <p class="hero-desc">服装 · 眼镜 · 袜子 · 口红 · 珠宝<br>省95%成本 · 快10倍</p>
+            <div class="hero-cta">
+                <a href="ai-solutions.html#cases" class="cta-btn">查看案例</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行业分类导航 -->
+    <section class="industries">
+        <div class="industries-grid">
+            <button class="industry-btn active" data-industry="all">全部方案</button>
+            <button class="industry-btn" data-industry="fashion">服装行业</button>
+            <button class="industry-btn" data-industry="jewelry">珠宝首饰</button>
+            <button class="industry-btn" data-industry="sports">运动装备</button>
+            <button class="industry-btn" data-industry="beauty">美妆护肤</button>
+            <button class="industry-btn" data-industry="decoration">装修建材</button>
+        </div>
+    </section>
+
+    <!-- 案例展示 - 紧凑网格 -->
+    <section class="cases" id="cases">
+        <div class="cases-grid">
+            <!-- 全部案例 -->
+            <div class="case-group all active">
+                <!-- 服装虚拟试衣 -->
+                <a href="clothing-virtual-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/clothing-tryon-cover-new.webp" alt="服装AI虚拟试衣">
+                    </div>
+                    <span class="case-tag">服装行业</span>
+                    <h3 class="case-title">虚拟试衣·无限可能</h3>
+                    <p class="case-desc">一键生成多场景、多模特效果图，10秒完成传统1天工作量</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">99%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">70%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 袜子虚拟试穿 -->
+                <a href="socks-virtual-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/socks-tryon-cover-new.webp" alt="袜子AI虚拟试穿">
+                    </div>
+                    <span class="case-tag">服装行业</span>
+                    <h3 class="case-title">袜子虚拟试穿</h3>
+                    <p class="case-desc">AI生成真实场景试穿效果，支持运动、休闲、商务等多场景</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">95%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">60%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 珠宝AI模特 -->
+                <a href="ai-solutions.html#jewelry-case" class="case-card">
+                    <div class="case-image">
+                        <img src="images/ai-cases/jewelry-ai-models.webp" alt="珠宝AI模特生成">
+                    </div>
+                    <span class="case-tag">珠宝行业</span>
+                    <h3 class="case-title">AI模特·完美一致性</h3>
+                    <p class="case-desc">Midjourney + ComfyUI工作流，生成高端模特展示效果</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">95%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">100%</div>
+                            <div class="case-stat-label">产品一致</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 眼镜虚拟试戴 -->
+                <a href="glasses-virtual-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/glasses-tryon-cover-new.webp" alt="眼镜AI虚拟试戴">
+                    </div>
+                    <span class="case-tag">运动装备</span>
+                    <h3 class="case-title">虚拟试戴·即见即所得</h3>
+                    <p class="case-desc">用户上传照片即可看到真实佩戴效果，多场景展示提升转化</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">95%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">65%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 泳镜虚拟试戴 -->
+                <a href="swimming-goggles-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/goggles-tryon-cover-new.webp" alt="泳镜AI虚拟试戴">
+                    </div>
+                    <span class="case-tag">运动装备</span>
+                    <h3 class="case-title">泳镜虚拟试戴</h3>
+                    <p class="case-desc">AI生成真实泳池场景试戴效果，支持室内外多场景展示</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">95%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">60%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 口红虚拟试色 -->
+                <a href="lipstick-virtual-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/lipstick-tryon-cover-new.webp" alt="口红AI虚拟试色">
+                    </div>
+                    <span class="case-tag">美妆护肤</span>
+                    <h3 class="case-title">AI试色·真实还原</h3>
+                    <p class="case-desc">实时试色技术真实还原唇色效果，支持多肤色适配</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">90%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">50%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 装修场景预览 -->
+                <a href="ai-scene-solution-document.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/ai-decoration-cover-new.webp" alt="装修AI场景预览">
+                    </div>
+                    <span class="case-tag">装修建材</span>
+                    <h3 class="case-title">10秒预览·真实场景</h3>
+                    <p class="case-desc">AI 10秒生成真实铺装场景，覆盖地砖、墙砖、木地板等5大类目</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">99%</div>
+                            <div class="case-stat-label">成本降低</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">80%</div>
+                            <div class="case-stat-label">决策效率</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 云犀AI场景 -->
+                <a href="yunxi-live-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/yunxi-live-cover-new.webp" alt="云犀AI场景生成">
+                    </div>
+                    <span class="case-tag">早期AI技术</span>
+                    <h3 class="case-title">云犀·AI场景生成</h3>
+                    <p class="case-desc">早期Stable Diffusion技术探索，结合C4D产品渲染</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">85%</div>
+                            <div class="case-stat-label">时间节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">70%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 服装行业组 -->
+            <div class="case-group fashion">
+                <!-- 服装虚拟试衣 -->
+                <a href="clothing-virtual-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/clothing-tryon-cover-new.webp" alt="服装AI虚拟试衣">
+                    </div>
+                    <span class="case-tag">服装行业</span>
+                    <h3 class="case-title">虚拟试衣·无限可能</h3>
+                    <p class="case-desc">一键生成多场景、多模特效果图，10秒完成传统1天工作量</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">99%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">70%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="socks-virtual-tryon-detail.html" class="case-card">
+                    <div class="case-image">
+                        <img src="images/covers/socks-tryon-cover-new.webp" alt="袜子AI虚拟试穿">
+                    </div>
+                    <span class="case-tag">服装行业</span>
+                    <h3 class="case-title">袜子虚拟试穿</h3>
+                    <p class="case-desc">AI生成真实场景试穿效果，支持运动、休闲、商务等多场景</p>
+                    <div class="case-stats">
+                        <div>
+                            <div class="case-stat-value">95%</div>
+                            <div class="case-stat-label">成本节省</div>
+                        </div>
+                        <div>
+                            <div class="case-stat-value">60%</div>
+                            <div class="case-stat-label">退货降低</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 其他行业组类似结构... -->
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 行业分类切换
+        const industryBtns = document.querySelectorAll('.industry-btn');
+        const caseGroups = document.querySelectorAll('.case-group');
+
+        industryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const industry = btn.dataset.industry;
+                
+                // 更新按钮状态
+                industryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // 切换案例组
+                caseGroups.forEach(group => {
+                    if (group.classList.contains(industry)) {
+                        group.classList.add('active');
+                    } else {
+                        group.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+    <!-- 全局滚动交互效果脚本 -->
+    <script src="js/scroll-animations.js"></script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

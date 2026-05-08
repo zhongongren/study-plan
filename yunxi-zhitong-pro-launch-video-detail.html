@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云犀智瞳Pro产品发布会视频 - 三维渲染 × 视频剪辑 | 3D视觉设计师作品集</title>
+    <meta name="description" content="云犀智瞳Pro产品发布会宣传视频 - C4D三维渲染、AE特效、PR剪辑，智能摄像头产品动画展示">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+            border-radius: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #ff6b35;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffd93d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .tech-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #ff6b35;
+            border-left: 5px solid #ff6b35;
+            padding-left: 20px;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 比例 */
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+        
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 保持视频比例,添加黑边 */
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            background: rgba(255, 107, 53, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+        
+        .info-card h3 {
+            color: #ff6b35;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-card p {
+            color: #c0c0c0;
+            line-height: 1.8;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #ff6b35;
+            margin: 30px 0;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .section h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="project-meta">
+                <span>杭州星犀科技有限公司</span>
+                <span style="margin: 0 12px; color: #666;">|</span>
+                <span>2023年</span>
+                <span style="margin: 0 12px; color: #666;">|</span>
+                <span>智能硬件 / AI摄像头</span>
+            </div>
+            <h1>云犀 · 智瞳Pro产品发布会视频</h1>
+            <div class="subtitle">三维渲染 × 视频剪辑 × 产品动画</div>
+            <div class="tech-stack">
+                <div class="tech-badge">🎨 C4D三维渲染</div>
+                <div class="tech-badge">✨ AE特效合成</div>
+                <div class="tech-badge">🎬 PR视频剪辑</div>
+                <div class="tech-badge">📹 产品动画</div>
+            </div>
+        </div>
+
+        <!-- 视频展示 -->
+        <div class="section">
+            <h2>🎬 完整视频展示</h2>
+            <div class="video-container">
+                <video controls playsinline webkit-playsinline>
+                    <source src="videos/yunxi-zhitong-pro-launch.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+            </div>
+            <div class="highlight-box">
+                <h3 style="color: #ff6b35; margin-bottom: 15px;">💡 项目亮点</h3>
+                <p style="color: #e0e0e0;">
+                    负责云犀智瞳Pro产品发布会宣传视频的三维渲染与剪辑工作，运用C4D打造高质量产品模型与场景渲染，
+                    通过AE特效合成增强视觉表现力，最终使用PR完成视频剪辑与节奏把控，呈现专业级产品发布视觉效果。
+                </p>
+            </div>
+        </div>
+
+        <!-- 项目信息 -->
+        <div class="section">
+            <h2>📋 项目信息</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🎯 项目定位</h3>
+                    <p>产品发布会宣传视频<br>智能摄像头产品展示<br>品牌形象传播</p>
+                </div>
+                <div class="info-card">
+                    <h3>👨‍💻 我的职责</h3>
+                    <p>三维渲染制作<br>视频特效合成<br>视频剪辑与调色</p>
+                </div>
+                <div class="info-card">
+                    <h3>🛠️ 制作工具</h3>
+                    <p>Cinema 4D - 三维建模渲染<br>After Effects - 特效合成<br>Premiere Pro - 视频剪辑</p>
+                </div>
+                <div class="info-card">
+                    <h3>⚙️ 技术参数</h3>
+                    <p>帧率: 30fps<br>渲染引擎: OC渲染器<br>制作周期: 专业级产品视频</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 制作流程 -->
+        <div class="section">
+            <h2>🔧 制作流程与技术要点</h2>
+            
+            <div class="highlight-box">
+                <h3 style="color: #ff6b35; margin-bottom: 20px;">阶段一: C4D三维渲染</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">📐</span>
+                        <div>
+                            <strong style="color: #fff;">产品建模</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">高精度智瞳Pro摄像头模型制作</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💎</span>
+                        <div>
+                            <strong style="color: #fff;">材质贴图</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">金属质感与玻璃材质真实表现</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💡</span>
+                        <div>
+                            <strong style="color: #fff;">灯光布置</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">专业布光营造产品质感</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎥</span>
+                        <div>
+                            <strong style="color: #fff;">摄像机动画</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">流畅的镜头运动展示产品细节</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 style="color: #ff6b35; margin-bottom: 20px;">阶段二: AE特效合成</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">✨</span>
+                        <div>
+                            <strong style="color: #fff;">文字动画</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">产品功能介绍文字特效</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🌟</span>
+                        <div>
+                            <strong style="color: #fff;">光效合成</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">增强视觉冲击力的光影效果</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎨</span>
+                        <div>
+                            <strong style="color: #fff;">色彩调整</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">统一色调与品牌视觉风格</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <div>
+                            <strong style="color: #fff;">转场特效</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">流畅的场景过渡动画</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3 style="color: #ff6b35; margin-bottom: 20px;">阶段三: PR视频剪辑</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">✂️</span>
+                        <div>
+                            <strong style="color: #fff;">节奏把控</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">精准剪辑控制视频节奏感</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎵</span>
+                        <div>
+                            <strong style="color: #fff;">音频处理</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">背景音乐与音效混合</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎬</span>
+                        <div>
+                            <strong style="color: #fff;">最终输出</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">发布会级别的成片质量</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <div>
+                            <strong style="color: #fff;">版本迭代</strong>
+                            <p style="color: #a0a0a0; font-size: 14px;">根据反馈优化调整(修改28版)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技术亮点 -->
+        <div class="section">
+            <h2>💎 技术亮点与价值</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🎨 高质量渲染</h3>
+                    <p>
+                        使用C4D配合OC渲染器，打造照片级真实感的产品渲染效果，
+                        精准还原智瞳Pro的金属质感、镜头材质与产品细节。
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>🎬 专业级剪辑</h3>
+                    <p>
+                        运用PR进行精细剪辑，控制视频节奏与叙事流程，
+                        配合音效与背景音乐，提升观看体验与品牌传播力。
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>✨ 特效增强</h3>
+                    <p>
+                        通过AE添加动态文字、光效特效、转场动画等元素，
+                        增强视频的视觉冲击力与产品卖点的展示效果。
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>🎯 产品聚焦</h3>
+                    <p>
+                        镜头运动与构图设计突出产品核心功能，
+                        用视觉语言传达智瞳Pro的AI智能、清晰成像等技术优势。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目价值 -->
+        <div class="section">
+            <h2>📈 项目价值与应用</h2>
+            <div class="highlight-box">
+                <h3 style="color: #ff6b35; margin-bottom: 15px;">🚀 商业应用场景</h3>
+                <p style="color: #e0e0e0; line-height: 1.8;">
+                    <strong style="color: #ff6b35;">产品发布会:</strong>
+                    作为云犀智瞳Pro产品发布会的核心宣传视频，通过高质量的三维渲染与专业剪辑，
+                    提升产品发布的视觉档次与品牌形象传播效果。
+                </p>
+                <p style="color: #e0e0e0; line-height: 1.8; margin-top: 15px;">
+                    <strong style="color: #ff6b35;">多平台传播:</strong>
+                    视频可用于官网展示、社交媒体传播、电商平台产品介绍等多个渠道，
+                    实现产品价值的最大化传播与用户触达。
+                </p>
+                <p style="color: #e0e0e0; line-height: 1.8; margin-top: 15px;">
+                    <strong style="color: #ff6b35;">技术展示:</strong>
+                    展示了C4D三维渲染、AE特效合成、PR视频剪辑的综合应用能力，
+                    体现了从建模到成片的完整视频制作流程掌握。
+                </p>
+            </div>
+        </div>
+
+        <!-- 返回链接 -->
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">← 返回首页</a>
+            <a href="portfolio.html" class="back-link" style="margin-left: 20px;">查看更多作品 →</a>
+        </div>
+    </div>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>

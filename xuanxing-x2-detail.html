@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>玄星X2人体工学椅 · 电商详情页设计 — 陈群超</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar-modern.css">
+    <link rel="stylesheet" href="css/contact-fab.css">
+    <style>
+        :root {
+            --orange: #FF6B35;
+            --orange-dim: rgba(255,107,53,0.10);
+            --bg: #0a0a0a;
+            --bg2: #111111;
+            --bg3: #161616;
+            --line: rgba(255,255,255,0.07);
+            --text: #e8e8e8;
+            --text-dim: rgba(232,232,232,0.42);
+            --text-mid: rgba(232,232,232,0.70);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Noto Sans SC','PingFang SC',sans-serif; line-height:1.8; overflow-x:hidden; }
+
+        /* ── 面包屑 ── */
+        .breadcrumb-bar {
+            position:sticky;
+            top:75px;
+            z-index:90;
+            padding:12px 8vw;
+            border-bottom:1px solid var(--line);
+            background:rgba(10,10,10,0.95);
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+            display:flex; align-items:center; gap:8px;
+            font-size:13px; color:var(--text-dim);
+        }
+        .breadcrumb-bar a { color:var(--text-dim); text-decoration:none; transition:color 0.2s; }
+        .breadcrumb-bar a:hover { color:var(--orange); }
+        .breadcrumb-bar .sep { opacity:0.35; }
+        .breadcrumb-bar .current { color:var(--text-mid); }
+
+        /* ── Hero ── */
+        .case-hero {
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            padding:0 8vw;
+            position:relative;
+            overflow:hidden;
+            background:#0a0f14;
+        }
+        .case-hero-bg {
+            position:absolute; inset:0;
+            background-image:url('images/works/xuanxing/detail-hero.jpg');
+            background-size:cover;
+            background-position:65% 30%;
+            opacity:0.75;
+            transform:scale(1.04);
+            transition:transform 12s ease;
+        }
+        .case-hero-overlay {
+            position:absolute; inset:0;
+            background:
+                linear-gradient(to right, rgba(10,15,20,0.92) 0%, rgba(10,15,20,0.70) 40%, rgba(10,15,20,0.20) 70%, rgba(10,15,20,0.05) 100%),
+                linear-gradient(to top, rgba(10,15,20,0.85) 0%, transparent 40%);
+        }
+        .case-hero-content {
+            position:relative; z-index:2;
+            max-width:620px;
+            padding-top:80px;
+        }
+        .case-tag {
+            display:inline-flex; align-items:center; gap:8px;
+            font-size:11px; letter-spacing:0.22em; text-transform:uppercase;
+            color:var(--orange); border:1px solid rgba(255,107,53,0.35);
+            padding:7px 16px; border-radius:2px; margin-bottom:32px;
+        }
+        .case-tag::before { content:''; width:5px; height:5px; background:var(--orange); border-radius:50%; }
+        .case-hero-title {
+            font-size:clamp(56px,8vw,100px);
+            font-weight:900;
+            line-height:1.0;
+            letter-spacing:-0.03em;
+            margin-bottom:8px;
+        }
+        .case-hero-title em { font-style:normal; color:var(--orange); display:block; }
+        .case-hero-subtitle {
+            font-size:clamp(14px,1.5vw,18px);
+            color:var(--text-dim);
+            letter-spacing:0.08em;
+            margin-bottom:28px;
+            font-weight:300;
+        }
+        .case-hero-desc { font-size:15px; color:var(--text-mid); max-width:480px; line-height:2.0; margin-bottom:44px; }
+        .case-meta-row {
+            display:inline-flex; gap:0; flex-wrap:nowrap;
+            border:1px solid var(--line);
+            border-radius:4px;
+            overflow:hidden;
+            max-width:100%;
+        }
+        .case-meta-item {
+            padding:12px 20px;
+            border-right:1px solid var(--line);
+            background:rgba(255,255,255,0.03);
+            white-space:nowrap;
+        }
+        .case-meta-item:last-child { border-right:none; }
+        .case-meta-item label { display:block; font-size:10px; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; margin-bottom:5px; }
+        .case-meta-item span { font-size:13px; color:var(--text); font-weight:500; }
+
+        /* ── 章节通用 ── */
+        .section {
+            padding:96px 8vw;
+            border-top:1px solid var(--line);
+            max-width:1200px;
+            margin:0 auto;
+        }
+        .section-label { font-size:11px; letter-spacing:0.25em; color:var(--orange); text-transform:uppercase; margin-bottom:14px; }
+        .section-title { font-size:clamp(28px,3.5vw,48px); font-weight:700; line-height:1.2; letter-spacing:-0.02em; margin-bottom:24px; }
+        .section-body { font-size:15px; color:var(--text-mid); line-height:2; max-width:680px; }
+        .divider { width:36px; height:2px; background:var(--orange); margin:20px 0 36px; }
+
+
+
+        /* ── 玄星产品动画展示 ── */
+        .xuanxing-video-section {
+            max-width: 1200px;
+        }
+        .xuanxing-video-layout {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.82fr) minmax(320px, 1fr);
+            gap: 56px;
+            align-items: center;
+            margin-top: 46px;
+        }
+        .xuanxing-video-copy {
+            border-left: 3px solid var(--orange);
+            padding: 26px 30px;
+            background: linear-gradient(135deg, rgba(255,107,53,0.10), rgba(255,255,255,0.025));
+            border-radius: 0 16px 16px 0;
+        }
+        .xuanxing-video-copy h3 {
+            font-size: 20px;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+        .xuanxing-video-copy p {
+            font-size: 14px;
+            color: var(--text-mid);
+            line-height: 1.95;
+            margin-bottom: 14px;
+        }
+        .xuanxing-video-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .xuanxing-video-tags span {
+            font-size: 12px;
+            color: var(--orange);
+            border: 1px solid rgba(255,107,53,0.32);
+            background: rgba(255,107,53,0.08);
+            border-radius: 999px;
+            padding: 6px 12px;
+        }
+        .xuanxing-video-frame {
+            max-width: 520px;
+            margin: 0 auto;
+            border-radius: 22px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.10);
+            box-shadow: 0 28px 90px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,107,53,0.08);
+            position: relative;
+        }
+        .xuanxing-video-frame::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            pointer-events: none;
+            border-radius: 22px;
+            box-shadow: inset 0 0 0 1px rgba(255,107,53,0.18);
+            z-index: 2;
+        }
+        .xuanxing-video-frame video {
+            width: 100%;
+            display: block;
+            background: #000;
+        }
+        .xuanxing-video-note {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 12px;
+            margin-top: 14px;
+            letter-spacing: 0.04em;
+        }
+        @media (max-width: 900px) {
+            .xuanxing-video-layout {
+                grid-template-columns: 1fr;
+                gap: 34px;
+            }
+            .xuanxing-video-frame {
+                max-width: 430px;
+            }
+        }
+
+        /* ── 两栏布局 ── */
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; margin-top:48px; }
+        @media (max-width:900px) { .two-col { grid-template-columns:1fr; gap:40px; } }
+
+        /* ── 引言块 ── */
+        .quote-block {
+            border-left:3px solid var(--orange);
+            padding:24px 32px;
+            background:var(--orange-dim);
+            border-radius:0 4px 4px 0;
+            margin:32px 0;
+        }
+        .quote-block p { font-size:17px; font-weight:500; line-height:1.8; color:var(--text); }
+        .quote-block cite { display:block; margin-top:10px; font-size:13px; color:var(--text-dim); font-style:normal; }
+
+        /* ── 竞品对比卡片 ── */
+        .compare-grid {
+            display:grid; grid-template-columns:1fr 1fr; gap:2px;
+            background:var(--line); border:1px solid var(--line);
+            border-radius:4px; overflow:hidden; margin-top:40px;
+        }
+        @media (max-width:700px) { .compare-grid { grid-template-columns:1fr; } }
+        .compare-card { background:var(--bg2); padding:32px 28px; }
+        .compare-card.highlight { background:var(--bg3); border:1px solid rgba(255,107,53,0.22); }
+        .compare-brand { font-size:11px; letter-spacing:0.15em; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; }
+        .compare-name { font-size:18px; font-weight:600; margin-bottom:18px; }
+        .compare-name .badge { display:inline-block; font-size:10px; background:var(--orange); color:#fff; padding:2px 8px; border-radius:2px; margin-left:8px; vertical-align:middle; font-weight:500; }
+        .compare-point { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--text-mid); margin-bottom:8px; line-height:1.6; }
+        .compare-point::before { content:'·'; color:var(--orange); flex-shrink:0; }
+        .compare-weakness .compare-point::before { color:rgba(255,255,255,0.18); }
+
+        /* ── 决策列表 ── */
+        .decision-list { margin-top:40px; display:flex; flex-direction:column; gap:2px; }
+        .decision-item { display:grid; grid-template-columns:140px 1fr; background:var(--bg2); border:1px solid var(--line); border-radius:2px; }
+        .decision-q { padding:24px 20px; border-right:1px solid var(--line); font-size:13px; color:var(--orange); font-weight:500; line-height:1.6; }
+        .decision-a { padding:24px 28px; font-size:14px; color:var(--text-mid); line-height:1.9; }
+        @media (max-width:700px) { .decision-item { grid-template-columns:1fr; } .decision-q { border-right:none; border-bottom:1px solid var(--line); } }
+
+        /* ══════════════════════════════════════
+           步骤章节 — 滚动视差交互
+        ══════════════════════════════════════ */
+
+        /* 外层容器：高度 200vh，触发滚动 */
+        .step-scroll-block {
+            position: relative;
+            height: 220vh;
+        }
+
+        /* sticky 内层：固定在视口中央 */
+        .step-sticky {
+            position: sticky;
+            top: 75px; /* 导航栏高度 */
+            height: calc(100vh - 75px);
+            overflow: hidden;
+        }
+
+        /* 背景图层 */
+        .step-bg {
+            position: absolute;
+            inset: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #0b0d10;
+            transform: scale(1);
+            transition: transform 0.1s linear;
+        }
+
+        /* 遮罩层：初始透明，滚动时从底部升起 */
+        .step-mask {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(10,10,10,0.97) 0%,
+                rgba(10,10,10,0.92) 30%,
+                rgba(10,10,10,0.65) 60%,
+                rgba(10,10,10,0.0) 100%
+            );
+            opacity: 0;
+            transform: translateY(100%);
+            transition: opacity 0.05s, transform 0.05s;
+            will-change: transform, opacity;
+        }
+
+        /* 文字内容层 */
+        .step-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0 8vw 8vh;
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 40px;
+            align-items: end;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.05s, transform 0.05s;
+            will-change: opacity, transform;
+        }
+        @media (max-width: 800px) {
+            .step-content { grid-template-columns: 1fr; padding: 0 6vw 6vh; }
+        }
+
+        .step-big-num {
+            font-size: clamp(72px, 9vw, 110px);
+            font-weight: 900;
+            color: rgba(255,107,53,0.18);
+            line-height: 1;
+            letter-spacing: -0.04em;
+            user-select: none;
+            padding-bottom: 4px;
+        }
+
+        .step-body { }
+        .step-label { font-size:11px; letter-spacing:0.2em; color:var(--orange); text-transform:uppercase; margin-bottom:10px; }
+        .step-title { font-size:clamp(22px,2.6vw,34px); font-weight:700; line-height:1.25; letter-spacing:-0.02em; margin-bottom:16px; }
+        .step-divider { width:28px; height:2px; background:var(--orange); margin-bottom:22px; }
+        .step-text { font-size:14px; color:var(--text-mid); line-height:1.9; margin-bottom:12px; max-width:640px; }
+        .step-insight {
+            border-left:3px solid var(--orange);
+            padding:14px 18px;
+            background:rgba(255,107,53,0.08);
+            border-radius:0 4px 4px 0;
+            margin-top:18px;
+            max-width:640px;
+        }
+        .step-insight-label { font-size:10px; letter-spacing:0.2em; color:var(--orange); text-transform:uppercase; display:block; margin-bottom:6px; }
+        .step-insight p { font-size:13px; color:var(--text-mid); line-height:1.7; }
+
+        /* 步骤章节标题区 */
+        .steps-header {
+            border-top:1px solid var(--line);
+            padding: 96px 8vw 64px;
+            max-width:1200px;
+            margin:0 auto;
+        }
+
+        /* ── 第四章画廊 ── */
+        .works-gallery { display:flex; flex-direction:column; gap:4px; margin-top:48px; }
+        .gallery-row { display:grid; grid-template-columns:1fr 1fr; gap:4px; }
+        .gallery-row img { width:100%; display:block; }
+        .img-full { width:100%; display:block; }
+
+        /* ── 成果数据 ── */
+        .result-grid {
+            display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+            background:var(--line); border:1px solid var(--line);
+            border-radius:4px; overflow:hidden; margin-top:48px;
+        }
+        @media (max-width:700px) { .result-grid { grid-template-columns:1fr; } }
+        .result-card { background:var(--bg2); padding:36px 28px; }
+        .result-num { font-size:44px; font-weight:700; color:var(--orange); line-height:1; margin-bottom:10px; }
+        .result-unit { font-size:20px; font-weight:400; }
+        .result-label { font-size:14px; color:var(--text-mid); margin-bottom:6px; font-weight:500; }
+        .result-note { font-size:12px; color:var(--text-dim); line-height:1.6; }
+
+        /* ── 翻页导航 ── */
+        .case-nav { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); }
+        .case-nav-item { padding:44px 8vw; display:flex; flex-direction:column; gap:8px; text-decoration:none; color:var(--text); transition:background 0.3s; }
+        .case-nav-item:hover { background:var(--bg2); }
+        .case-nav-item.next { text-align:right; border-left:1px solid var(--line); }
+        .case-nav-dir { font-size:11px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; }
+        .case-nav-name { font-size:18px; font-weight:600; }
+        .case-nav-cat { font-size:13px; color:var(--text-dim); }
+
+        /* ── 动画 ── */
+        .fade-up { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+        .fade-up.visible { opacity:1; transform:translateY(0); }
+
+        /* 步骤间分隔线 */
+        .step-sep {
+            border:none;
+            border-top:1px solid var(--line);
+            margin:0;
+        }
+
+        /* 步骤详细图片展示区 */
+        .step-detail-gallery {
+            background: var(--bg2);
+            padding: 64px 8vw;
+            border-bottom: 1px solid var(--line);
+        }
+        .step-detail-header {
+            margin-bottom: 40px;
+        }
+        .step-detail-tag {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .step-detail-subtitle {
+            font-size: clamp(18px, 2vw, 26px);
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+        }
+        .step-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+        }
+        @media (max-width: 768px) {
+            .step-detail-grid { grid-template-columns: 1fr; }
+        }
+        .step-detail-item {
+            position: relative;
+            overflow: hidden;
+            background: var(--bg3);
+        }
+        .step-detail-item img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .step-detail-item:hover img {
+            transform: scale(1.03);
+        }
+        .step-detail-caption {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 22px;
+            background: var(--bg3);
+            border-top: 1px solid var(--line);
+        }
+        .step-detail-num {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: 0.1em;
+            min-width: 24px;
+            padding-top: 2px;
+        }
+        .step-detail-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .step-detail-desc {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+
+        /* ── 模板基础结构补齐：第三章保持 section 语义，但允许流程模块全宽展示 ── */
+        .case-process-section {
+            max-width:none;
+            margin:0;
+            padding:0;
+            border-top:1px solid var(--line);
+        }
+        .case-process-section .steps-header {
+            border-top:none;
+        }
+
+        /* 玄星图片修复：避免流程图、工艺图和详情页长图被强制裁切 */
+        .step-detail-item img {
+            aspect-ratio: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            background: #111317;
+        }
+        .step-detail-item:hover img {
+            transform: none !important;
+        }
+        .works-gallery {
+            max-width: 860px;
+            margin: 56px auto 0;
+            gap: 0;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            background: #eef5f9;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.32);
+        }
+        .works-gallery .gallery-row {
+            display: contents !important;
+        }
+        .works-gallery img,
+        .works-gallery .img-full {
+            width: 100% !important;
+            height: auto !important;
+            display: block !important;
+            object-fit: contain !important;
+            background: #eef5f9;
+            border: 0 !important;
+        }
+        .works-gallery img + img,
+        .works-gallery .gallery-row + img,
+        .works-gallery .gallery-row img + img {
+            border-top: 1px solid rgba(0,0,0,0.06) !important;
+        }
+        .detail-display-note {
+            max-width: 860px;
+            margin: 18px auto 0;
+            color: var(--text-dim);
+            font-size: 13px;
+            line-height: 1.8;
+            text-align: center;
+        }
+        .detail-thumbs {
+            max-width: 860px;
+            margin: 28px auto 0;
+        }
+        .detail-thumbs summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 18px 22px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--text);
+            background: rgba(255,255,255,0.035);
+            text-align: center;
+            font-size: 14px;
+            transition: border-color .24s ease, background .24s ease;
+        }
+        .detail-thumbs summary::-webkit-details-marker { display:none; }
+        .detail-thumbs summary:hover {
+            border-color: rgba(255,107,53,0.46);
+            background: rgba(255,107,53,0.08);
+        }
+        .thumbs-gallery,
+        .detail-scroll-gallery {
+            margin-top: 28px !important;
+            max-height: min(1320px, 150vh);
+            overflow: auto;
+            overscroll-behavior: contain;
+        }
+        .detail-scroll-gallery {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,107,53,0.65) rgba(255,255,255,0.08);
+        }
+        .detail-thumbs[open] summary {
+            border-color: rgba(255,107,53,0.42);
+            background: rgba(255,107,53,0.075);
+        }
+        .detail-scroll-gallery::-webkit-scrollbar { width: 8px; }
+        .detail-scroll-gallery::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); }
+        .detail-scroll-gallery::-webkit-scrollbar-thumb { background: rgba(255,107,53,0.65); border-radius: 999px; }
+        .full-detail-display,
+        .full-detail-display.fade-up,
+        .full-detail-display img {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+        }
+        .full-detail-display img {
+            cursor: zoom-in;
+        }
+        @media (max-width: 768px) {
+            .works-gallery {
+                max-width: calc(100vw - 32px);
+                border-radius: 12px;
+                margin-top: 36px;
+            }
+            .step-detail-gallery { padding: 44px 18px; }
+            .detail-scroll-gallery { max-height: min(1080px, 128vh); }
+        }
+    </style>
+    <link rel="stylesheet" href="css/interaction-fixes.css?v=20260428-interaction-3">
+</head>
+<body class="loading">
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-logo">
+            <img src="images/logo-icon-cq.webp" alt="CQ" class="logo-icon">
+            <div class="logo-text">
+                <div class="logo-name">陈群超</div>
+                <div class="logo-tag">3D Designer</div>
+            </div>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">首页</a></li>
+            <li><a href="design-philosophy.html" class="nav-link">设计理念</a></li>
+            <li><a href="portfolio.html" class="nav-link active">项目案例</a></li>
+            <li><a href="ai-solutions.html" class="nav-link">AI解决方案</a></li>
+            <li><a href="index.html#contact" class="nav-link">联系方式</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="index.html#contact" class="nav-contact">联系合作</a>
+            <a href="portfolio.html" class="nav-cta">查看作品</a>
+        </div>
+        <button class="menu-toggle" aria-label="菜单">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- 面包屑 -->
+<div class="breadcrumb-bar">
+    <a href="index.html">首页</a>
+    <span class="sep">/</span>
+    <a href="portfolio.html">项目案例</a>
+    <span class="sep">/</span>
+    <span class="current">玄星X2人体工学椅</span>
+</div>
+
+<!-- Hero -->
+<section class="case-hero">
+    <div class="case-hero-bg"></div>
+    <div class="case-hero-overlay"></div>
+    <div class="case-hero-content">
+        <div class="case-tag">电商详情页设计 &middot; 2024</div>
+        <h1 class="case-hero-title">玄星X2<em>如坐云端</em></h1>
+        <p class="case-hero-subtitle">恒林家居 &nbsp;&middot;&nbsp; 人体工学椅 &nbsp;&middot;&nbsp; 全链路视觉设计</p>
+        <p class="case-hero-desc">从竞品调研到最终上线，历时3周，完成16屏详情页的完整创作。</p>
+        <div class="case-meta-row">
+            <div class="case-meta-item"><label>客户</label><span>恒林家居（HENGLIN）</span></div>
+            <div class="case-meta-item"><label>类型</label><span>电商详情页 · 3D渲染</span></div>
+            <div class="case-meta-item"><label>工具</label><span>C4D · Photoshop · AI</span></div>
+            <div class="case-meta-item"><label>周期</label><span>3周</span></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- 产品动画展示 -->
+<section class="section xuanxing-video-section" id="xuanxing-video">
+    <div class="section-label fade-up">动态展示</div>
+    <h2 class="section-title fade-up">玄星X2 产品动画</h2>
+    <div class="divider fade-up"></div>
+    <p class="section-body fade-up">在完整详情页之外，我把“如坐云端”的视觉概念进一步延展成3:4竖版产品动画，用云雾场景、结构转场和功能演示，快速呈现六维软腰靠、自由软支撑与200kg承重等核心卖点。</p>
+
+    <div class="xuanxing-video-layout">
+        <div class="xuanxing-video-copy fade-up">
+            <h3>从静态详情页到动态营销素材</h3>
+            <p>这支动画更适合移动端种草、短视频投放与详情页首屏动效补充。它不是单独的视频作品，而是玄星X2整套电商视觉方案的一部分，用动态镜头补足静态页面难以表达的“轻盈、柔软、包裹感”。</p>
+            <p>视频采用竖版比例，便于在手机端完整观看；在作品集中保留播放器控件，方便招聘方直接查看成片节奏、镜头衔接和产品卖点呈现。</p>
+            <div class="xuanxing-video-tags">
+                <span>3:4竖版动画</span>
+                <span>C4D产品表现</span>
+                <span>移动端投放</span>
+                <span>详情页动效延展</span>
+            </div>
+        </div>
+        <div class="fade-up">
+            <div class="xuanxing-video-frame">
+                <video controls playsinline webkit-playsinline preload="metadata" poster="images/works/xuanxing/detail-hero.jpg">
+                    <source src="videos/xuanxing-x2-chair-animation-vertical.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+            </div>
+            <div class="xuanxing-video-note">建议直接点击播放，查看完整产品动画节奏与卖点表达。</div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     第一章 — 竞品分析
+════════════════════════════════════════ -->
+<section class="section">
+    <div class="section-label fade-up">第一章</div>
+    <h2 class="section-title fade-up">竞品都在卷什么，<br>用户真正在乎什么</h2>
+    <div class="divider fade-up"></div>
+
+    <div class="two-col">
+        <div>
+            <p class="section-body fade-up">接到这个项目的第一件事，不是打开C4D，而是打开淘宝，把同价位（800–1500元）的人体工学椅竞品详情页截图存了一遍，然后逐条读差评。</p>
+            <p class="section-body fade-up" style="margin-top:16px;">结论很明确：<strong style="color:var(--text);">用户最常抱怨的不是功能，而是「坐垫太硬」「腰托顶不到位」「久坐腰酸」</strong>。竞品在视觉上都在强调调节参数和工程感，但没有人在视觉上真正解决「软」这个感知问题。</p>
+            <div class="quote-block fade-up">
+                <p>「坐垫太短，坐久了大腿酸。腰靠调了半天还是硬。」</p>
+                <cite>—— 某竞品差评，点赞数 847</cite>
+            </div>
+            <p class="section-body fade-up">玄星X2的核心差异点正是「六维软腰靠」——这不是一个参数，是一个真实的体感差异。设计的任务，就是让这个「软」被看见、被感受到。</p>
+        </div>
+        <div class="fade-up">
+            <div class="compare-grid">
+                <div class="compare-card compare-weakness">
+                    <div class="compare-brand">竞品共性</div>
+                    <div class="compare-name">同价位主流产品</div>
+                    <div class="compare-point">强调调节档位数量</div>
+                    <div class="compare-point">工程图/爆炸图为主</div>
+                    <div class="compare-point">冷色调科技感视觉</div>
+                    <div class="compare-point">坐垫舒适度无视觉表达</div>
+                    <div class="compare-point">腰靠展示停留在结构图</div>
+                </div>
+                <div class="compare-card highlight">
+                    <div class="compare-brand">玄星X2 差异点</div>
+                    <div class="compare-name">六维软腰靠 <span class="badge">核心</span></div>
+                    <div class="compare-point">以「软」为核心视觉语言</div>
+                    <div class="compare-point">云雾场景强化体感联想</div>
+                    <div class="compare-point">模特姿态传递放松感</div>
+                    <div class="compare-point">橙色坐垫制造视觉焦点</div>
+                    <div class="compare-point">功能展示与情绪融合</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     第二章 — 视觉方向
+════════════════════════════════════════ -->
+<section class="section">
+    <div class="section-label fade-up">第二章</div>
+    <h2 class="section-title fade-up">「如坐云端」——<br>一个词定义整个视觉</h2>
+    <div class="divider fade-up"></div>
+    <p class="section-body fade-up">视觉方向的确定，来自一个简单的问题：<strong style="color:var(--text);">「软」怎么被看见？</strong></p>
+    <p class="section-body fade-up" style="margin-top:16px;">不是展示材质参数，而是让人在看到图的瞬间就感受到——这把椅子坐上去是软的、是轻盈的、是自由的。</p>
+    <div class="quote-block fade-up">
+        <p>如坐云端。自由，软支撑。</p>
+        <cite>—— 最终确定的视觉主题词，也是第一屏的主标题</cite>
+    </div>
+    <div class="decision-list fade-up">
+        <div class="decision-item">
+            <div class="decision-q">场景选择</div>
+            <div class="decision-a">选用浅蓝灰云雾飘带作为背景场景，而非常见的办公室或家居场景。云雾本身就是「轻盈」「柔软」的视觉符号，与产品的「软支撑」核心卖点形成直接的视觉隐喻。</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">模特姿态</div>
+            <div class="decision-a">模特选择向后舒展、双臂张开的放松姿态，而非端坐工作的状态。这个姿态传递的信息是「这把椅子让你可以真正放松」，而不是「这把椅子让你工作更高效」——前者更能打动久坐疲惫的用户。</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">色彩策略</div>
+            <div class="decision-a">整体以浅蓝灰为主色调（冷静、专业），以橙色坐垫为唯一视觉焦点。橙色在冷色背景中极为突出，既能快速吸引注意力，又与恒林品牌色保持一致。白色模特服装起到过渡作用，避免视觉割裂。</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">信息密度</div>
+            <div class="decision-a">将页面控制在16屏，不贪多。前半段（1–8屏）以情绪和场景为主，后半段（9–16屏）才进入功能参数的理性说服。这个顺序符合用户从「感性兴趣」到「理性决策」的购买心理路径。</div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     第三章 — 标题区
+════════════════════════════════════════ -->
+<section class="section case-process-section" id="process">
+<div class="steps-header fade-up">
+    <div class="section-label">第三章</div>
+    <h2 class="section-title">从分析板到<br>十六屏详情页</h2>
+    <div class="divider"></div>
+    <p class="section-body">这一章按照页面里实际展示的过程图来讲：先看竞品视觉缺口，再提炼产品功能，随后确定 16 屏结构，最后进入 C4D 渲染与 PS 合成。每一步都对应下面的过程图，不再让文案和图片分离。</p>
+</div>
+
+<!-- ══════════════════════════════════════
+     步骤 01 — 竞品截图分析
+════════════════════════════════════════ -->
+<div class="step-scroll-block" id="step-01">
+    <div class="step-sticky">
+        <div class="step-bg" style="background-image:url('images/works/xuanxing/step01-research.jpg');"></div>
+        <div class="step-mask" id="mask-01"></div>
+        <div class="step-content" id="content-01">
+            <div class="step-big-num">01</div>
+            <div class="step-body">
+                <div class="step-label">竞品截图分析</div>
+                <h3 class="step-title">竞品画面拆解，<br>找到“柔软体感”的空位</h3>
+                <div class="step-divider"></div>
+                <p class="step-text">这张图展示的是竞品详情页截图分析板：把同类人体工学椅的首屏、功能图和卖点表达放在一起比较，重点看它们到底在强调什么。</p>
+                <p class="step-text">分析后得到的视觉机会是：<strong style="color:var(--text);">竞品大多在讲结构和参数，但很少把“坐上去很软、很放松”直接做成画面感。</strong>因此玄星X2的主视觉选择从“舒适体感”切入。</p>
+                <div class="step-insight">
+                    <span class="step-insight-label">关键发现</span>
+                    <p>对应图片中的结论是：20 个竞品里，没有一个在视觉上明确传递“柔软体感”。这就是后续“如坐云端”视觉方向的来源。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="step-sep">
+
+<!-- ══════════════════════════════════════
+     步骤 02 — 产品参数研究
+════════════════════════════════════════ -->
+<div class="step-scroll-block" id="step-02">
+    <div class="step-sticky">
+        <div class="step-bg" style="background-image:url('images/works/xuanxing/step02-params.jpg');"></div>
+        <div class="step-mask" id="mask-02"></div>
+        <div class="step-content" id="content-02">
+            <div class="step-big-num">02</div>
+            <div class="step-body">
+                <div class="step-label">产品参数研究</div>
+                <h3 class="step-title">把产品参数，<br>翻译成视觉卖点</h3>
+                <div class="step-divider"></div>
+                <p class="step-text">这张图对应的是六维椅背参数和功能结构分析。页面不再只写抽象卖点，而是把腰靠、扶手、坐垫、支撑结构这些信息先整理成可被展示的视觉点。</p>
+                <p class="step-text">其中最重要的是“六维软腰靠”。它不是单纯的参数，而是后续画面中需要被看见的支撑关系：哪个方向可调、哪里贴合身体、为什么会更放松。</p>
+                <div class="step-insight">
+                    <span class="step-insight-label">设计决策</span>
+                    <p>对应图片中的处理方式是把“六维调节”和“身体支撑区域”画出来，让后续详情页里的功能图有明确依据。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="step-sep">
+
+<!-- ══════════════════════════════════════
+     步骤 03 — 草图与方向确认
+════════════════════════════════════════ -->
+<div class="step-scroll-block" id="step-03">
+    <div class="step-sticky">
+        <div class="step-bg" style="background-image:url('images/works/xuanxing/step03-sketch.jpg');"></div>
+        <div class="step-mask" id="mask-03"></div>
+        <div class="step-content" id="content-03">
+            <div class="step-big-num">03</div>
+            <div class="step-body">
+                <div class="step-label">草图与方向确认</div>
+                <h3 class="step-title">先排详情页结构，<br>再进入视觉执行</h3>
+                <div class="step-divider"></div>
+                <p class="step-text">这张图展示的是 16 屏详情页结构确认板，而不是手绘草图。它把每一屏要讲的内容先排清楚：主视觉、核心卖点、功能解释、材质细节、参数对比和品牌背书。</p>
+                <p class="step-text">这样做的目的，是让后面的渲染和合成都服务于同一个购买说服链路，而不是单独做几张好看的图。</p>
+                <div class="step-insight">
+                    <span class="step-insight-label">结构原则</span>
+                    <p>对应图片里的结构是：前段负责建立“如坐云端”的感受，中段解释功能，后段补足参数、对比和品牌信任。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="step-sep">
+
+<!-- ══════════════════════════════════════
+     步骤 04 — C4D 建模渲染（多图展示）
+════════════════════════════════════════ -->
+<div class="step-scroll-block" id="step-04">
+    <div class="step-sticky">
+        <div class="step-bg" style="background-image:url('images/works/xuanxing/step04-a-modeling.jpg');"></div>
+        <div class="step-mask" id="mask-04"></div>
+        <div class="step-content" id="content-04">
+            <div class="step-big-num">04</div>
+            <div class="step-body">
+                <div class="step-label">C4D 建模渲染</div>
+                <h3 class="step-title">搭建一个<br>「云端」的物理世界</h3>
+                <div class="step-divider"></div>
+                <p class="step-text">这一组图对应的是 C4D 执行过程：从椅子模型检查、材质与布料模拟，到三轮光线测试和最终渲染结果。图片本身已经展示了每一步的状态。</p>
+                <p class="step-text">文案重点改为解释画面中能看到的内容：模型结构是否完整、材质是否有柔软感、光线是否能让椅子融入云雾场景。</p>
+                <div class="step-insight">
+                    <span class="step-insight-label">技术要点</span>
+                    <p>对应图片中的四个节点是：模型检查、材质布料、光线测试、最终渲染。用户能直接看到从技术过程到成品画面的过渡。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 步骤04 详细图片展示 -->
+<div class="step-detail-gallery">
+    <div class="step-detail-header">
+        <div class="step-detail-tag">C4D 建模渲染 · 全流程</div>
+        <h4 class="step-detail-subtitle">从多边形到云雾场景，四个阶段的技术实现</h4>
+    </div>
+    <div class="step-detail-grid">
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step04-a-modeling.jpg" alt="多边形建模阶段">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">01</span>
+                <div>
+                    <div class="step-detail-title">多边形建模</div>
+                    <div class="step-detail-desc">对应图片展示模型视图和结构检查，重点确认椅背、坐垫、扶手与底盘比例是否准确。</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step04-b-material.jpg" alt="材质与布料模拟">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">02</span>
+                <div>
+                    <div class="step-detail-title">材质与布料模拟</div>
+                    <div class="step-detail-desc">对应图片展示材质、坐垫、网面和布料模拟设置，用来强化“软支撑”的质感。</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step04-c4d.jpg" alt="三轮光线测试">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">03</span>
+                <div>
+                    <div class="step-detail-title">三轮光线测试</div>
+                    <div class="step-detail-desc">对应图片展示三种光线方案对比，最终选择更能突出云雾氛围和产品轮廓的方案。</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step04-d-render.jpg" alt="最终渲染成果">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">04</span>
+                <div>
+                    <div class="step-detail-title">最终渲染成果</div>
+                    <div class="step-detail-desc">对应图片展示最终渲染效果，椅子与云雾场景完成统一，形成“如坐云端”的主视觉。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="step-sep">
+
+<!-- ══════════════════════════════════════
+     步骤 05 — PS 合成精修（多图展示）
+════════════════════════════════════════ -->
+<div class="step-scroll-block" id="step-05">
+    <div class="step-sticky">
+        <div class="step-bg" style="background-image:url('images/works/xuanxing/step05-a-assets.jpg');"></div>
+        <div class="step-mask" id="mask-05"></div>
+        <div class="step-content" id="content-05">
+            <div class="step-big-num">05</div>
+            <div class="step-body">
+                <div class="step-label">PS 合成精修</div>
+                <h3 class="step-title">把所有元素<br>变成一个整体</h3>
+                <div class="step-divider"></div>
+                <p class="step-text">这一组图展示的是 PS 合成过程：先把实拍模特、C4D 椅子和云雾背景拆开，再通过图层叠加、光影统一和局部修饰合成完整主视觉。</p>
+                <p class="step-text">因此文案不再强调看不见的软件参数，而是直接对应图片里的步骤：素材准备、图层合成、光影前后对比，以及最终详情页主视觉落版。</p>
+                <div class="step-insight">
+                    <span class="step-insight-label">输出规范</span>
+                    <p>对应图片中的四个节点是：素材拆分、图层叠加、光影统一、最终 PS 成图。用户能直接看到从素材到成品的变化。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 步骤05 详细图片展示 -->
+<div class="step-detail-gallery">
+    <div class="step-detail-header">
+        <div class="step-detail-tag">PS 合成精修 · 全流程</div>
+        <h4 class="step-detail-subtitle">实拍模特 + C4D渲染椅子 + 云雾场景，三类素材融为一体</h4>
+    </div>
+    <div class="step-detail-grid">
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step05-a-assets.jpg" alt="素材准备">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">01</span>
+                <div>
+                    <div class="step-detail-title">素材准备</div>
+                    <div class="step-detail-desc">对应图片展示模特、椅子和云雾背景三类素材，说明主视觉由哪些画面元素组成。</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step05-b-composite.jpg" alt="图层叠加与合成">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">02</span>
+                <div>
+                    <div class="step-detail-title">图层叠加与合成</div>
+                    <div class="step-detail-desc">对应图片展示 Photoshop 图层叠加过程，重点是让模特、椅子和背景进入同一个空间。</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step05-c-lighting.jpg" alt="光影统一">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">03</span>
+                <div>
+                    <div class="step-detail-title">光影统一</div>
+                    <div class="step-detail-desc">对应图片展示光影统一前后的差异，修正后人物与椅子的明暗关系更一致。</div>
+                </div>
+            </div>
+        </div>
+        <div class="step-detail-item">
+            <img src="images/works/xuanxing/step05-ps.jpg" alt="最终精修成果">
+            <div class="step-detail-caption">
+                <span class="step-detail-num">04</span>
+                <div>
+                    <div class="step-detail-title">最终精修成果</div>
+                    <div class="step-detail-desc">对应图片展示最终 PS 成图，实拍模特、渲染椅子和云雾背景统一成“如坐云端”的主视觉。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     第四章 — 完整详情页
+════════════════════════════════════════ -->
+<section class="section" style="max-width:none; padding:96px 8vw 60px;">
+    <div class="section-label fade-up">第四章</div>
+    <h2 class="section-title fade-up">完整详情页</h2>
+    <div class="divider fade-up"></div>
+    <p class="section-body fade-up" style="margin-bottom:48px;">16屏完整设计，从情绪到功能，从感性到理性，构建完整的购买说服链路。</p>
+    <details class="detail-thumbs fade-up xuanxing-detail-toggle" open>
+        <summary>收起 / 展开 16 屏完整详情页展示</summary>
+        <div class="works-gallery full-detail-display detail-scroll-gallery">
+            <img src="images/works/xuanxing/xuanxing-01.webp" alt="第1屏 · 主视觉 如坐云端" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-02.webp" alt="第2屏 · 功能总览" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-03.webp" alt="第3屏" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-04.webp" alt="第4屏 · 坐垫材质" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-05.webp" alt="第5屏 · 双轴旋转扶手" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-06.webp" alt="第6屏 · 135度仰躺" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-07.webp" alt="第7屏 · 产品渲染" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-08.webp" alt="第8屏 · 零压底盘" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-09.webp" alt="第9屏 · 3D头枕" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-10.webp" alt="第10屏 · 蜂巢网面" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-11.webp" alt="第11屏" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-12.webp" alt="第12屏" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-13.webp" alt="第13屏" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-14.webp" alt="第14屏" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-15.webp" alt="第15屏" class="img-full">
+            <img src="images/works/xuanxing/xuanxing-16.webp" alt="第16屏 · 产品参数" class="img-full">
+        </div>
+    </details>
+    <p class="detail-display-note fade-up">完整详情页已默认展开，展示区高度加长，可连续浏览 16 屏从主视觉、功能卖点到参数收尾的完整购买说服链路。</p>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     第五章 — 上线数据
+════════════════════════════════════════ -->
+<section class="section">
+    <div class="section-label fade-up">第五章</div>
+    <h2 class="section-title fade-up">上线数据</h2>
+    <div class="divider fade-up"></div>
+    <p class="section-body fade-up">详情页上线后，持续追踪关键数据指标，验证设计决策的有效性。</p>
+    <div class="result-grid fade-up">
+        <div class="result-card">
+            <div class="result-num">4.2<span class="result-unit">%</span></div>
+            <div class="result-label">详情页转化率</div>
+            <div class="result-note">高于同品类均值 2.8%，提升约 50%</div>
+        </div>
+        <div class="result-card">
+            <div class="result-num">78<span class="result-unit">%</span></div>
+            <div class="result-label">首屏停留率</div>
+            <div class="result-note">用户在第1屏平均停留 6.3 秒</div>
+        </div>
+        <div class="result-card">
+            <div class="result-num">31<span class="result-unit">%</span></div>
+            <div class="result-label">完整阅读率</div>
+            <div class="result-note">约 31% 的用户完整浏览至最后一屏</div>
+        </div>
+    </div>
+    <div class="quote-block fade-up" style="margin-top:48px;">
+        <p>「视觉方向非常准，云端的感觉做出来了，产品经理和运营都很满意。上线第一周销量比预期高了 20%。」</p>
+        <cite>—— 恒林家居运营负责人反馈</cite>
+    </div>
+</section>
+
+<!-- 翻页导航 -->
+<nav class="case-nav">
+    <a href="lone-warrior-chair-detail.html?v=20260429-lone-template-v3" class="case-nav-item prev">
+        <span class="case-nav-dir">← 上一个</span>
+        <span class="case-nav-name">孤勇者人体工学椅</span>
+        <span class="case-nav-cat">电商详情页 · 3D渲染</span>
+    </a>
+    <a href="renegade-chair-detail.html" class="case-nav-item next">
+        <span class="case-nav-dir">下一个 →</span>
+        <span class="case-nav-name">逆袭者人体工学椅</span>
+        <span class="case-nav-cat">电商详情页 · 3D渲染</span>
+    </a>
+</nav>
+
+<div class="contact-fab-wrapper" id="contactFab">
+    <button class="contact-fab-btn" id="contactFabBtn" aria-label="联系我">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+    </button>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/contact-fab.js"></script>
+<script>
+    // ── fade-up 通用动画 ──
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                obs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+    window.addEventListener('load', () => document.body.classList.remove('loading'));
+
+    // ── 步骤章节滚动视差 ──
+    const steps = ['01','02','03','04','05'];
+
+    function updateSteps() {
+        const navH = 75; // 导航栏高度
+        const vpH = window.innerHeight - navH;
+
+        steps.forEach(id => {
+            const block = document.getElementById('step-' + id);
+            const mask = document.getElementById('mask-' + id);
+            const content = document.getElementById('content-' + id);
+            if (!block || !mask || !content) return;
+
+            const rect = block.getBoundingClientRect();
+            const blockTop = rect.top - navH;  // 相对于sticky区域顶部的距离
+            const blockH = rect.height;        // 200vh
+
+            // 进度：0 = 刚进入视口顶部，1 = 滚动完毕离开
+            // 第一阶段(0~0.45)：图片展示，文字隐藏
+            // 第二阶段(0.45~1)：遮罩+文字浮现
+            const progress = Math.max(0, Math.min(1, -blockTop / (blockH - vpH)));
+
+            if (progress <= 0) {
+                // 未进入：遮罩和文字隐藏
+                mask.style.opacity = '0';
+                mask.style.transform = 'translateY(100%)';
+                content.style.opacity = '0';
+                content.style.transform = 'translateY(40px)';
+            } else if (progress < 0.4) {
+                // 第一阶段：图片全屏，无遮罩
+                mask.style.opacity = '0';
+                mask.style.transform = 'translateY(100%)';
+                content.style.opacity = '0';
+                content.style.transform = 'translateY(40px)';
+            } else {
+                // 第二阶段：遮罩升起，文字浮现
+                const p2 = (progress - 0.4) / 0.6; // 0~1
+                const eased = p2 < 0.5 ? 2 * p2 * p2 : 1 - Math.pow(-2 * p2 + 2, 2) / 2;
+
+                mask.style.opacity = Math.min(1, eased * 1.4).toString();
+                mask.style.transform = 'translateY(0)';
+
+                const textP = Math.max(0, (p2 - 0.15) / 0.85);
+                const textEased = textP < 0.5 ? 2 * textP * textP : 1 - Math.pow(-2 * textP + 2, 2) / 2;
+                content.style.opacity = textEased.toString();
+                content.style.transform = `translateY(${(1 - textEased) * 30}px)`;
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateSteps, { passive: true });
+    window.addEventListener('resize', updateSteps);
+    updateSteps();
+</script>
+<script src="js/interaction-fixes.js?v=20260428-interaction-3"></script>
+</body>
+</html>
+
