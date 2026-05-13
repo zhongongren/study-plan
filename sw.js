@@ -1,5 +1,5 @@
 // Service Worker for 我的逆袭计划表
-const CACHE_NAME = 'study-plan-admin-nav-ui-20260513_01';
+const CACHE_NAME = 'study-plan-admin-weekkey-compat-20260513_02';
 const OFFLINE_URL = '/study/';
 
 // 安装时缓存核心资源

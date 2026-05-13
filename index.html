@@ -1274,20 +1274,14 @@ function getWeekKey(dateStr){const d=new Date(dateStr+'T00:00:00');const dow=d.g
 // PATCH: week-scoped-admin-tasks-20260513
 // 管理端临时添加的任务默认只在创建所在自然周生效，避免上周事项在下周继续出现。
 // 兼容规则：默认模板任务（如 wake、math 等非 task_ 时间戳 id）仍按周循环；
-// 管理端“＋ 添加新任务”生成的 task_<Date.now()> 会按创建周过滤。
+// 管理端“＋ 添加新任务”生成的新任务会写入 weekKey，并只按创建周过滤。
+// 兼容修复：旧任务没有 weekKey 时必须视为永久有效，不能再从 task_<timestamp> ID 反推周，
+// 否则历史创建的正常任务会在本周管理端被误隐藏，造成“任务安排 0 个启用”的假象。
 function inferTaskWeekKey(task){
   if(!task) return null;
   if(task.weekKey) return task.weekKey;
   if(task.validWeek) return task.validWeek;
   if(task.activeWeek) return task.activeWeek;
-  const id=String(task.id||'');
-  const m=id.match(/^task_(\d{12,})/);
-  if(m){
-    const ts=parseInt(m[1],10);
-    if(Number.isFinite(ts)){
-      return getWeekKey(formatDateInChina(ts));
-    }
-  }
   return null;
 }
 function isTaskActiveForDate(task,dateStr){
