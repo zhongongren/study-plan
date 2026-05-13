@@ -493,14 +493,23 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   max-width:none!important;
   min-width:0!important;
   box-sizing:border-box;
-  justify-content:space-between;
+  justify-content:flex-start;
+  cursor:grab;
+  user-select:none;
 }
-.week-cal-cell,
-.admin-cal-cell{
+.admin-week-cal:active,.admin-week-cal.dragging-scroll{cursor:grabbing;}
+.week-cal-cell{
   flex:1 0 46px;
   max-width:58px;
   text-align:center;
 }
+.admin-cal-cell{
+  flex:0 0 58px;
+  max-width:58px;
+  text-align:center;
+}
+.admin-cal-cell.future-date{opacity:.92;}
+.admin-cal-cell.past-date{opacity:.72;}
 @media(max-width:600px){
   .nav{padding:0 10px;}
   .nav-inner{height:48px;gap:8px;}
@@ -1282,13 +1291,24 @@ function isTaskActiveForDate(task,dateStr){
   if(wk) return wk===getWeekKey(dateStr);
   return true;
 }
-function getCurrentAdminDateStr(){
+let adminSelectedDateStr=null;
+const ADMIN_FUTURE_DAYS=35;
+function getAdminDefaultDateStr(){
   const today=getTodayStr();
   const d=new Date(today+'T00:00:00');
   const dow=d.getDay();
   const mo=dow===0?-6:1-dow;
   const monday=new Date(d.getTime()+mo*86400000);
   return getDateStr(new Date(monday.getTime()+(currentDay||0)*86400000));
+}
+function setAdminSelectedDate(dateStr){
+  adminSelectedDateStr=dateStr||getAdminDefaultDateStr();
+  const dow=getDow(adminSelectedDateStr);
+  currentDay=dow===0?6:dow-1;
+}
+function getCurrentAdminDateStr(){
+  if(!adminSelectedDateStr) setAdminSelectedDate(getAdminDefaultDateStr());
+  return adminSelectedDateStr;
 }
 function getAdminVisibleTaskEntries(){
   const ds=getCurrentAdminDateStr();
@@ -1491,6 +1511,7 @@ function renderStudentWeekCal(){
 
 function renderAdminWeekCal(){
   const today = getTodayStr();
+  const selected = getCurrentAdminDateStr();
   const d = new Date(today + 'T00:00:00');
   const dow = d.getDay();
   const mondayOffset = dow === 0 ? -6 : 1 - dow;
@@ -1499,26 +1520,64 @@ function renderAdminWeekCal(){
   const container = document.getElementById('adminWeekCal');
   if(!container) return;
   container.innerHTML = '';
-  // 固定只显示本周7天；任务模板按周一到周日编辑
-  for(let i = 0; i < 7; i++){
+  // 管理端日期条支持横向拖动查看接下来日期；任务仍按实际选中日期所在自然周过滤。
+  for(let i = 0; i < ADMIN_FUTURE_DAYS; i++){
     const day = new Date(monday.getTime() + i * 86400000);
     const ds = getDateStr(day);
     const isToday = ds === today;
+    const isSelected = ds === selected;
     const isWeekend = day.getDay() === 0 || day.getDay() === 6;
-    // currentDay: 0=周一...6=周日，i%7 对应周模板；例如下周一仍编辑“周一”任务
-    const dayIdx = i % 7;
-    const isActive = dayIdx === currentDay;
+    const isFuture = ds > today;
+    const isPast = ds < today;
+    const dayIdx = day.getDay() === 0 ? 6 : day.getDay() - 1;
     const cell = document.createElement('div');
     let cls = 'admin-cal-cell';
     if(isWeekend) cls += ' weekend';
-    if(isActive) cls += ' active';
+    if(isSelected) cls += ' active';
     if(isToday) cls += ' today-cell';
+    if(isFuture) cls += ' future-date';
+    if(isPast) cls += ' past-date';
     cell.className = cls;
     const dowName = DOW_NAMES[day.getDay()];
     cell.innerHTML = `<div class="admin-cal-dow">${dowName}</div><div class="admin-cal-date">${day.getDate()}</div>${isToday ? '<div class="admin-cal-today-dot"></div>' : '<div style="height:7px"></div>'}`;
-    cell.onclick = () => { switchDay(dayIdx); setTimeout(() => cell.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'}), 30); };
+    cell.onclick = () => { switchDay(dayIdx, ds); setTimeout(() => cell.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'}), 30); };
     container.appendChild(cell);
+    if(isSelected){
+      setTimeout(() => cell.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'}), 50);
+    }
   }
+  enableAdminWeekCalDrag(container);
+}
+function enableAdminWeekCalDrag(container){
+  if(!container || container.dataset.dragScrollBound==='1') return;
+  container.dataset.dragScrollBound='1';
+  let isDown=false,startX=0,startScroll=0,dragged=false;
+  container.addEventListener('pointerdown',ev=>{
+    if(ev.pointerType==='mouse' && ev.button!==0) return;
+    isDown=true;dragged=false;startX=ev.clientX;startScroll=container.scrollLeft;
+    container.classList.add('dragging-scroll');
+    try{container.setPointerCapture(ev.pointerId);}catch(e){}
+  });
+  container.addEventListener('pointermove',ev=>{
+    if(!isDown) return;
+    const dx=ev.clientX-startX;
+    if(Math.abs(dx)>4) dragged=true;
+    container.scrollLeft=startScroll-dx;
+    if(dragged) ev.preventDefault();
+  });
+  const finish=ev=>{
+    if(!isDown) return;
+    isDown=false;container.classList.remove('dragging-scroll');
+    if(dragged) container.dataset.justDragged='1';
+    try{container.releasePointerCapture(ev.pointerId);}catch(e){}
+  };
+  container.addEventListener('pointerup',finish);
+  container.addEventListener('pointercancel',finish);
+  container.addEventListener('click',ev=>{
+    if(container.dataset.justDragged==='1'){
+      ev.preventDefault();ev.stopPropagation();container.dataset.justDragged='0';
+    }
+  },true);
 }
 
 function changeViewDate(delta){
@@ -2431,8 +2490,10 @@ function showAdminTab(name){
   }
 }
 
-function switchDay(dayIdx){
+function switchDay(dayIdx,dateStr){
   currentDay=dayIdx;
+  if(dateStr) setAdminSelectedDate(dateStr);
+  else setAdminSelectedDate(getAdminDefaultDateStr());
   renderDayEditor();
   renderAdminWeekCal();
 }
@@ -2443,7 +2504,7 @@ function renderDayEditor(){
   const container=document.getElementById('dayEditor');if(!container)return;
   const DN=['周一','周二','周三','周四','周五','周六','周日'];
   const ds=getCurrentAdminDateStr();
-  container.innerHTML=`<div class="acard"><div class="acard-title">${DN[currentDay]} 任务安排 <span style="font-size:12px;font-weight:600;color:var(--light);">${ds}</span><span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--light);">${tasks.filter(t=>t.enabled!==false).length}个启用</span></div><div class="task-sort-tools"><button class="btn btn-ghost btn-sm" onclick="sortCurrentDayTasksByTime()">⏱ 按时间排序</button><div class="task-sort-hint">按住左侧“≡”可拖动调整顺序；本页仅显示本周任务，上周临时任务会自动隐藏。</div></div><div id="taskEditorList"></div><div style="display:flex;gap:10px;margin-top:12px;"><button class="add-task-btn" onclick="addTask()" style="flex:1;">＋ 添加新任务</button><button class="btn btn-primary" onclick="saveAllAdminConfig()" style="flex:1;padding:10px;border-radius:12px;font-size:14px;font-weight:700;">✅ 保存设置</button></div></div>`;
+  container.innerHTML=`<div class="acard"><div class="acard-title">${DN[currentDay]} 任务安排 <span style="font-size:12px;font-weight:600;color:var(--light);">${ds}</span><span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--light);">${tasks.filter(t=>t.enabled!==false).length}个启用</span></div><div class="task-sort-tools"><button class="btn btn-ghost btn-sm" onclick="sortCurrentDayTasksByTime()">⏱ 按时间排序</button><div class="task-sort-hint">上方日期可向右滑动查看未来日期；本页仅显示所选日期所在周的任务，上周临时任务会自动隐藏。</div></div><div id="taskEditorList"></div><div style="display:flex;gap:10px;margin-top:12px;"><button class="add-task-btn" onclick="addTask()" style="flex:1;">＋ 添加新任务</button><button class="btn btn-primary" onclick="saveAllAdminConfig()" style="flex:1;padding:10px;border-radius:12px;font-size:14px;font-weight:700;">✅ 保存设置</button></div></div>`;
   renderTaskList();
 }
 
@@ -2451,7 +2512,7 @@ function renderTaskList(){
   const entries=getAdminVisibleTaskEntries();
   const list=document.getElementById('taskEditorList');if(!list)return;
   list.innerHTML='';
-  if(!entries.length){list.innerHTML='<div style="padding:18px 12px;text-align:center;color:var(--light);font-size:13px;background:#F8FAFF;border:1px dashed #D0DCFF;border-radius:12px;">本周这一天暂无任务，点击下方“＋ 添加新任务”创建。</div>';return;}
+  if(!entries.length){list.innerHTML='<div style="padding:18px 12px;text-align:center;color:var(--light);font-size:13px;background:#F8FAFF;border:1px dashed #D0DCFF;border-radius:12px;">所选日期这一天暂无任务，点击下方“＋ 添加新任务”创建。</div>';return;}
   entries.forEach(({task,idx})=>list.appendChild(createTaskEditorItem(task,idx)));
 }
 
@@ -2613,7 +2674,7 @@ function addTask(){
   if(!adminConfig.tasksByDay[currentDay])adminConfig.tasksByDay[currentDay]=[];
   const ds=getCurrentAdminDateStr();
   adminConfig.tasksByDay[currentDay].push({id:'task_'+Date.now(),time:'',name:'新任务',desc:'任务说明',type:'review',pts:2,required:true,flex:false,enabled:true,weekKey:getWeekKey(ds),createdAt:formatDateInChina(Date.now()+_serverTimeOffset)});
-  renderDayEditor();showToast('已添加本周任务，请填写内容；下周不会自动显示','success');
+  renderDayEditor();showToast('已添加所选日期所在周任务，请填写内容；其它周不会自动显示','success');
 }
 // 根据已完成的 taskStatus 重算积分
 function recalcScoreFromStatus(stuState){
@@ -3835,5 +3896,6 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 <!-- PATCH: admin-drag-sort-and-time-sort-20260506 -->
 <!-- PATCH: admin-date-server-china-fix-20260506 -->
 <!-- PATCH: week-scoped-admin-tasks-20260513 -->
+<!-- PATCH: admin-future-date-drag-20260513 -->
 </body>
 </html>
