@@ -1275,8 +1275,8 @@ function getWeekKey(dateStr){const d=new Date(dateStr+'T00:00:00');const dow=d.g
 // 管理端临时添加的任务默认只在创建所在自然周生效，避免上周事项在下周继续出现。
 // 兼容规则：默认模板任务（如 wake、math 等非 task_ 时间戳 id）仍按周循环；
 // 管理端“＋ 添加新任务”生成的新任务会写入 weekKey，并只按创建周过滤。
-// 兼容修复：旧任务没有 weekKey 时必须视为永久有效，不能再从 task_<timestamp> ID 反推周，
-// 否则历史创建的正常任务会在本周管理端被误隐藏，造成“任务安排 0 个启用”的假象。
+// 兼容修复：旧任务没有 weekKey 时只在当前自然周显示，不能再从 task_<timestamp> ID 反推周，
+// 这样既能恢复本周旧任务，又不会让这些旧任务继续出现在下周或未来日期。
 function inferTaskWeekKey(task){
   if(!task) return null;
   if(task.weekKey) return task.weekKey;
@@ -1290,7 +1290,7 @@ function isTaskActiveForDate(task,dateStr){
   if(task.endDate && dateStr > task.endDate) return false;
   const wk=inferTaskWeekKey(task);
   if(wk) return wk===getWeekKey(dateStr);
-  return true;
+  return getWeekKey(dateStr)===getWeekKey(getTodayStr());
 }
 let adminSelectedDateStr=null;
 const ADMIN_FUTURE_DAYS=35;
