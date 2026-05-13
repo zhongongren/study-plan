@@ -218,11 +218,25 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* ADMIN */
-.admin-tabs-bar{background:#fff;border-bottom:2px solid #E8EEFF;position:sticky;top:52px;z-index:99;}
-.admin-tabs-inner{max-width:960px;margin:0 auto;display:flex;gap:0;overflow-x:auto;}
-.admin-tab{padding:12px 18px;font-size:13px;font-weight:700;cursor:pointer;color:var(--light);border-bottom:3px solid transparent;transition:.2s;white-space:nowrap;flex-shrink:0;}
-.admin-tab.active{color:var(--primary);border-bottom-color:var(--primary);}
-.admin-tab:hover{color:var(--primary);}
+.admin-tabs-bar{position:sticky;top:52px;z-index:99;padding:10px 12px 8px;background:linear-gradient(180deg,rgba(247,250,255,.96),rgba(239,244,255,.88));backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(208,220,255,.72);box-shadow:0 10px 28px rgba(79,142,247,.08);}
+.admin-tabs-shell{max-width:960px;margin:0 auto;position:relative;border:1px solid rgba(208,220,255,.78);border-radius:22px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 12px 30px rgba(79,142,247,.10);overflow:hidden;}
+.admin-tabs-shell::before{content:'';position:absolute;inset:-40% auto auto -10%;width:180px;height:90px;background:radial-gradient(circle,rgba(79,142,247,.18),transparent 68%);pointer-events:none;}
+.admin-tabs-inner{max-width:none;margin:0;display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding:6px;position:relative;cursor:grab;}
+.admin-tabs-inner::-webkit-scrollbar{display:none;}
+.admin-tabs-inner.dragging-scroll{cursor:grabbing;}
+.admin-tabs-indicator{position:absolute;top:6px;left:6px;width:0;height:calc(100% - 12px);border-radius:16px;background:linear-gradient(135deg,#4F8EF7,#7C5CFF);box-shadow:0 10px 22px rgba(79,142,247,.30),inset 0 1px 0 rgba(255,255,255,.42);transform:translateX(0);transition:transform .34s cubic-bezier(.22,1,.36,1),width .34s cubic-bezier(.22,1,.36,1),opacity .2s;opacity:0;pointer-events:none;z-index:0;}
+.admin-tab{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 14px;min-height:42px;border:0;background:transparent;border-radius:16px;font-size:13px;font-weight:800;letter-spacing:.01em;cursor:pointer;color:#66758F;transition:color .2s ease,transform .2s ease,background .2s ease,box-shadow .2s ease;white-space:nowrap;flex:1 0 auto;scroll-snap-align:center;user-select:none;-webkit-tap-highlight-color:transparent;}
+.admin-tab-icon{font-size:16px;line-height:1;filter:saturate(.9);transition:transform .24s ease,filter .24s ease;}
+.admin-tab-label{line-height:1;}
+.admin-tab:hover{color:#2F6FEF;background:rgba(79,142,247,.08);transform:translateY(-1px);}
+.admin-tab:hover .admin-tab-icon{transform:scale(1.12) rotate(-3deg);filter:saturate(1.18);}
+.admin-tab.active{color:#fff;text-shadow:0 1px 6px rgba(36,92,200,.22);}
+.admin-tab.active .admin-tab-icon{transform:scale(1.1);filter:saturate(1.35) drop-shadow(0 3px 5px rgba(0,0,0,.14));}
+.admin-tab.pressing{transform:scale(.96);}
+.admin-tab::after{content:'';position:absolute;left:50%;bottom:5px;width:4px;height:4px;border-radius:999px;background:rgba(255,255,255,.9);transform:translateX(-50%) scale(0);transition:.22s ease;}
+.admin-tab.active::after{transform:translateX(-50%) scale(1);}
+.admin-tab-ripple{position:absolute;border-radius:999px;transform:translate(-50%,-50%) scale(0);background:rgba(255,255,255,.42);pointer-events:none;animation:adminTabRipple .52s ease-out forwards;}
+@keyframes adminTabRipple{to{transform:translate(-50%,-50%) scale(2.9);opacity:0;}}
 .admin-content{max-width:960px;margin:0 auto;padding:20px 16px;}
 .admin-page{display:none;}
 .admin-page.active{display:block;}
@@ -468,23 +482,10 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
 .nav-tabs::-webkit-scrollbar{display:none;}
 .nav-tab{flex:1 0 auto;text-align:center;scroll-snap-align:start;}
 .logout-btn{flex-shrink:0;}
-.admin-tabs-bar{overflow:hidden;background:#fff;width:100%;}
-.admin-tabs-inner{
-  width:100%;
-  max-width:none;
-  margin:0;
-  display:flex;
-  justify-content:space-between;
-  overflow-x:auto;
-  overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  scroll-snap-type:x proximity;
-  padding:0 12px;
-  background:#fff;
-}
-.admin-tabs-inner::-webkit-scrollbar{display:none;}
-.admin-tab{flex:1 0 auto;text-align:center;scroll-snap-align:start;}
+.admin-tabs-bar{overflow:hidden;width:100%;}
+.admin-tabs-shell{width:100%;max-width:none;}
+.admin-tabs-inner{width:100%;max-width:none;margin:0;justify-content:flex-start;}
+.admin-tab{flex:1 0 auto;text-align:center;scroll-snap-align:center;}
 .today-banner{flex-wrap:wrap;}
 .today-banner .week-cal-bar{order:3;flex:0 0 100%!important;}
 .week-cal-bar,
@@ -516,9 +517,12 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
   .nav-title{font-size:14px;max-width:42vw;overflow:hidden;text-overflow:ellipsis;}
   .nav-tab{padding:4px 9px;font-size:11px;}
   .logout-btn{padding:4px 9px;font-size:11px;}
-  .admin-tabs-bar{top:48px;}
-  .admin-tabs-inner{max-width:none;margin:0;padding:0 12px;}
-  .admin-tab{padding:10px 12px;font-size:12px;}
+  .admin-tabs-bar{top:48px;padding:8px 8px 7px;}
+  .admin-tabs-shell{border-radius:18px;}
+  .admin-tabs-inner{max-width:none;margin:0;padding:5px;gap:5px;}
+  .admin-tabs-indicator{top:5px;left:5px;height:calc(100% - 10px);border-radius:13px;}
+  .admin-tab{padding:9px 11px;font-size:12px;min-height:38px;border-radius:13px;}
+  .admin-tab-icon{font-size:15px;}
   .today-banner{flex-wrap:wrap!important;}
   .today-banner .week-cal-bar{order:3;flex:0 0 100%!important;}
   .week-cal-bar,
@@ -813,15 +817,18 @@ body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;backg
     </div>
   </div>
   <div class="admin-tabs-bar">
-    <div class="admin-tabs-inner">
-      <button class="admin-tab active" onclick="showAdminTab('today')">今日打卡</button>
-      <button class="admin-tab" onclick="showAdminTab('schedule')">任务安排</button>
-      <button class="admin-tab" onclick="showAdminTab('subjects')">科目</button>
-      <button class="admin-tab" onclick="showAdminTab('stats')">统计</button>
-      <button class="admin-tab" onclick="showAdminTab('reset')">重置</button>
-      <button class="admin-tab" onclick="showAdminTab('reward')">奖励</button>
-      <button class="admin-tab" onclick="showAdminTab('settings')">设置</button>
-      <button class="admin-tab" onclick="showAdminTab('log')">日志</button>
+    <div class="admin-tabs-shell">
+      <div class="admin-tabs-inner" id="adminTabsInner" aria-label="管理端功能导航">
+        <div class="admin-tabs-indicator" id="adminTabsIndicator"></div>
+        <button class="admin-tab active" data-tab="today" onclick="showAdminTab('today',event)"><span class="admin-tab-icon">🔥</span><span class="admin-tab-label">今日打卡</span></button>
+        <button class="admin-tab" data-tab="schedule" onclick="showAdminTab('schedule',event)"><span class="admin-tab-icon">📅</span><span class="admin-tab-label">任务安排</span></button>
+        <button class="admin-tab" data-tab="subjects" onclick="showAdminTab('subjects',event)"><span class="admin-tab-icon">📚</span><span class="admin-tab-label">科目</span></button>
+        <button class="admin-tab" data-tab="stats" onclick="showAdminTab('stats',event)"><span class="admin-tab-icon">📊</span><span class="admin-tab-label">统计</span></button>
+        <button class="admin-tab" data-tab="reset" onclick="showAdminTab('reset',event)"><span class="admin-tab-icon">↺</span><span class="admin-tab-label">重置</span></button>
+        <button class="admin-tab" data-tab="reward" onclick="showAdminTab('reward',event)"><span class="admin-tab-icon">🏆</span><span class="admin-tab-label">奖励</span></button>
+        <button class="admin-tab" data-tab="settings" onclick="showAdminTab('settings',event)"><span class="admin-tab-icon">⚙️</span><span class="admin-tab-label">设置</span></button>
+        <button class="admin-tab" data-tab="log" onclick="showAdminTab('log',event)"><span class="admin-tab-icon">🧾</span><span class="admin-tab-label">日志</span></button>
+      </div>
     </div>
   </div>
   <div class="admin-content">
@@ -2264,6 +2271,7 @@ function initAdmin(){
   currentDay = todayDow === 0 ? 6 : todayDow - 1; // 转换为 0=周一...6=周日
   renderDayEditor();
   renderAdminWeekCal();
+  enableAdminTabsDrag();
   // 默认显示今日打卡监控
   showAdminTab('today');
   // 每30秒自动刷新今日打卡
@@ -2470,12 +2478,14 @@ async function switchAdminViewStudent(sid){
   renderAdminStudentSelector();
 }
 
-function showAdminTab(name){
+function showAdminTab(name,ev){
   document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   const el=document.getElementById('admin-'+name);if(el)el.classList.add('active');
   const tabs=['today','schedule','subjects','stats','reset','reward','settings','log'];const idx=tabs.indexOf(name);
-  if(idx>=0)document.querySelectorAll('.admin-tab')[idx].classList.add('active');
+  const tabEls=document.querySelectorAll('.admin-tab');
+  const activeTab=idx>=0?tabEls[idx]:document.querySelector(`.admin-tab[data-tab="${name}"]`);
+  if(activeTab){activeTab.classList.add('active');animateAdminTab(activeTab,ev);updateAdminTabsIndicator(activeTab,true);}
   if(name==='today')renderTodayMonitor();
   if(name==='stats')renderAdminStats();
   if(name==='reward'){renderRewardEditor();renderAdminRewardStatus();renderMotivationInput();}
@@ -2488,6 +2498,49 @@ function showAdminTab(name){
     renderScoreSnapshotList(sid);
     renderScoreAdjHistory(sid);
   }
+}
+
+function animateAdminTab(tab,ev){
+  if(!tab)return;
+  tab.classList.add('pressing');
+  setTimeout(()=>tab.classList.remove('pressing'),170);
+  const r=tab.getBoundingClientRect();
+  const x=ev&&ev.clientX?ev.clientX-r.left:r.width/2;
+  const y=ev&&ev.clientY?ev.clientY-r.top:r.height/2;
+  const ripple=document.createElement('span');
+  ripple.className='admin-tab-ripple';
+  const size=Math.max(r.width,r.height);
+  ripple.style.width=size+'px';
+  ripple.style.height=size+'px';
+  ripple.style.left=x+'px';
+  ripple.style.top=y+'px';
+  tab.appendChild(ripple);
+  setTimeout(()=>ripple.remove(),560);
+}
+function updateAdminTabsIndicator(activeTab,focus){
+  const inner=document.getElementById('adminTabsInner');
+  const indicator=document.getElementById('adminTabsIndicator');
+  if(!inner||!indicator)return;
+  activeTab=activeTab||inner.querySelector('.admin-tab.active');
+  if(!activeTab)return;
+  const left=activeTab.offsetLeft-inner.scrollLeft;
+  indicator.style.width=activeTab.offsetWidth+'px';
+  indicator.style.transform='translateX('+left+'px)';
+  indicator.style.opacity='1';
+  if(focus&&activeTab.scrollIntoView){activeTab.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
+}
+function enableAdminTabsDrag(){
+  const inner=document.getElementById('adminTabsInner');
+  if(!inner||inner.dataset.dragReady==='1')return;
+  inner.dataset.dragReady='1';
+  let down=false,startX=0,startLeft=0,moved=false;
+  inner.addEventListener('pointerdown',e=>{down=true;moved=false;startX=e.clientX;startLeft=inner.scrollLeft;inner.classList.add('dragging-scroll');inner.setPointerCapture&&inner.setPointerCapture(e.pointerId);});
+  inner.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-startX;if(Math.abs(dx)>8)moved=true;if(moved){inner.scrollLeft=startLeft-dx;updateAdminTabsIndicator();}});
+  function end(e){if(!down)return;down=false;inner.classList.remove('dragging-scroll');if(inner.releasePointerCapture)try{inner.releasePointerCapture(e.pointerId);}catch(_){} if(moved){inner.dataset.justDragged='1';setTimeout(()=>{inner.dataset.justDragged='0';},180);}}
+  inner.addEventListener('pointerup',end);inner.addEventListener('pointercancel',end);inner.addEventListener('scroll',()=>updateAdminTabsIndicator(),{passive:true});
+  inner.addEventListener('click',e=>{if(inner.dataset.justDragged==='1'){e.preventDefault();e.stopPropagation();}},true);
+  window.addEventListener('resize',()=>setTimeout(()=>updateAdminTabsIndicator(),80));
+  setTimeout(()=>updateAdminTabsIndicator(inner.querySelector('.admin-tab.active')),50);
 }
 
 function switchDay(dayIdx,dateStr){
@@ -3897,5 +3950,6 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 <!-- PATCH: admin-date-server-china-fix-20260506 -->
 <!-- PATCH: week-scoped-admin-tasks-20260513 -->
 <!-- PATCH: admin-future-date-drag-20260513 -->
+<!-- PATCH: admin-nav-interactive-ui-20260513 -->
 </body>
 </html>
